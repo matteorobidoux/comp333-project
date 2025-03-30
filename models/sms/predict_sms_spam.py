@@ -3,6 +3,8 @@ import joblib
 import numpy as np
 from urllib.parse import urlparse
 from scipy.sparse import hstack, csr_matrix
+import sys
+import json
 
 # ============================
 # Step 1: Load Pretrained Models and Vectorizer
@@ -139,20 +141,15 @@ def predict_spam(text):
 # Example Usage
 # ============================
 if __name__ == '__main__':
-    sample_texts = [
-        "Congratulations! You've won a free iPhone. Click here: https://win-free-rewards.biz to claim your prize!",
-        "Hi, please check our latest product on https://www.amazon.com/secure-shop now.",
-        "Secure your account by logging in at https://auth.secure-login.net",
-        "Hello, just checking in to see how you're doing! No links here :)",
-        # Nigerian prince scam
-        "Dear friend, I am a Nigerian prince and I need your help to transfer $10 million. Please send me your bank details.",
-        "Get paid to work from home! Visit https://www.work-from-home.com for more info.",
-        # Phishing
-        "Your PayPal account has been compromised. Please verify your identity at https://paypal.com/verify-account.",
-        "GENT! We are trying to contact you. Last weekends draw shows that you won a �1000 prize GUARANTEED. Call 09064012160. Claim Code K52. Valid 12hrs only. 150ppm"
-    ]
+    # Example text input
+    param = sys.argv[1] if len(sys.argv) > 1 else 'Check out this link: http://example.com/free-gift'
+    
+    # Predict spam
+    prediction_result = analyze_text(param)
+    
+    # convert mumpy float values to string for JSON serialization
+    for key, value in prediction_result.items():
+        if isinstance(value, np.float64) or isinstance(value, np.float32):
+            prediction_result[key] = round(float(value), 2)
 
-    for text in sample_texts:
-        print("\n===============================")
-        print(f"📩 Analyzing Text: {text}")
-        predict_spam(text)
+    print(json.dumps(prediction_result, indent=4))

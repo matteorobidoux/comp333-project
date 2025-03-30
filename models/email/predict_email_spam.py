@@ -3,6 +3,8 @@ import joblib
 import numpy as np
 from urllib.parse import urlparse
 from scipy.sparse import hstack, csr_matrix
+import sys
+import json
 
 # ============================
 # Step 1: Load Pretrained Models and Vectorizers
@@ -145,7 +147,21 @@ if __name__ == '__main__':
         {"subject": "Urgent! Win a Prize!", "text": "GENT! We are trying to contact you. Last weekends draw shows that you won a £1000 prize GUARANTEED. Call 09064012160. Claim Code K52. Valid 12hrs only. 150ppm"}
     ]
 
-    for email in sample_emails:
-        print("\n===============================")
-        print(f"📧 Analyzing Email: {email['subject']}")
-        predict_spam(email['subject'], email['text'])
+    # for email in sample_emails:
+    #     print("\n===============================")
+    #     print(f"📧 Analyzing Email: {email['subject']}")
+    #     predict_spam(email['subject'], email['text'])
+
+     # Example text input
+    subject = sys.argv[1] if len(sys.argv) > 1 else f'{sample_emails[-1]["subject"]}'
+    text = sys.argv[2] if len(sys.argv) > 2 else f'{sample_emails[-1]["text"]}'
+
+    # Predict spam
+    prediction_result = analyze_email(subject, text)
+    
+    # convert mumpy float values to string for JSON serialization
+    for key, value in prediction_result.items():
+        if isinstance(value, np.float64) or isinstance(value, np.float32):
+            prediction_result[key] = round(float(value), 2)
+
+    print(json.dumps(prediction_result, indent=4))

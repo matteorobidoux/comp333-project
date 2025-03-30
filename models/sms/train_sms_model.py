@@ -11,7 +11,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # ============================
 
 # Load and preprocess SMS data
-sms_df = pd.read_csv('data/sms_data.csv')
+sms_df = pd.read_csv('data/normalized/sms_data.csv')
 
 # Check for missing or empty texts
 sms_df['text'] = sms_df['text'].fillna('').astype(str)

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spam Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-group input, .input-group textarea, .input-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    .buttons button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .buttons button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .spinner {
+      display: none;
+      margin: 20px auto;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #007bff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Spam Checker</h1>
+    <div class="input-group">
+      <label for="inputType">Select Input Type</label>
+      <select id="inputType" onchange="updateForm()">
+        <option value="sms">SMS</option>
+        <option value="email">Email</option>
+        <option value="youtube">YouTube Comment</option>
+      </select>
+    </div>
+    <div id="formContainer">
+      <!-- Dynamic form content will be inserted here -->
+    </div>
+    <div class="buttons">
+      <button onclick="checkSpam()">Check Spam</button>
+    </div>
+    <div class="spinner" id="spinner"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function updateForm() {
+      const inputType = document.getElementById('inputType').value;
+      const formContainer = document.getElementById('formContainer');
+      formContainer.innerHTML = '';
+
+      if (inputType === 'sms') {
+        formContainer.innerHTML = `
+          <div class="input-group">
+            <label for="smsText">SMS Text</label>
+            <textarea id="smsText" rows="4"></textarea>
+          </div>
+        `;
+      } else if (inputType === 'email') {
+        formContainer.innerHTML = `
+          <div class="input-group">
+            <label for="emailSubject">Email Subject</label>
+            <input type="text" id="emailSubject">
+          </div>
+          <div class="input-group">
+            <label for="emailBody">Email Body</label>
+            <textarea id="emailBody" rows="4"></textarea>
+          </div>
+        `;
+      } else if (inputType === 'youtube') {
+        formContainer.innerHTML = `
+          <div class="input-group">
+            <label for="youtubeText">Comment Text</label>
+            <textarea id="youtubeText" rows="4"></textarea>
+          </div>
+          <div class="input-group">
+            <label for="youtubeAuthor">Author</label>
+            <input type="text" id="youtubeAuthor">
+          </div>
+        `;
+      }
+    }
+
+    async function checkSpam() {
+      const inputType = document.getElementById('inputType').value;
+      const spinner = document.getElementById('spinner');
+      let endpoint = '';
+      let body = {};
+
+      if (inputType === 'sms') {
+        const smsText = document.getElementById('smsText').value;
+        endpoint = `http://localhost:3000/predict-sms`;
+        body = { text: smsText };
+      } else if (inputType === 'email') {
+        const emailSubject = document.getElementById('emailSubject').value;
+        const emailBody = document.getElementById('emailBody').value;
+        endpoint = `http://localhost:3000/predict-email`;
+        body = { text: emailBody, subject: emailSubject };
+      } else if (inputType === 'youtube') {
+        const youtubeText = document.getElementById('youtubeText').value;
+        const youtubeAuthor = document.getElementById('youtubeAuthor').value;
+        endpoint = `http://localhost:3000/predict-comment`;
+        body = { text: youtubeText, author: youtubeAuthor };
+      }
+
+      try {
+        // Show the spinner
+        spinner.style.display = 'block';
+
+        console.log('Endpoint:', endpoint);
+        console.log('Body:', body);
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // convert the prediction to a json
+        result.prediction = JSON.parse(result.prediction);
+
+        let predictionText = '';
+
+        let has_url = false;
+
+        console.log(result.prediction.url_spam_prob);
+
+        if (result.prediction.url_spam_prob > 0) {
+          has_url = true;
+        //   predictionText = 'This message contains a URL.';
+        }
+
+        console.log(has_url);
+
+
+        // if (result.prediction.url_spam) {
+        //   predictionText = 'This message is likely spam.';
+        // }
+
+
+        document.getElementById('result').textContent = `Prediction: ${JSON.stringify(result.prediction)}`;
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('result').textContent = 'Error checking spam.';
+      } finally {
+        // Hide the spinner
+        spinner.style.display = 'none';
+      }
+    }
+
+    // Initialize the form with SMS input by default
+    updateForm();
+  </script>
+</body>
+</html>
