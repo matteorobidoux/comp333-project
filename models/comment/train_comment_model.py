@@ -73,8 +73,8 @@ print(classification_report(y_test, y_pred))
 # Step 5: Save Model and Vectorizers
 # ============================
 # Save the trained model and vectorizers
-joblib.dump(text_vectorizer, 'models/comments/comments_text_vectorizer.pkl')
-joblib.dump(author_vectorizer, 'models/comments/comments_author_vectorizer.pkl')
-joblib.dump(gb_model, 'models/comments/comments_model.pkl')
+joblib.dump(text_vectorizer, 'models/comment/comment_text_vectorizer.pkl')
+joblib.dump(author_vectorizer, 'models/comment/comment_author_vectorizer.pkl')
+joblib.dump(gb_model, 'models/comment/comment_model.pkl')
 
 print("📚 comments Spam Model and Vectorizers saved successfully!")

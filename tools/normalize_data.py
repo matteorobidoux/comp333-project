@@ -95,12 +95,12 @@ def save_data(data, output_file):
 # Load datasets
 email_datasets = [get_email_data(pd.read_csv(f'data/email/email_dataset_{i}.csv')) for i in range(1, 5)]
 url_data = get_url_data(pd.read_csv('data/url/url_dataset.csv'))
-comments_data = get_comments_data(pd.read_csv('data/comments/comments_dataset.csv'))
+comment_data = get_comments_data(pd.read_csv('data/comment/comment_dataset.csv'))
 sms_data = [get_sms_data(pd.read_csv(f'data/sms/sms_dataset_{i}.csv')) for i in range(1, 3)]
 
 # Combine email datasets
 combined_email_data = combine_datasets(email_datasets)
-combined_comments_data = combine_datasets([comments_data])
+combined_comment_data = combine_datasets([comment_data])
 combined_sms_data = combine_datasets(sms_data)
 
 # Combine URL data (if you have more URL datasets, you can combine them similarly)
@@ -108,7 +108,7 @@ combined_url_data = combine_datasets([url_data])
 
 # Save cleaned and combined data
 save_data(combined_email_data, 'data/normalized/email_data.csv')
-save_data(combined_comments_data, 'data/normalized/comments_data.csv')
+save_data(combined_comment_data, 'data/normalized/comment_data.csv')
 save_data(combined_sms_data, 'data/normalized/sms_data.csv')
 save_data(combined_url_data, 'data/normalized/url_data.csv')
 

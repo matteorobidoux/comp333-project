@@ -112,49 +112,19 @@ def analyze_email(subject, text):
     is_spam = combined_prob >= 0.5
 
     return {
-        'email_spam_prob': round(spam_prob, 4),
+        'spam_prob': round(spam_prob, 4),
         'url_spam_prob': round(url_spam_prob, 4),
         'combined_prob': round(combined_prob, 4),
         'is_spam': bool(is_spam)
     }
 
 # ============================
-# Step 9: Main Prediction Function
-# ============================
-def predict_spam(subject, text):
-    """Wrapper function to analyze email subject and text and predict spam."""
-    result = analyze_email(subject, text)
-    
-    print(f"✅ Subject Spam Probability: {result['email_spam_prob']}")
-    print(f"🔗 URL Spam Probability: {result['url_spam_prob']}")
-    print(f"⚡ Combined Spam Probability: {result['combined_prob']}")
-    print(f"🚨 Final Decision: {'SPAM' if result['is_spam'] else 'NOT SPAM'}")
-
-    return result
-
-# ============================
 # Example Usage
 # ============================
 if __name__ == '__main__':
-    sample_emails = [
-        {"subject": "Congratulations! You've won a free iPhone.", "text": "Click here: https://win-free-rewards.biz to claim your prize!"},
-        {"subject": "Hi, please check our latest product on Amazon", "text": "Visit https://www.amazon.com/secure-shop now."},
-        {"subject": "Secure your account", "text": "Please login at https://auth.secure-login.net"},
-        {"subject": "Just Checking In", "text": "Hello, just checking in to see how you're doing! No links here :)"},
-        {"subject": "Claim Your Prize!", "text": "Dear friend, I am a Nigerian prince and I need your help to transfer $10 million. Please send me your bank details."},
-        {"subject": "Work from home", "text": "Get paid to work from home! Visit https://www.work-from-home.com for more info."},
-        {"subject": "Account Verification", "text": "Your PayPal account has been compromised. Please verify your identity at https://paypal.com/verify-account."},
-        {"subject": "Urgent! Win a Prize!", "text": "GENT! We are trying to contact you. Last weekends draw shows that you won a £1000 prize GUARANTEED. Call 09064012160. Claim Code K52. Valid 12hrs only. 150ppm"}
-    ]
-
-    # for email in sample_emails:
-    #     print("\n===============================")
-    #     print(f"📧 Analyzing Email: {email['subject']}")
-    #     predict_spam(email['subject'], email['text'])
-
      # Example text input
-    subject = sys.argv[1] if len(sys.argv) > 1 else f'{sample_emails[-1]["subject"]}'
-    text = sys.argv[2] if len(sys.argv) > 2 else f'{sample_emails[-1]["text"]}'
+    subject = sys.argv[1] if len(sys.argv) > 1 else 'Test'
+    text = sys.argv[2] if len(sys.argv) > 2 else 'Good afternoon, when will the test be? Thank you'
 
     # Predict spam
     prediction_result = analyze_email(subject, text)

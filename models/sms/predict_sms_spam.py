@@ -107,7 +107,7 @@ def analyze_text(text):
         # Step 6: Combine SMS and URL Results
         # ============================
         # Weighted combination of probabilities
-        combined_prob = 0.7 * sms_spam_prob + 0.3 * url_spam_prob
+        combined_prob = 0.3 * sms_spam_prob + 0.7 * url_spam_prob
 
     else:
         # No URLs found, use only SMS spam probability
@@ -117,25 +117,12 @@ def analyze_text(text):
     is_spam = combined_prob >= 0.5
 
     return {
-        'sms_spam_prob': round(sms_spam_prob, 4),
+        'spam_prob': round(sms_spam_prob, 4),
         'url_spam_prob': round(url_spam_prob, 4),
         'combined_prob': round(combined_prob, 4),
         'is_spam': bool(is_spam)
     }
 
-# ============================
-# Step 7: Main Prediction Function
-# ============================
-def predict_spam(text):
-    """Wrapper function to analyze input text and predict spam."""
-    result = analyze_text(text)
-    
-    print(f"✅ SMS Spam Probability: {result['sms_spam_prob']}")
-    print(f"🔗 URL Spam Probability: {result['url_spam_prob']}")
-    print(f"⚡ Combined Spam Probability: {result['combined_prob']}")
-    print(f"🚨 Final Decision: {'SPAM' if result['is_spam'] else 'NOT SPAM'}")
-
-    return result
 
 # ============================
 # Example Usage

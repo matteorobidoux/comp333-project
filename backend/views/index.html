@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Spam Checker</title>
+		<link rel="stylesheet" href="/backend/public/css/styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Spam Checker</h1>
+			<div class="input-group">
+				<label for="inputType">Select Input Type</label>
+				<select id="inputType" onchange="updateForm()">
+					<option value="sms">SMS</option>
+					<option value="email">Email</option>
+					<option value="youtube">YouTube Comment</option>
+				</select>
+			</div>
+			<div id="formContainer">
+				<!-- Dynamic form content will be inserted here -->
+			</div>
+			<div class="buttons">
+				<button onclick="checkSpam()">Check Spam</button>
+			</div>
+			<div class="spinner" id="spinner"></div>
+			<div class="result" id="result"></div>
+		</div>
+
+		<script src="/backend/public/js/script.js"></script>
+	</body>
+</html>

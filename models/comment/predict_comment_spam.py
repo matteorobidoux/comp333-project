@@ -3,14 +3,16 @@ import joblib
 import numpy as np
 from urllib.parse import urlparse
 from scipy.sparse import hstack, csr_matrix
+import sys
+import json
 
 # ============================
 # Step 1: Load Pretrained Models and Vectorizers
 # ============================
 # Load comments text and author vectorizers and models
-text_vectorizer = joblib.load('models/comments/comments_text_vectorizer.pkl')
-author_vectorizer = joblib.load('models/comments/comments_author_vectorizer.pkl')
-comments_model = joblib.load('models/comments/comments_model.pkl')
+text_vectorizer = joblib.load('models/comment/comment_text_vectorizer.pkl')
+author_vectorizer = joblib.load('models/comment/comment_author_vectorizer.pkl')
+comments_model = joblib.load('models/comment/comment_model.pkl')
 
 # Load URL feature extraction model
 url_model = joblib.load('models/url/url_model.pkl')
@@ -60,7 +62,7 @@ def fix_url(url):
 # ============================
 # Step 4: Analyze comments (Text and author)
 # ============================
-def analyze_comments(author, text):
+def analyze_comment(author, text):
     """Analyze both comments author and text, check for URLs, and classify the comments."""
     
     # Extract URLs from both author and text (if any)
@@ -110,74 +112,26 @@ def analyze_comments(author, text):
     is_spam = combined_prob >= 0.5
 
     return {
-        'comments_spam_prob': round(spam_prob, 4),
+        'spam_prob': round(spam_prob, 4),
         'url_spam_prob': round(url_spam_prob, 4),
         'combined_prob': round(combined_prob, 4),
         'is_spam': bool(is_spam)
     }
 
-# ============================
-# Step 9: Main Prediction Function
-# ============================
-def predict_spam(author, text):
-    """Wrapper function to analyze comments author and text and predict spam."""
-    result = analyze_comments(author, text)
-    
-    print(f"✅ Comment Spam Probability: {result['comments_spam_prob']}")
-    print(f"🔗 URL Spam Probability: {result['url_spam_prob']}")
-    print(f"⚡ Combined Spam Probability: {result['combined_prob']}")
-    print(f"🚨 Final Decision: {'SPAM' if result['is_spam'] else 'NOT SPAM'}")
 
-    return result
-
-# ============================
-# Example Usage
-# ============================
 if __name__ == '__main__':
-    sample_commentss =  [
-    {
-        'author': 'JohnDoe123',
-        'text': 'Check out my amazing YouTube channel! Don’t forget to subscribe!'
-    },
-    {
-        'author': 'JaneSmith',
-        'text': 'This is a legitimate comment without any spammy links or promotions.'
-    },
-    {
-        'author': 'SpamBot99',
-        'text': 'Win a free iPhone! Click here: http://malicious-site.com/free-iphone-offer'
-    },
-    {
-        'author': 'TrustedUser789',
-        'text': 'I love this product! Definitely going to buy it! No links or spam here.'
-    },
-    {
-        'author': 'FreeMoney2025',
-        'text': 'Congratulations! You’ve won $1000! Claim your prize at http://dangerous-link.com/claim-your-prize'
-    },
-    {
-        'author': 'LegitCommenter',
-        'text': 'Great video! Keep up the good work!'
-    },
-    {
-        'author': 'ClickHereForFreeStuff',
-        'text': 'Hurry up and get your free gift now: https://phishing-site.com/free-gift-now'
-    },
-    {
-        'author': 'User12345',
-        'text': 'Amazing tutorial, learned a lot from it! Keep posting helpful content.'
-    },
-    {
-        'author': 'ScamAlertBot',
-        'text': 'You have been selected for a free giveaway! Click here to claim: http://malicious-link.com/free-giveaway'
-    },
-    {
-        'author': 'NoSpamHere',
-        'text': 'Great video, I’ve been following your channel for a while! Keep it up.'
-    }
-]
+    # Example input for author and text
+    author = sys.argv[1] if len(sys.argv) > 1 else 'example_author'
+    text = sys.argv[2] if len(sys.argv) > 2 else 'Sick vid bro'
 
-    for comments in sample_commentss:
-        print("\n===============================")
-        print(f"📧 Analyzing comments: {comments['author']}")
-        predict_spam(comments['author'], comments['text'])
+    # Predict spam
+    prediction_result = analyze_comment(author, text)
+
+    # Convert numpy float values to string for JSON serialization
+    for key, value in prediction_result.items():
+        if isinstance(value, (np.float64, np.float32)):
+            prediction_result[key] = round(float(value), 2)
+
+    # Print the result as a JSON string
+    print(json.dumps(prediction_result, indent=4))
+   
