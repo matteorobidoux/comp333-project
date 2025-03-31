@@ -1,12 +1,14 @@
+// Updates the form based on the selected input type
 function updateForm() {
 	const inputType = document.getElementById("inputType").value;
 	const formContainer = document.getElementById("formContainer");
 	const resultContainer = document.getElementById("result");
 
-	// Clear form content and previous results
+	// Clear previous form content and results
 	formContainer.innerHTML = "";
 	resultContainer.innerHTML = "";
 
+	// Create form inputs based on the selected type
 	if (inputType === "sms") {
 		formContainer.innerHTML = `
         <div class="input-group">
@@ -39,8 +41,8 @@ function updateForm() {
 	}
 }
 
+// Returns the appropriate color based on the probability value
 function getColor(probability) {
-	// Determine confidence level and color
 	let confidenceColor;
 	if (probability >= 0.8) {
 		confidenceColor = "#dc3545"; // red
@@ -56,16 +58,18 @@ function getColor(probability) {
 	return confidenceColor;
 }
 
+// Sends input data to the backend and checks for spam
 async function checkSpam() {
-	// Clear previous results when clicking "Check Spam"
+	// Clear previous results
 	document.getElementById("result").innerHTML = "";
 
+	// Get selected input type and spinner
 	const inputType = document.getElementById("inputType").value;
 	const spinner = document.getElementById("spinner");
 	let endpoint = "";
 	let body = {};
 
-	// Define the correct endpoint and body based on the selected input type
+	// Set API endpoint and request body based on input type
 	if (inputType === "sms") {
 		const smsText = document.getElementById("smsText").value;
 		endpoint = `http://localhost:3000/predict-sms`;
@@ -83,29 +87,32 @@ async function checkSpam() {
 	}
 
 	try {
-		// Show the spinner while waiting for a response
+		// Show spinner while waiting for the response
 		spinner.style.display = "block";
 
+		// Send the request to the backend
 		const response = await fetch(endpoint, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body)
 		});
 
+		// Handle response errors
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
 		}
 
+		// Parse the result from the response
 		const result = await response.json();
 		result.prediction = JSON.parse(result.prediction);
 
-		// Extract combined probability and spam status
+		// Extract prediction details
 		const { is_spam, combined_prob, spam_prob, url_spam_prob } =
 			result.prediction;
 		const percentage = (spam_prob * 100).toFixed(2);
 		const combinedPercentage = (combined_prob * 100).toFixed(2);
 
-		// Set dynamic label based on input type
+		// Set label based on the input type
 		let label = "";
 		if (inputType === "sms") {
 			label = "SMS Spam Probability";
@@ -115,7 +122,7 @@ async function checkSpam() {
 			label = "Comment Spam Probability";
 		}
 
-		// Check if URL probability exists (if URL was detected)
+		// Check if URL probability exists and prepare the analysis
 		let urlAnalysis = "";
 		if (url_spam_prob !== 0.0) {
 			const urlPercentage = (url_spam_prob * 100).toFixed(2);
@@ -127,7 +134,7 @@ async function checkSpam() {
             </div>`;
 		}
 
-		// Build the result display
+		// Build the result content to be displayed
 		let formattedResult = `
         <div class="result-container">
             <p><strong>${label}:</strong> <span style="color: ${getColor(
@@ -151,10 +158,11 @@ async function checkSpam() {
 		// Display the result
 		document.getElementById("result").innerHTML = formattedResult;
 	} catch (error) {
+		// Show error message if something goes wrong
 		console.error("Error:", error);
 		document.getElementById("result").textContent = "Error checking spam.";
 	} finally {
-		// Hide the spinner when done
+		// Hide spinner when done
 		spinner.style.display = "none";
 	}
 }

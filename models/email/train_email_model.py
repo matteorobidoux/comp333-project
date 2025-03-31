@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
@@ -8,29 +7,27 @@ from scipy.sparse import hstack
 import time
 from xgboost import XGBClassifier
 
-# ============================
-# Step 1: Load and Preprocess Data
-# ============================
+print("Loading data...")
 
-# Load and preprocess email data
-email_df = pd.read_csv('data/normalized/email_data.csv')
+# Load email data
+email_df = pd.read_csv('data/normalized/email_data.csv', keep_default_na=False)
 
-email_df['text'] = email_df['text'].fillna('').astype(str)
-email_df['subject'] = email_df['subject'].fillna('').astype(str)
+print("Data loaded!")
 
-# ============================
-# Step 2: Feature Engineering
-# ============================
 # TF-IDF Vectorization for both subject and text
 text_vectorizer = TfidfVectorizer(
     ngram_range=(1, 2),    # Unigrams and bigrams
     max_features=5000,     # Limit to top 5000 features
+    min_df=3,              # Ignore terms appearing in fewer than 3 docs
+    max_df=0.9,            # Ignore overly common terms
     stop_words='english'   # Remove common stopwords
 )
 subject_vectorizer = TfidfVectorizer(
-    ngram_range=(1, 2),
-    max_features=1000,     # Smaller limit for subject
-    stop_words='english'
+    ngram_range=(1, 2),   # Unigrams and bigrams
+    max_features=1000,    # Smaller limit for subject
+    max_df=0.95,          # Ignore overly common terms
+    min_df=2,             # Ignore rare terms
+    stop_words='english'  # Remove common stopwords
 )
 
 # Fit and transform text and subject features
@@ -40,9 +37,6 @@ X_subject = subject_vectorizer.fit_transform(email_df['subject'])
 # Combine text and subject features into a single matrix
 X = hstack([X_subject, X_text])
 
-# ============================
-# Step 3: Model Training
-# ============================
 # Prepare target labels
 y = email_df['is_spam']
 
@@ -53,40 +47,45 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # Define and train the XGBoost model
 xgb_model = XGBClassifier(
-    n_estimators=500,         # Number of boosting stages
-    max_depth=10,             # Maximum tree depth
-    learning_rate=0.05,       # Step size at each iteration
-    subsample=0.8,            # Fraction of samples to use for each tree
-    colsample_bytree=0.8,     # Fraction of features to consider at each split
-    objective='binary:logistic',  # For binary classification
-    eval_metric='logloss',
-    random_state=42           # Ensures reproducibility
+    n_estimators=500,               # Number of boosting stages
+    max_depth=10,                   # Maximum tree depth
+    learning_rate=0.05,             # Step size at each iteration
+    subsample=0.8,                  # Fraction of samples to use for each tree
+    colsample_bytree=0.8,           # Fraction of features to consider at each split
+    objective='binary:logistic',    # For binary classification
+    eval_metric='logloss',          # Evaluation metric
+    random_state=42,                # Ensures reproducibility
+    early_stopping_rounds=30,       # Stop if no improvement in 30 rounds
 )
 
-# Train the model
-print("Starting training...")
+# Start time training the model
+print("\nStarting training...")
 start = time.time()
-print("start time:", start)
-xgb_model.fit(X_train, y_train)
-end = time.time()
-print("Training completed.")
-print("end time:", end)
-print("Training time:", end - start)
 
-# ============================
-# Step 4: Model Evaluation
-# ============================
+# Train the model
+xgb_model.fit(
+    X_train, y_train,
+    eval_set=[(X_test, y_test)],
+    verbose=False
+)
+
+# End time for training
+end = time.time()
+print(f"Training completed in {end - start:.2f} seconds.")
+
 # Predict and evaluate performance
 y_pred = xgb_model.predict(X_test)
-print("XGBoost Model Evaluation Report:")
+
+# Print Accuracy
+print(f'\nAccuracy: {xgb_model.score(X_test, y_test):.4f}')
+
+# Print classification report for detailed evaluation
+print("\nXGBoost Model Evaluation Report:")
 print(classification_report(y_test, y_pred))
 
-# ============================
-# Step 5: Save Model and Vectorizers
-# ============================
 # Save the trained model and vectorizers
 joblib.dump(text_vectorizer, 'models/email/email_text_vectorizer.pkl')
 joblib.dump(subject_vectorizer, 'models/email/email_subject_vectorizer.pkl')
 joblib.dump(xgb_model, 'models/email/email_model.pkl')
 
-print("Email Spam Model and Vectorizers saved successfully!")
+print("\nEmail Spam Model and Vectorizers saved!")

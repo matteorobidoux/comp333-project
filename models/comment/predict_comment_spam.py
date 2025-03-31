@@ -2,13 +2,10 @@ import re
 import joblib
 import numpy as np
 from urllib.parse import urlparse
-from scipy.sparse import hstack, csr_matrix
+from scipy.sparse import hstack
 import sys
 import json
 
-# ============================
-# Step 1: Load Pretrained Models and Vectorizers
-# ============================
 # Load comments text and author vectorizers and models
 text_vectorizer = joblib.load('models/comment/comment_text_vectorizer.pkl')
 author_vectorizer = joblib.load('models/comment/comment_author_vectorizer.pkl')
@@ -17,9 +14,6 @@ comments_model = joblib.load('models/comment/comment_model.pkl')
 # Load URL feature extraction model
 url_model = joblib.load('models/url/url_model.pkl')
 
-# ============================
-# Step 2: URL Feature Extraction Function
-# ============================
 def extract_url_features(url):
     """Extract high-impact features from a given URL."""
     parsed_url = urlparse(url)
@@ -49,19 +43,14 @@ def extract_url_features(url):
     }
     return list(features.values())
 
-# ============================
-# Step 3: URL Normalization Function
-# ============================
 def fix_url(url):
+    """Fix the URL format to ensure it starts with http://www or https://www"""
     if not re.match(r'^(http://|https://)', url):
         url = 'http://' + url
     if not re.match(r'^(http://www\.|https://www\.)', url):
         url = url.replace('http://', 'http://www.').replace('https://', 'https://www.')
     return url
 
-# ============================
-# Step 4: Analyze comments (Text and author)
-# ============================
 def analyze_comment(author, text):
     """Analyze both comments author and text, check for URLs, and classify the comments."""
     
@@ -72,11 +61,9 @@ def analyze_comment(author, text):
     # Prepare default probabilities
     url_spam_prob = 0.0
 
-    # ============================
-    # Step 1: Analyze comments author and Text
-    # ============================
-    clean_author = re.sub(r'https?://\S+|www\.\S+', '[URL]', author)  
-    clean_text = re.sub(r'https?://\S+|www\.\S+', '[URL]', text)  
+    # Clean author and text by removing URLs
+    clean_author = re.sub(r'https?://\S+|www\.\S+', '', author)  
+    clean_text = re.sub(r'https?://\S+|www\.\S+', '', text)  
 
     # Vectorize author and text
     X_author = author_vectorizer.transform([clean_author])
@@ -85,30 +72,24 @@ def analyze_comment(author, text):
     # Stack features (important to match training shape)
     X_combined = hstack([X_author, X_text])
 
-    # author_prob = comments_model.predict_proba(X_author)[0][1]  # Probability of spam for author
-    # text_prob = comments_model.predict_proba(X_text)[0][1]  # Probability of spam for text
-
     # Predict probabilities
     spam_prob = comments_model.predict_proba(X_combined)[0][1]
 
-    
-    combined_prob = 0.0  # Default combined probability
+    combined_prob = 0.0  
 
-    # ============================
-    # Step 2: Analyze URL (if any)
-    # ============================
+    # If URLs are found, extract features and predict spam probability
     if urls:
         url_features = np.array([extract_url_features(url) for url in urls])
         url_spam_prob = max(url_model.predict_proba(url_features)[:, 1])  
 
-        # ============================
-        # Step 3: Combine Results
-        # ============================
+        # Combine probabilities with weights
         combined_prob = 0.4 * spam_prob + 0.6 * url_spam_prob  # Weighted combination
 
     else:
+        # If no URLs are found, use only the comments spam probability
         combined_prob = spam_prob  # No URLs found, use only comments spam probability
 
+    # Determine if the comment is spam based on combined probability
     is_spam = combined_prob >= 0.5
 
     return {
@@ -120,7 +101,7 @@ def analyze_comment(author, text):
 
 
 if __name__ == '__main__':
-    # Example input for author and text
+    # Pre define author and text if not provided as command line arguments
     author = sys.argv[1] if len(sys.argv) > 1 else 'example_author'
     text = sys.argv[2] if len(sys.argv) > 2 else 'Sick vid bro'
 
