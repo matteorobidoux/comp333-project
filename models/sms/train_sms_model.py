@@ -2,50 +2,45 @@ import pandas as pd
 import numpy as np
 import joblib
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import classification_report
 from sklearn.feature_extraction.text import TfidfVectorizer
 import time
+from sklearn.metrics import classification_report
+from xgboost import XGBClassifier  # Better than GradientBoosting!
 
 # ============================
-# Step 1: Load and Preprocess Data
+# 1. Load & Preprocess Data
 # ============================
-
-# Load and preprocess SMS data
 sms_df = pd.read_csv('data/normalized/sms_data.csv')
-
-# Check for missing or empty texts
 sms_df['text'] = sms_df['text'].fillna('').astype(str)
 
 # ============================
-# Step 2: Feature Engineering
+# 2. TF-IDF Vectorization (Keep it Simple)
 # ============================
-# TF-IDF Vectorization
-text_vectorizer = TfidfVectorizer(
-    ngram_range=(1, 2),    # Unigrams and bigrams
-    max_features=5000,     # Limit to top 5000 features
-    stop_words='english'   # Remove common stopwords
+tfidf = TfidfVectorizer(
+    ngram_range=(1, 2),  # Bigrams help catch phrases like "claim now"
+    max_features=5000,   # Balances speed & accuracy
+    stop_words='english'
 )
-
-X_text = text_vectorizer.fit_transform(sms_df['text'])
-
-# ============================
-# Step 3: Model Training
-# ============================
-# Prepare target labels
+X = tfidf.fit_transform(sms_df['text'])
 y = sms_df['is_spam']
 
-# Split data into training and testing sets
+# ============================
+# 3. Train/Test Split (80/20)
+# ============================
 X_train, X_test, y_train, y_test = train_test_split(
-    X_text, y, test_size=0.3, random_state=42, stratify=y
+    X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Define and train the Gradient Boosting model
-gb_model = GradientBoostingClassifier(
-    n_estimators=200,     # Number of boosting stages (trees)
-    max_depth=6,           # Maximum depth of trees
-    learning_rate=0.1,     # Step size at each iteration
-    random_state=42        # Random state for reproducibility
+# ============================
+# 4. Train XGBoost (Best Balance of Speed & Accuracy)
+# ============================
+model = XGBClassifier(
+    n_estimators=300,      # More trees = better generalization (but slower)
+    max_depth=6,           # Prevents overfitting
+    learning_rate=0.1,     # Default works well
+    subsample=0.8,         # Randomly samples data to reduce overfitting
+    random_state=42,
+    eval_metric='logloss'  # Better for binary classification
 )
 
 
@@ -53,25 +48,22 @@ print("Starting training...")
 start = time.time()
 print("start time:", start)
 # Train the model
-gb_model.fit(X_train, y_train)
+model.fit(X_train, y_train)
 end = time.time()
 print("Training completed.")
 print("end time:", end)
 print("Training time:", end - start)
 
+
 # ============================
-# Step 4: Model Evaluation
+# 5. Evaluate
 # ============================
-# Predict and evaluate performance
-y_pred = gb_model.predict(X_test)
-print("✅ Gradient Boosting Model Evaluation Report:")
+y_pred = model.predict(X_test)
 print(classification_report(y_test, y_pred))
 
 # ============================
-# Step 5: Save Model and Vectorizer
+# 6. Save Model
 # ============================
-# Save the trained model and vectorizer
-joblib.dump(text_vectorizer, 'models/sms/sms_text_vectorizer.pkl')
-joblib.dump(gb_model, 'models/sms/sms_model.pkl')
-
-print("📚 SMS Model and Vectorizer saved successfully!")
+joblib.dump(tfidf, 'models/sms/sms_text_vectorizer.pkl')
+joblib.dump(model, 'models/sms/sms_model.pkl')
+print("✅ Model saved!")
