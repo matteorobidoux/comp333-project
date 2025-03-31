@@ -142,7 +142,7 @@ async function checkSpam() {
             <p> <strong> Final Prediction: </strong> ${
 							is_spam
 								? '<span class="spam-yes">Likely Spam ' +
-								  `(${100 - combinedPercentage}% Confidence)</span>`
+								  `(${combinedPercentage}% Confidence)</span>`
 								: '<span class="spam-no">Likely Not Spam' +
 								  ` (${100 - combinedPercentage}% Confidence)</span>`
 						}</p>

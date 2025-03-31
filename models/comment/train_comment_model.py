@@ -21,60 +21,69 @@ comments_df['author'] = comments_df['author'].fillna('').astype(str)
 # ============================
 # Step 2: Feature Engineering
 # ============================
-# TF-IDF Vectorization for both author and text
+
+# Vectorize the 'text' column using TF-IDF (unigrams and bigrams, max 5000 features)
 text_vectorizer = TfidfVectorizer(
-    ngram_range=(1, 2),    # Unigrams and bigrams
-    max_features=5000,     # Limit to top 5000 features
-    stop_words='english'   # Remove common stopwords
+    ngram_range=(1, 2),  # Include both unigrams and bigrams
+    max_features=5000,   # Limit features to 5000 for text
+    stop_words='english'  # Remove English stopwords
 )
+
+# Vectorize the 'author' column using TF-IDF (unigrams and bigrams, max 1000 features)
 author_vectorizer = TfidfVectorizer(
     ngram_range=(1, 2),
-    max_features=1000,     # Smaller limit for author
+    max_features=1000,   # Limit features to 1000 for author
     stop_words='english'
 )
 
+# Fit and transform text and author columns
 X_text = text_vectorizer.fit_transform(comments_df['text'])
 X_author = author_vectorizer.fit_transform(comments_df['author'])
 
-# Combine text and author features
+# Combine text and author features using horizontal stacking
 X = hstack([X_author, X_text])
 
 # ============================
 # Step 3: Model Training
 # ============================
-# Prepare target labels
+
+# Prepare target labels for training
 y = comments_df['is_spam']
 
-# Split data into training and testing sets
+# Split data into training and testing sets (70% train, 30% test)
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42, stratify=y
 )
 
-# Define and train the Gradient Boosting model
+# Define the Gradient Boosting model with optimal hyperparameters
 gb_model = GradientBoostingClassifier(
-    n_estimators=200,     # Number of boosting stages (trees)
-    max_depth=6,           # Maximum depth of trees
-    learning_rate=0.1,     # Step size at each iteration
-    random_state=42        # Random state for reproducibility
+    n_estimators=200,    # Number of boosting stages (trees)
+    max_depth=6,         # Maximum depth of trees to prevent overfitting
+    learning_rate=0.1,   # Step size at each iteration
+    random_state=42      # Set random state for reproducibility
 )
 
-# Train the model
+# Train the model using the training data
 gb_model.fit(X_train, y_train)
 
 # ============================
 # Step 4: Model Evaluation
 # ============================
-# Predict and evaluate performance
+
+# Predict on the test set
 y_pred = gb_model.predict(X_test)
-print("✅ Gradient Boosting Model Evaluation Report:")
+
+# Print classification report to evaluate model performance
+print("Gradient Boosting Model Evaluation Report:")
 print(classification_report(y_test, y_pred))
 
 # ============================
 # Step 5: Save Model and Vectorizers
 # ============================
-# Save the trained model and vectorizers
+
+# Save the text vectorizer, author vectorizer, and trained model for future use
 joblib.dump(text_vectorizer, 'models/comment/comment_text_vectorizer.pkl')
 joblib.dump(author_vectorizer, 'models/comment/comment_author_vectorizer.pkl')
 joblib.dump(gb_model, 'models/comment/comment_model.pkl')
 
-print("📚 comments Spam Model and Vectorizers saved successfully!")
+print("✅ Comment Spam Model and Vectorizers saved successfully!")
