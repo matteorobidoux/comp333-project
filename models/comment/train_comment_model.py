@@ -6,6 +6,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import classification_report
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack
+import time
 
 # ============================
 # Step 1: Load and Preprocess Data
@@ -58,8 +59,15 @@ gb_model = GradientBoostingClassifier(
     random_state=42        # Random state for reproducibility
 )
 
+print("Starting training...")
+start = time.time()
+print("start time:", start)
 # Train the model
 gb_model.fit(X_train, y_train)
+end = time.time()
+print("Training completed.")
+print("end time:", end)
+print("Training time:", end - start)
 
 # ============================
 # Step 4: Model Evaluation

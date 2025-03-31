@@ -7,6 +7,9 @@ from sklearn.metrics import accuracy_score, classification_report
 import joblib
 from xgboost import XGBClassifier
 from tqdm import tqdm
+import time
+
+
 
 # ============================
 # Function to Extract URL Features
@@ -109,7 +112,16 @@ randomized_search = RandomizedSearchCV(
 )
 
 # Fit model to training data
+
+start = time.time()
+print("Starting training...")
+print("start time:", start)
 randomized_search.fit(X_train, y_train)
+end = time.time()
+print("Training completed.")
+print("end time:", end)
+print("Training time:", end - start)
+
 
 # Retrieve the best model
 best_model = randomized_search.best_estimator_
