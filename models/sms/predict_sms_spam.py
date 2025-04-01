@@ -2,33 +2,28 @@ import re
 import joblib
 import numpy as np
 from urllib.parse import urlparse
-from scipy.sparse import hstack, csr_matrix
+import sys
+import json
 
-# ============================
-# Step 1: Load Pretrained Models and Vectorizer
-# ============================
-# Load SMS text vectorizer and model
+# Load Pretrained Models and Vectorizer
+# Load the trained SMS text vectorizer and model
 text_vectorizer = joblib.load('models/sms/sms_text_vectorizer.pkl')
 sms_model = joblib.load('models/sms/sms_model.pkl')
 
-# Load URL feature extraction model
+# Load the trained URL spam detection model
 url_model = joblib.load('models/url/url_model.pkl')
 
-# ============================
-# Step 2: URL Feature Extraction Function
-# ============================
+
 def extract_url_features(url):
-    """Extract high-impact features from a given URL."""
+    """Extract relevant features from a URL to detect potential spam."""
     parsed_url = urlparse(url)
     domain_parts = parsed_url.netloc.split('.')
     query_params = parsed_url.query
 
+    # Define URL-based features for spam classification
     features = {
-        # Basic URL features
         'url_length': len(url),
         'num_dots': url.count('.'),
-
-        # Keyword-based features
         'contains_free': int('free' in url.lower()),
         'contains_win': int(any(word in url.lower() for word in ['win', 'reward', 'gift', 'claim'])),
         'contains_click': int('click' in url.lower()),
@@ -37,122 +32,81 @@ def extract_url_features(url):
         'contains_auth': int('auth' in url.lower()),
         'contains_login': int('login' in url.lower()),
         'contains_brand': int(any(brand in url.lower() for brand in ['paypal', 'google', 'amazon', 'facebook'])),
-
-        # Domain and subdomain features
         'domain_length': len(domain_parts[-2]) if len(domain_parts) > 1 else 0,
         'subdomain_length': len(domain_parts[0]) if len(domain_parts) > 2 else 0,
         'suspicious_tld': int(domain_parts[-1] in ['top', 'xyz', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
-
-        # Redirect and suspicious path features
         'has_redirect': int('?q=' in url or '?url=' in url or '?redirect=' in url),
         'suspicious_subdomain': int(any(keyword in parsed_url.netloc for keyword in ['auth', 'login', 'secure'])),
         'num_redirects': url.count('http') - 1,
-
-        # Path and query features
         'path_length': len(parsed_url.path),
         'query_length': len(parsed_url.query),
         'num_query_params': len(query_params),
     }
     return list(features.values())
 
-# ============================
-# Step 2: URL Normalization Function
-# ============================
+
 def fix_url(url):
-        # Check if the URL has a valid scheme (http or https), and ensure it starts with 'http://www.' or 'https://www.'
-        if not re.match(r'^(http://|https://)', url):
-            url = 'http://' + url  # Default to http if no scheme is provided
-        if not re.match(r'^(http://www\.|https://www\.)', url):
-            # If the URL doesn't start with 'www.', add it
-            url = url.replace('http://', 'http://www.').replace('https://', 'https://www.')
-        return url
+    """Ensure that the URL starts with a valid scheme and add 'www.' if missing."""
+    if not re.match(r'^(http://|https://)', url):  # Add protocol if missing
+        url = 'http://' + url
+    if not re.match(r'^(http://www\.|https://www\.)', url):  # Add 'www.' if missing
+        url = url.replace('http://', 'http://www.').replace('https://', 'https://www.')
+    return url
 
 
-# ============================
-# Step 3: URL and Text Analysis
-# ============================
 def analyze_text(text):
-    """Check for URLs, analyze them, and classify the SMS text."""
-    # Extract URL from the text (if any)
-    urls = re.findall(r'https?://\S+|www\.\S+', text)
-    urls = [fix_url(url) for url in urls]  # Normalize URLs
+    """Analyze the SMS text and any URLs within it to detect spam."""
     
-    # Prepare default predictions
+    # Extract and normalize URLs from the text
+    urls = re.findall(r'https?://\S+|www\.\S+', text)
+    urls = [fix_url(url) for url in urls]
+
+    # Default probabilities for SMS and URL spam detection
     sms_spam_prob = 0.0
     url_spam_prob = 0.0
 
-    # ============================
-    # Step 4: Analyze SMS Text
-    # ============================
-    # Clean and vectorize text for SMS analysis
-    clean_text = re.sub(r'https?://\S+|www\.\S+', '[URL]', text)  # Replace URLs with placeholder
+    # Analyze the SMS content after removing URLs
+    clean_text = re.sub(r'https?://\S+|www\.\S+', '', text)
     X_text = text_vectorizer.transform([clean_text])
 
-    # Get SMS model prediction probability
+    # Get spam probability for the SMS content
     sms_spam_prob = sms_model.predict_proba(X_text)[0][1]
 
-    # ============================
-    # Step 5: Analyze URL (if any)
-    # ============================
+    # Analyze URL spam if any URLs are found
     if urls:
-        # Extract features from all URLs found
+        # Extract features from each URL
         url_features = np.array([extract_url_features(url) for url in urls])
+        # Get the highest spam probability if multiple URLs are present
+        url_spam_prob = max(url_model.predict_proba(url_features)[:, 1])
 
-        # Predict URL spam probability
-        url_spam_prob = max(url_model.predict_proba(url_features)[:, 1])  # Max risk if multiple URLs
-
-        # ============================
-        # Step 6: Combine SMS and URL Results
-        # ============================
-        # Weighted combination of probabilities
-        combined_prob = 0.7 * sms_spam_prob + 0.3 * url_spam_prob
-
+        # Combine SMS and URL spam probabilities (weighted sum)
+        combined_prob = 0.3 * sms_spam_prob + 0.7 * url_spam_prob
     else:
-        # No URLs found, use only SMS spam probability
+        # If no URLs are found, use only the SMS spam probability
         combined_prob = sms_spam_prob
 
-    # Decision threshold for spam classification
+    # Determine if the text is spam based on the combined probability
     is_spam = combined_prob >= 0.5
 
+    # Return the results in a dictionary
     return {
-        'sms_spam_prob': round(sms_spam_prob, 4),
+        'spam_prob': round(sms_spam_prob, 4),
         'url_spam_prob': round(url_spam_prob, 4),
         'combined_prob': round(combined_prob, 4),
         'is_spam': bool(is_spam)
     }
 
-# ============================
-# Step 7: Main Prediction Function
-# ============================
-def predict_spam(text):
-    """Wrapper function to analyze input text and predict spam."""
-    result = analyze_text(text)
-    
-    print(f"✅ SMS Spam Probability: {result['sms_spam_prob']}")
-    print(f"🔗 URL Spam Probability: {result['url_spam_prob']}")
-    print(f"⚡ Combined Spam Probability: {result['combined_prob']}")
-    print(f"🚨 Final Decision: {'SPAM' if result['is_spam'] else 'NOT SPAM'}")
-
-    return result
-
-# ============================
-# Example Usage
-# ============================
 if __name__ == '__main__':
-    sample_texts = [
-        "Congratulations! You've won a free iPhone. Click here: https://win-free-rewards.biz to claim your prize!",
-        "Hi, please check our latest product on https://www.amazon.com/secure-shop now.",
-        "Secure your account by logging in at https://auth.secure-login.net",
-        "Hello, just checking in to see how you're doing! No links here :)",
-        # Nigerian prince scam
-        "Dear friend, I am a Nigerian prince and I need your help to transfer $10 million. Please send me your bank details.",
-        "Get paid to work from home! Visit https://www.work-from-home.com for more info.",
-        # Phishing
-        "Your PayPal account has been compromised. Please verify your identity at https://paypal.com/verify-account.",
-        "GENT! We are trying to contact you. Last weekends draw shows that you won a �1000 prize GUARANTEED. Call 09064012160. Claim Code K52. Valid 12hrs only. 150ppm"
-    ]
+    # Get the text input from the command line or use a default example
+    param = sys.argv[1] if len(sys.argv) > 1 else 'Check out this link: http://example.com/free-gift'
 
-    for text in sample_texts:
-        print("\n===============================")
-        print(f"📩 Analyzing Text: {text}")
-        predict_spam(text)
+    # Analyze the text input for spam
+    prediction_result = analyze_text(param)
+
+    # Convert any NumPy float values to standard Python floats for JSON serialization
+    for key, value in prediction_result.items():
+        if isinstance(value, np.float64) or isinstance(value, np.float32):
+            prediction_result[key] = round(float(value), 2)
+
+    # Print the result as a formatted JSON string
+    print(json.dumps(prediction_result, indent=4))

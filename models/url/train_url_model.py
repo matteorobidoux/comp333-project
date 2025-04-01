@@ -1,16 +1,12 @@
-# Import necessary libraries
 from urllib.parse import urlparse, parse_qs
-import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 import joblib
 from xgboost import XGBClassifier
 from tqdm import tqdm
+import time
 
-# ============================
-# Function to Extract URL Features
-# ============================
 def extract_url_features(url):
     """Extract high-impact features from a given URL."""
     parsed_url = urlparse(url)
@@ -49,32 +45,29 @@ def extract_url_features(url):
     }
     return list(features.values())
 
-# ============================
-# Step 1: Load and Preprocess Data
-# ============================
-# Load URL data
-df = pd.read_csv('data/normalized/url_data.csv')
+print("Loading data...")
 
-# Extract features from each URL
+# Load URL data
+df = pd.read_csv('data/normalized/url_data.csv', keep_default_na=False)
+
+print("Data loaded!\n")
+
+# Extract features from each URL with progress bar
 feature_columns = [
-    'url_length', 'num_dots', 
+    'url_length', 'num_dots',
     'contains_free', 'contains_win', 'contains_click', 'contains_offer',
     'contains_account', 'contains_auth', 'contains_login', 'contains_brand',
     'domain_length', 'subdomain_length', 'suspicious_tld',
     'has_redirect', 'suspicious_subdomain', 'num_redirects',
     'path_length', 'query_length', 'num_query_params'
 ]
-
-# Apply feature extraction with progress bar
 url_features = [extract_url_features(url) for url in tqdm(df['text'], desc="Extracting URL Features")]
 url_features_df = pd.DataFrame(url_features, columns=feature_columns)
 
 # Add target variable
 url_features_df['is_spam'] = df['is_spam']
 
-# ============================
-# Step 2: Split Data for Training and Testing
-# ============================
+# Split data into features and target
 X = url_features_df.drop('is_spam', axis=1)
 y = url_features_df['is_spam']
 
@@ -83,60 +76,46 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# ============================
-# Step 3: Hyperparameter Tuning
-# ============================
-param_dist = {
-    'n_estimators': [100, 200, 300, 400],
-    'max_depth': [3, 5, 7, 10, 15],
-    'learning_rate': [0.01, 0.05, 0.1, 0.2],
-    'subsample': [0.8, 0.9, 1.0],
-    'colsample_bytree': [0.8, 0.9, 1.0],
-    'gamma': [0, 0.1, 0.2],
-    'reg_alpha': [0, 0.1, 0.5],
-    'reg_lambda': [0, 0.1, 0.5],
-}
-
-# Initialize and run RandomizedSearchCV
-randomized_search = RandomizedSearchCV(
-    estimator=XGBClassifier(random_state=42, n_jobs=-1),
-    param_distributions=param_dist,
-    n_iter=20,
-    cv=5,
-    scoring='accuracy',
-    n_jobs=-1,
-    random_state=42
+# Define and train the XGBoost model
+best_model = XGBClassifier(
+    n_estimators=150,           # Fewer trees for faster training
+    max_depth=6,                # Balanced complexity
+    learning_rate=0.1,          # Reasonable learning rate
+    subsample=0.8,              # Sample 80% of data to prevent overfitting
+    colsample_bytree=0.8,       # Randomly sample columns to reduce overfitting
+    random_state=42,
+    eval_metric='logloss',      # Better for binary classification
+    early_stopping_rounds=30    # Stop early if no improvement
 )
 
-# Fit model to training data
-randomized_search.fit(X_train, y_train)
+# Train the model
+start = time.time()
+print("\nStarting training...")
+best_model.fit(
+    X_train, y_train,
+    eval_set=[(X_test, y_test)],
+    verbose=False
+)
+end = time.time()
+print(f"Training completed in {end - start:.2f} seconds.")
 
-# Retrieve the best model
-best_model = randomized_search.best_estimator_
-
-# ============================
-# Step 4: Model Evaluation
-# ============================
-# Make predictions on the test set
+# Predict and evaluate the model
 y_pred = best_model.predict(X_test)
+print(f'\nAccuracy: {accuracy_score(y_test, y_pred):.4f}')
 
-# Evaluate model performance
-print(f'✅ Accuracy: {accuracy_score(y_test, y_pred):.4f}')
+# Print classification report
+print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 
-# ============================
-# Step 5: Save Model and Feature Importance
-# ============================
 # Save the trained model
 joblib.dump(best_model, 'models/url/url_model.pkl')
 
-# Print the best hyperparameters
-print("🏆 Best Hyperparameters:", randomized_search.best_params_)
+print("\nURL Spam Model saved!")
 
-# Get feature importance from the trained model
+# Get feature importance
 importances = best_model.feature_importances_
 feature_importance_df = pd.DataFrame({'feature': feature_columns, 'importance': importances})
 
-# Print sorted feature importance
-print("🔍 Feature Importance Ranking:")
+# Sort features by importance
+print("\nFeature Importance Ranking:")
 print(feature_importance_df.sort_values(by='importance', ascending=False))
