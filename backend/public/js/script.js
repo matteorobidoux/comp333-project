@@ -68,21 +68,22 @@ async function checkSpam() {
 	const spinner = document.getElementById("spinner");
 	let endpoint = "";
 	let body = {};
+	let vercelUrl = "https://spam-detection-model.vercel.app/";
 
 	// Set API endpoint and request body based on input type
 	if (inputType === "sms") {
 		const smsText = document.getElementById("smsText").value;
-		endpoint = `http://localhost:3000/predict-sms`;
+		endpoint = vercelUrl + `predict-sms`;
 		body = { text: smsText };
 	} else if (inputType === "email") {
 		const emailSubject = document.getElementById("emailSubject").value;
 		const emailBody = document.getElementById("emailBody").value;
-		endpoint = `http://localhost:3000/predict-email`;
+		endpoint = vercelUrl + `predict-email`;
 		body = { text: emailBody, subject: emailSubject };
 	} else if (inputType === "youtube") {
 		const youtubeAuthor = document.getElementById("youtubeAuthor").value;
 		const youtubeText = document.getElementById("youtubeText").value;
-		endpoint = `http://localhost:3000/predict-comment`;
+		endpoint = vercelUrl + `predict-comment`;
 		body = { text: youtubeText, author: youtubeAuthor };
 	}
 

@@ -3,3 +3,4 @@
 data/normalized/*
 
 node_modules
+.vercel

@@ -3,7 +3,7 @@ const { spawn } = require("child_process");
 const path = require("path");
 const app = express();
 const cors = require("cors");
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware to parse JSON data and enable CORS
 app.use(express.json());
@@ -108,3 +108,5 @@ app.post("/predict-comment", (req, res) => {
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });
+
+module.exports = app;

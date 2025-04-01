@@ -1,0 +1,8 @@
+./report/*
+./tools/*
+./models/email/train_email_model.py
+./models/comment/train_comment_model.py
+./models/sms/train_sms_model.py
+./models/url/train_url_model.py
+./data/*
+
