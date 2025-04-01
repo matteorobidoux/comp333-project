@@ -56,6 +56,9 @@ def get_url_data(url_data):
     url_data = change_column_names_and_data(url_data, {'result': 'is_spam', 'url': 'text'})
     url_data = normalize_text_column(url_data, ['text'])
 
+     # Replace [.] with '.' in URLs. DO NOT REMOVE AS THERE IS DIFFFERENCE BETWEEN URL PARSE IN WINDOWS AND LINUX
+    url_data['text'] = url_data['text'].replace(r'\[.\]', '.', regex=True)
+
     return url_data
 
 def get_comments_data(comments_data):
