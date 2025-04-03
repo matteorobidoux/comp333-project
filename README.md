@@ -38,6 +38,7 @@ A frontend interface is also included, allowing users to interact with the syste
 
 ## Project Structure
 
+```
 📂 spam-detection
 ├── backend/ - Backend server and dependencies
 │ ├── index.js - Node.js backend server
@@ -63,6 +64,7 @@ A frontend interface is also included, allowing users to interact with the syste
 ├── report/ - Final project report
 ├── tools/ - Dataset preprocessing tools
 └── README.md - Project documentation
+```
 
 ---
 
