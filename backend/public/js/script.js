@@ -72,17 +72,17 @@ async function checkSpam() {
 	// Set API endpoint and request body based on input type
 	if (inputType === "sms") {
 		const smsText = document.getElementById("smsText").value;
-		endpoint = `http://localhost:3000/predict-sms`;
+		endpoint = `/predict-sms`;
 		body = { text: smsText };
 	} else if (inputType === "email") {
 		const emailSubject = document.getElementById("emailSubject").value;
 		const emailBody = document.getElementById("emailBody").value;
-		endpoint = `http://localhost:3000/predict-email`;
+		endpoint = `/predict-email`;
 		body = { text: emailBody, subject: emailSubject };
 	} else if (inputType === "youtube") {
 		const youtubeAuthor = document.getElementById("youtubeAuthor").value;
 		const youtubeText = document.getElementById("youtubeText").value;
-		endpoint = `http://localhost:3000/predict-comment`;
+		endpoint = `/predict-comment`;
 		body = { text: youtubeText, author: youtubeAuthor };
 	}
 
