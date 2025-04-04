@@ -1,25 +1,24 @@
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.metrics import classification_report, accuracy_score
-import re
+from sklearn.metrics import accuracy_score, classification_report
+from scipy.sparse import hstack
 from urllib.parse import urlparse, parse_qs
-import tldextract   
+import tldextract
+import re
 
 # Load Pretrained SMS Model and Vectorizer
 text_vectorizer = joblib.load('models/sms/sms_text_vectorizer.pkl')
 sms_model = joblib.load('models/sms/sms_model.pkl')
 
-# Load the trained URL spam detection model and vectorizer
+# Load Pretrained URL Model and Vectorizer
 url_model = joblib.load('models/url/url_model.pkl')
 url_vectorizer = joblib.load('models/url/url_vectorizer.pkl')
 
-# Load the combined SMS and URL dataset
-data = pd.read_csv('sms_url_combined.csv', keep_default_na=False)
-
-# Function to extract features for the URL model
 def extract_url_features(url):
-    """Extract extensive set of URL features."""
+    """
+    Extract extensive set of URL features.
+    """
     parsed = urlparse(url)
     domain_info = tldextract.extract(url)
     
@@ -60,44 +59,86 @@ def extract_url_features(url):
     }
     return list(features.values())
 
-# Initialize predictions list
-predictions = []
+def predict_url_spam(url):
+    """
+    Predict whether a given URL is spam or not using the trained URL model.
+    """
+    # Extract structured features
+    structured_features = np.array(extract_url_features(url)).reshape(1, -1)
 
-# Iterate through each row in the dataset
-for _, row in data.iterrows():
-    text = row['text']
+    # Generate TF-IDF features
+    tfidf_features = url_vectorizer.transform([url])
 
-    # Extract and normalize URLs from the text
-    urls = re.findall(r'https?://\S+|www\.\S+', text)
-    urls = [url if url.startswith(('http://', 'https://')) else 'http://' + url for url in urls]
+    # Combine structured and TF-IDF features
+    combined_features = hstack([structured_features, tfidf_features])
 
-    # Remove URLs from the SMS text
-    clean_text = re.sub(r'https?://\S+|www\.\S+', '', text)
+    # Make a prediction
+    prediction = url_model.predict(combined_features)
+    return int(prediction[0] > 0.5)  # Return 1 for spam, 0 for not spam
 
-    # Predict using the SMS model
-    X_text = text_vectorizer.transform([clean_text])
-    sms_prediction = sms_model.predict(X_text)[0]
+def extract_url_from_text(text):
+    """
+    Extract the first URL from the text and return the URL and the text with the URL removed.
+    """
+    url_pattern = r'https?://\S+|www\.\S+'
+    match = re.search(url_pattern, text)
+    if match:
+        url = match.group(0)
+        text_without_url = re.sub(url_pattern, '', text).strip()
+        return url, text_without_url
+    return None, text  # No URL found, return the original text
 
-    # Predict using the URL model (if URLs are present)
-    url_prediction = 0
-    if urls:
-        # Extract features for each URL
-        url_features = np.array([extract_url_features(url) for url in urls])
-        url_tfidf_features = url_vectorizer.transform(urls).toarray()
-        combined_url_features = np.hstack([url_features, url_tfidf_features])
+def evaluate_hybrid_model(file_path):
+    """
+    Evaluate the hybrid SMS and URL spam detection model.
+    """
+    # Load the dataset
+    data = pd.read_csv(file_path, keep_default_na=False)
+    y_true = data['is_spam'].values
+    texts = data['text'].astype(str).values
 
-        # Predict using the URL model
-        url_prediction = int(any(url_model.predict(combined_url_features)))
+    sms_predictions = []
+    url_predictions = []
 
-    # Combine predictions: if either model predicts spam, mark as spam
-    final_prediction = sms_prediction or url_prediction
-    predictions.append(final_prediction)
+    for text in texts:
+        # Extract URL and clean SMS text
+        url, clean_text = extract_url_from_text(text)
 
-# Compare predictions with the actual labels
-accuracy = accuracy_score(data['is_spam'], predictions)
-report = classification_report(data['is_spam'], predictions)
+        # print(f"Processing text: {clean_text}")
+        # print(f"Extracted URL: {url}")
 
-# Print the accuracy and classification report
-print(f"Accuracy: {accuracy:.4f}")
-print("\nClassification Report:")
-print(report)
+        # Predict using the SMS model
+        X_sms = text_vectorizer.transform([clean_text])
+        sms_pred = sms_model.predict(X_sms)[0]
+        sms_predictions.append(sms_pred)
+
+        # Predict using the URL model if a URL is found
+        if url:
+            try:
+                url_pred = predict_url_spam(url)
+            except Exception as e:
+                print(f"Error processing URL: {url}, Error: {e}")
+                url_pred = 0  # Default to not spam in case of error
+        else:
+            url_pred = 0  # No URL found, default to not spam
+        url_predictions.append(url_pred)
+
+    # Combine predictions: 1 if either SMS or URL predicts spam, 0 otherwise
+    combined_predictions = [
+        1 if sms == 1 or url == 1 else 0
+        for sms, url in zip(sms_predictions, url_predictions)
+    ]
+
+    # Calculate accuracy and classification report
+    accuracy = accuracy_score(y_true, combined_predictions)
+    report = classification_report(y_true, combined_predictions)
+
+    # Print results
+    print(f"\nHybrid Model Accuracy: {accuracy:.4f}")
+    print("\nClassification Report:")
+    print(report)
+
+if __name__ == "__main__":
+    # Path to the `sms_url_combined.csv` file
+    file_path = 'sms_url_combined.csv'
+    evaluate_hybrid_model(file_path)

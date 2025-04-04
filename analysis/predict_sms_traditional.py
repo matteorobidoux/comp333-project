@@ -16,6 +16,9 @@ X = text_vectorizer.transform(data['text'])
 # Predict using the SMS model
 predictions = sms_model.predict(X)
 
+print(f"length of predictions: {len(predictions)}")
+print(f"length of data['is_spam']: {len(data['is_spam'])}")
+
 # Compare predictions with the actual labels
 accuracy = accuracy_score(data['is_spam'], predictions)
 report = classification_report(data['is_spam'], predictions)
