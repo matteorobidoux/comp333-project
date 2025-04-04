@@ -3,8 +3,12 @@ import joblib
 import numpy as np
 from urllib.parse import urlparse
 from scipy.sparse import hstack
+from scipy.special import expit
 import sys
 import json
+import tldextract
+from urllib.parse import parse_qs
+import re
 
 # Load Pretrained Models and Vectorizers
 # Load vectorizers and models for email spam classification
@@ -14,38 +18,49 @@ email_model = joblib.load('models/email/email_model.pkl')
 
 # Load the URL feature extraction model
 url_model = joblib.load('models/url/url_model.pkl')
-
+url_vectorizer = joblib.load('models/url/url_vectorizer.pkl')  # New vectorizer for URL feature extraction
 
 def extract_url_features(url):
-    """Extract features from a URL to determine spam probability."""
-    parsed_url = urlparse(url)
-    domain_parts = parsed_url.netloc.split('.')
-    query_params = parsed_url.query
+    """Extract extensive set of URL features."""
+    parsed = urlparse(url)
+    domain_info = tldextract.extract(url)
+    
+    domain = domain_info.domain
+    suffix = domain_info.suffix
+    subdomain = domain_info.subdomain
+    path = parsed.path
+    query = parsed.query
 
-    # Define URL features for classification
+    # Define URL-based features for spam classification
+    def entropy(string):
+        prob = [float(string.count(c)) / len(string) for c in set(string)]
+        return -sum(p * np.log2(p) for p in prob)
+
     features = {
         'url_length': len(url),
-        'num_dots': url.count('.'),
+        'num_digits': sum(c.isdigit() for c in url),
+        'num_special_chars': sum(not c.isalnum() for c in url),
+        'entropy_url': entropy(url),
+        'num_subdomains': subdomain.count('.') + 1 if subdomain else 0,
+        'domain_length': len(domain),
+        'path_length': len(path),
+        'query_length': len(query),
+        'num_query_params': len(parse_qs(query)),
+        'tld_length': len(suffix),
+        'suspicious_tld': int(suffix in ['xyz', 'top', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
+        'has_ip_address': int(bool(re.search(r'\d+\.\d+\.\d+\.\d+', url))),
         'contains_free': int('free' in url.lower()),
         'contains_win': int(any(word in url.lower() for word in ['win', 'reward', 'gift', 'claim'])),
-        'contains_click': int('click' in url.lower()),
-        'contains_offer': int('offer' in url.lower()),
-        'contains_account': int('account' in url.lower()),
-        'contains_auth': int('auth' in url.lower()),
         'contains_login': int('login' in url.lower()),
-        'contains_brand': int(any(brand in url.lower() for brand in ['paypal', 'google', 'amazon', 'facebook'])),
-        'domain_length': len(domain_parts[-2]) if len(domain_parts) > 1 else 0,
-        'subdomain_length': len(domain_parts[0]) if len(domain_parts) > 2 else 0,
-        'suspicious_tld': int(domain_parts[-1] in ['top', 'xyz', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
-        'has_redirect': int('?q=' in url or '?url=' in url or '?redirect=' in url),
-        'suspicious_subdomain': int(any(keyword in parsed_url.netloc for keyword in ['auth', 'login', 'secure'])),
-        'num_redirects': url.count('http') - 1,
-        'path_length': len(parsed_url.path),
-        'query_length': len(parsed_url.query),
-        'num_query_params': len(query_params),
+        'contains_auth': int('auth' in url.lower()),
+        'contains_account': int('account' in url.lower()),
+        'contains_offer': int('offer' in url.lower()),
+        'contains_secure': int('secure' in url.lower()),
+        'num_dots': url.count('.'),
+        'num_hyphens': url.count('-'),
+        'num_slashes': url.count('/'),
     }
     return list(features.values())
-
 
 def fix_url(url):
     """Ensure URLs have the correct protocol and format."""
@@ -54,7 +69,6 @@ def fix_url(url):
     if not re.match(r'^(http://www\.|https://www\.)', url):  # Add 'www.' if missing
         url = url.replace('http://', 'http://www.').replace('https://', 'https://www.')
     return url
-
 
 def analyze_email(subject, text):
     """Analyze an email subject and text to detect spam and check URLs."""
@@ -86,8 +100,15 @@ def analyze_email(subject, text):
     if urls:
         # Extract features from each URL
         url_features = np.array([extract_url_features(url) for url in urls])
-        # Predict spam probability for the URLs
-        url_spam_prob = max(url_model.predict_proba(url_features)[:, 1])
+         # Apply TF-IDF vectorization on the URL features
+        url_tfidf_features = url_vectorizer.transform([url for url in urls])
+        
+        # Combine the structured features with the TF-IDF features
+        combined_url_features = np.hstack([url_features, url_tfidf_features.toarray()])
+        
+        # For LightGBM model, use `predict()` and apply sigmoid to get probabilities
+        raw_probs = url_model.predict(combined_url_features)
+        url_spam_prob = max(expit(raw_probs))  # Apply sigmoid to get probabilities
         # Combine email and URL spam probabilities
         combined_prob = 0.3 * spam_prob + 0.7 * url_spam_prob
     else:
@@ -103,7 +124,6 @@ def analyze_email(subject, text):
         'combined_prob': round(combined_prob, 4),
         'is_spam': bool(is_spam)
     }
-
 
 if __name__ == '__main__':
     # Get email subject and text from command line arguments

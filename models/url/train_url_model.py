@@ -1,121 +1,121 @@
-from urllib.parse import urlparse, parse_qs
 import pandas as pd
+import numpy as np
+import re
+import tldextract
+import joblib
+import lightgbm as lgb
+from urllib.parse import urlparse, parse_qs
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
-import joblib
-from xgboost import XGBClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
+from scipy.sparse import hstack
 from tqdm import tqdm
-import time
 
-def extract_url_features(url):
-    """Extract high-impact features from a given URL."""
-    parsed_url = urlparse(url)
-    domain_parts = parsed_url.netloc.split('.')
-    query_params = parse_qs(parsed_url.query)
+# Load dataset
+df = pd.read_csv('data/normalized/url_data.csv', keep_default_na=False)
+
+# Extract target variable
+y = df['is_spam'].values
+urls = df['text'].astype(str).values  # Ensure URLs are strings
+
+# --- FEATURE ENGINEERING ---
+def extract_features(url):
+    """Extract extensive set of URL features."""
+    parsed = urlparse(url)
+    domain_info = tldextract.extract(url)
+    
+    domain = domain_info.domain
+    suffix = domain_info.suffix
+    subdomain = domain_info.subdomain
+    path = parsed.path
+    query = parsed.query
+
+    # Calculate entropy (higher entropy = more randomness, likely spam)
+    def entropy(string):
+        prob = [float(string.count(c)) / len(string) for c in set(string)]
+        return -sum(p * np.log2(p) for p in prob)
 
     features = {
-        # Basic URL features
         'url_length': len(url),
-        'num_dots': url.count('.'),
-
-        # Keyword-based features
+        'num_digits': sum(c.isdigit() for c in url),
+        'num_special_chars': sum(not c.isalnum() for c in url),
+        'entropy_url': entropy(url),
+        'num_subdomains': subdomain.count('.') + 1 if subdomain else 0,
+        'domain_length': len(domain),
+        'path_length': len(path),
+        'query_length': len(query),
+        'num_query_params': len(parse_qs(query)),
+        'tld_length': len(suffix),
+        'suspicious_tld': int(suffix in ['xyz', 'top', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
+        'has_ip_address': int(bool(re.search(r'\d+\.\d+\.\d+\.\d+', url))),
         'contains_free': int('free' in url.lower()),
         'contains_win': int(any(word in url.lower() for word in ['win', 'reward', 'gift', 'claim'])),
-        'contains_click': int('click' in url.lower()),
-        'contains_offer': int('offer' in url.lower()),
-        'contains_account': int('account' in url.lower()),
-        'contains_auth': int('auth' in url.lower()),
         'contains_login': int('login' in url.lower()),
-        'contains_brand': int(any(brand in url.lower() for brand in ['paypal', 'google', 'amazon', 'facebook'])),
-
-        # Domain and subdomain features
-        'domain_length': len(domain_parts[-2]) if len(domain_parts) > 1 else 0,
-        'subdomain_length': len(domain_parts[0]) if len(domain_parts) > 2 else 0,
-        'suspicious_tld': int(domain_parts[-1] in ['top', 'xyz', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
-
-        # Redirect and suspicious path features
-        'has_redirect': int('?q=' in url or '?url=' in url or '?redirect=' in url),
-        'suspicious_subdomain': int(any(keyword in parsed_url.netloc for keyword in ['auth', 'login', 'secure'])),
-        'num_redirects': url.count('http') - 1,
-
-        # Path and query features
-        'path_length': len(parsed_url.path),
-        'query_length': len(parsed_url.query),
-        'num_query_params': len(query_params),
+        'contains_auth': int('auth' in url.lower()),
+        'contains_account': int('account' in url.lower()),
+        'contains_offer': int('offer' in url.lower()),
+        'contains_secure': int('secure' in url.lower()),
+        'num_dots': url.count('.'),
+        'num_hyphens': url.count('-'),
+        'num_slashes': url.count('/'),
     }
     return list(features.values())
 
-print("Loading data...")
+# Extract structured features
+feature_data = [extract_features(url) for url in tqdm(urls, desc="Extracting Features")]
+feature_df = pd.DataFrame(feature_data)
 
-# Load URL data
-df = pd.read_csv('data/normalized/url_data.csv', keep_default_na=False)
+# --- TF-IDF ON URL TEXT ---
+print("\nGenerating TF-IDF features...")
 
-print("Data loaded!\n")
+tfidf_vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(3, 5), max_features=2000)
+tfidf_matrix = tfidf_vectorizer.fit_transform(urls)
 
-# Extract features from each URL with progress bar
-feature_columns = [
-    'url_length', 'num_dots',
-    'contains_free', 'contains_win', 'contains_click', 'contains_offer',
-    'contains_account', 'contains_auth', 'contains_login', 'contains_brand',
-    'domain_length', 'subdomain_length', 'suspicious_tld',
-    'has_redirect', 'suspicious_subdomain', 'num_redirects',
-    'path_length', 'query_length', 'num_query_params'
-]
-url_features = [extract_url_features(url) for url in tqdm(df['text'], desc="Extracting URL Features")]
-url_features_df = pd.DataFrame(url_features, columns=feature_columns)
+# Combine structured and tfidf features
+X_combined = hstack([feature_df.values, tfidf_matrix])
 
-# Add target variable
-url_features_df['is_spam'] = df['is_spam']
+# --- TRAIN/TEST SPLIT ---
+X_train, X_test, y_train, y_test = train_test_split(X_combined, y, test_size=0.2, stratify=y, random_state=42)
 
-# Split data into features and target
-X = url_features_df.drop('is_spam', axis=1)
-y = url_features_df['is_spam']
+# --- LIGHTGBM TRAINING ---
+print("\nTraining LightGBM Model...")
 
-# Split data into training and testing sets (stratified)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
+# Add an evaluation metric (binary_logloss or auc)
+lgb_params = {
+    'objective': 'binary',
+    'metric': 'binary_logloss',  # ✅ Required for early stopping
+    'boosting_type': 'gbdt',
+    'num_leaves': 31,
+    'learning_rate': 0.05,
+    'feature_fraction': 0.8,
+    'bagging_fraction': 0.8,
+    'bagging_freq': 5,
+    'verbose': -1,
+    'random_state': 42
+}
+
+train_data = lgb.Dataset(X_train, label=y_train)
+valid_data = lgb.Dataset(X_test, label=y_test, reference=train_data)
+
+# Train LightGBM model with proper early stopping
+model = lgb.train(
+    lgb_params,
+    train_data,
+    valid_sets=[valid_data],
+    num_boost_round=1000,
+    valid_names=['valid'],
+    callbacks=[lgb.early_stopping(50), lgb.log_evaluation(100)]
 )
 
-# Define and train the XGBoost model
-best_model = XGBClassifier(
-    n_estimators=150,           # Fewer trees for faster training
-    max_depth=6,                # Balanced complexity
-    learning_rate=0.1,          # Reasonable learning rate
-    subsample=0.8,              # Sample 80% of data to prevent overfitting
-    colsample_bytree=0.8,       # Randomly sample columns to reduce overfitting
-    random_state=42,
-    eval_metric='logloss',      # Better for binary classification
-    early_stopping_rounds=30    # Stop early if no improvement
-)
-
-# Train the model
-start = time.time()
-print("\nStarting training...")
-best_model.fit(
-    X_train, y_train,
-    eval_set=[(X_test, y_test)],
-    verbose=False
-)
-end = time.time()
-print(f"Training completed in {end - start:.2f} seconds.")
-
-# Predict and evaluate the model
-y_pred = best_model.predict(X_test)
-print(f'\nAccuracy: {accuracy_score(y_test, y_pred):.4f}')
-
-# Print classification report
+# --- MODEL EVALUATION ---
+y_pred = (model.predict(X_test) > 0.5).astype(int)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nTest Accuracy: {accuracy:.4f}")
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 
-# Save the trained model
-joblib.dump(best_model, 'models/url/url_model.pkl')
+# --- SAVE MODEL ---
+joblib.dump(model, 'models/url/url_model.pkl')
+joblib.dump(tfidf_vectorizer, 'models/url/url_vectorizer.pkl')
 
-print("\nURL Spam Model saved!")
-
-# Get feature importance
-importances = best_model.feature_importances_
-feature_importance_df = pd.DataFrame({'feature': feature_columns, 'importance': importances})
-
-# Sort features by importance
-print("\nFeature Importance Ranking:")
-print(feature_importance_df.sort_values(by='importance', ascending=False))
+print("\nModel and tokenizer saved!")

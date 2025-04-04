@@ -4,43 +4,60 @@ import numpy as np
 from urllib.parse import urlparse
 import sys
 import json
+from scipy.special import expit
+import tldextract
+from urllib.parse import parse_qs
+import re
 
-# Load Pretrained Models and Vectorizer
+# Load Pretrained Models and Vectorizers
 # Load the trained SMS text vectorizer and model
 text_vectorizer = joblib.load('models/sms/sms_text_vectorizer.pkl')
 sms_model = joblib.load('models/sms/sms_model.pkl')
 
-# Load the trained URL spam detection model
+# Load the trained URL spam detection model and vectorizer
 url_model = joblib.load('models/url/url_model.pkl')
+url_vectorizer = joblib.load('models/url/url_vectorizer.pkl')
 
 
 def extract_url_features(url):
-    """Extract relevant features from a URL to detect potential spam."""
-    parsed_url = urlparse(url)
-    domain_parts = parsed_url.netloc.split('.')
-    query_params = parsed_url.query
+    """Extract extensive set of URL features."""
+    parsed = urlparse(url)
+    domain_info = tldextract.extract(url)
+    
+    domain = domain_info.domain
+    suffix = domain_info.suffix
+    subdomain = domain_info.subdomain
+    path = parsed.path
+    query = parsed.query
 
     # Define URL-based features for spam classification
+    def entropy(string):
+        prob = [float(string.count(c)) / len(string) for c in set(string)]
+        return -sum(p * np.log2(p) for p in prob)
+
     features = {
         'url_length': len(url),
-        'num_dots': url.count('.'),
+        'num_digits': sum(c.isdigit() for c in url),
+        'num_special_chars': sum(not c.isalnum() for c in url),
+        'entropy_url': entropy(url),
+        'num_subdomains': subdomain.count('.') + 1 if subdomain else 0,
+        'domain_length': len(domain),
+        'path_length': len(path),
+        'query_length': len(query),
+        'num_query_params': len(parse_qs(query)),
+        'tld_length': len(suffix),
+        'suspicious_tld': int(suffix in ['xyz', 'top', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
+        'has_ip_address': int(bool(re.search(r'\d+\.\d+\.\d+\.\d+', url))),
         'contains_free': int('free' in url.lower()),
         'contains_win': int(any(word in url.lower() for word in ['win', 'reward', 'gift', 'claim'])),
-        'contains_click': int('click' in url.lower()),
-        'contains_offer': int('offer' in url.lower()),
-        'contains_account': int('account' in url.lower()),
-        'contains_auth': int('auth' in url.lower()),
         'contains_login': int('login' in url.lower()),
-        'contains_brand': int(any(brand in url.lower() for brand in ['paypal', 'google', 'amazon', 'facebook'])),
-        'domain_length': len(domain_parts[-2]) if len(domain_parts) > 1 else 0,
-        'subdomain_length': len(domain_parts[0]) if len(domain_parts) > 2 else 0,
-        'suspicious_tld': int(domain_parts[-1] in ['top', 'xyz', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
-        'has_redirect': int('?q=' in url or '?url=' in url or '?redirect=' in url),
-        'suspicious_subdomain': int(any(keyword in parsed_url.netloc for keyword in ['auth', 'login', 'secure'])),
-        'num_redirects': url.count('http') - 1,
-        'path_length': len(parsed_url.path),
-        'query_length': len(parsed_url.query),
-        'num_query_params': len(query_params),
+        'contains_auth': int('auth' in url.lower()),
+        'contains_account': int('account' in url.lower()),
+        'contains_offer': int('offer' in url.lower()),
+        'contains_secure': int('secure' in url.lower()),
+        'num_dots': url.count('.'),
+        'num_hyphens': url.count('-'),
+        'num_slashes': url.count('/'),
     }
     return list(features.values())
 
@@ -76,8 +93,16 @@ def analyze_text(text):
     if urls:
         # Extract features from each URL
         url_features = np.array([extract_url_features(url) for url in urls])
-        # Get the highest spam probability if multiple URLs are present
-        url_spam_prob = max(url_model.predict_proba(url_features)[:, 1])
+        
+        # Apply TF-IDF vectorization on the URL features
+        url_tfidf_features = url_vectorizer.transform([url for url in urls])
+        
+        # Combine the structured features with the TF-IDF features
+        combined_url_features = np.hstack([url_features, url_tfidf_features.toarray()])
+        
+        # For LightGBM model, use `predict()` and apply sigmoid to get probabilities
+        raw_probs = url_model.predict(combined_url_features)
+        url_spam_prob = max(expit(raw_probs))  # Apply sigmoid to get probabilities
 
         # Combine SMS and URL spam probabilities (weighted sum)
         combined_prob = 0.3 * sms_spam_prob + 0.7 * url_spam_prob
@@ -95,6 +120,7 @@ def analyze_text(text):
         'combined_prob': round(combined_prob, 4),
         'is_spam': bool(is_spam)
     }
+
 
 if __name__ == '__main__':
     # Get the text input from the command line or use a default example
