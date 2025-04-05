@@ -102,6 +102,10 @@ sms_data = [get_sms_data(pd.read_csv(f'data/sms/sms_dataset_{i}.csv')) for i in 
 sms_data = list_to_dataframe(sms_data)
 sms_data = balance_dataset(sms_data)
 
+# Load and process SMS UCI dataset
+sms_uci_data = get_sms_data(pd.read_csv('data/sms/sms_dataset_2.csv'))
+sms_uci_data = balance_dataset(sms_uci_data)
+
 # Process and normalize URL datasets
 url_data = get_url_data(pd.read_csv('data/url/url_dataset.csv'))
 url_data = balance_dataset(url_data)
@@ -120,6 +124,7 @@ start = time.time()
 save_data(email_data, 'data/normalized/email_data.csv')
 save_data(comment_data, 'data/normalized/comment_data.csv')
 save_data(sms_data, 'data/normalized/sms_data.csv')
+save_data(sms_uci_data, 'data/normalized/sms_uci_data.csv')
 save_data(url_data, 'data/normalized/url_data.csv')
 
 end = time.time()
