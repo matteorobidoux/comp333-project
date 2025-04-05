@@ -10,6 +10,10 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import roc_auc_score, roc_curve, precision_recall_curve, average_precision_score, confusion_matrix
+from sklearn.metrics import classification_report
 
 # Load dataset
 df = pd.read_csv('data/normalized/url_data.csv', keep_default_na=False)
@@ -107,12 +111,68 @@ model = lgb.train(
     callbacks=[lgb.early_stopping(50), lgb.log_evaluation(100)]
 )
 
-# --- MODEL EVALUATION ---
 y_pred = (model.predict(X_test) > 0.5).astype(int)
+y_pred_proba = model.predict(X_test)  # Probability scores
+
+# Calculate metrics
 accuracy = accuracy_score(y_test, y_pred)
-print(f"\nTest Accuracy: {accuracy:.4f}")
-print("\nClassification Report:")
-print(classification_report(y_test, y_pred))
+auc = roc_auc_score(y_test, y_pred_proba)
+report = classification_report(y_test, y_pred, target_names=['Legitimate', 'Spam'])
+
+# Generate ROC curve
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
+
+# Generate Precision-Recall curve
+precision, recall, _ = precision_recall_curve(y_test, y_pred_proba)
+avg_precision = average_precision_score(y_test, y_pred_proba)
+
+# Confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# --- VISUALIZATION ---
+plt.figure(figsize=(18, 6))
+sns.set_style("whitegrid")
+plt.rcParams['font.size'] = 12
+
+# 1. ROC Curve
+plt.subplot(1, 3, 1)
+plt.plot(fpr, tpr, color='#3498db', lw=2, label=f'AUC = {auc:.3f}')
+plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+plt.fill_between(fpr, tpr, alpha=0.1, color='#3498db')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.legend(loc="lower right")
+
+# 2. Precision-Recall Curve
+plt.subplot(1, 3, 2)
+plt.plot(recall, precision, color='#e74c3c', lw=2, label=f'AP = {avg_precision:.3f}')
+plt.fill_between(recall, precision, alpha=0.1, color='#e74c3c')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('Precision-Recall Curve')
+plt.legend(loc="upper right")
+
+# 3. Confusion Matrix
+plt.subplot(1, 3, 3)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Legitimate', 'Spam'], 
+            yticklabels=['Legitimate', 'Spam'])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+
+plt.tight_layout()
+plt.savefig('analysis/url/url_model_performance.png', dpi=300, bbox_inches='tight')
+plt.show()
+
+# --- PRINT METRICS ---
+print(f"\n{' MODEL EVALUATION ':=^60}")
+print(f"Accuracy: {accuracy:.4f}")
+print(f"AUC-ROC: {auc:.4f}")
+print(f"Average Precision: {avg_precision:.4f}\n")
+print("Classification Report:")
+print(classification_report(y_test, y_pred, target_names=['Legitimate', 'Spam']))
 
 # --- SAVE MODEL ---
 joblib.dump(model, 'models/url/url_model.pkl')

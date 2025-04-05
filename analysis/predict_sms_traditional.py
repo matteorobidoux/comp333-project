@@ -8,7 +8,7 @@ text_vectorizer = joblib.load('models/sms/sms_text_vectorizer.pkl')
 sms_model = joblib.load('models/sms/sms_model.pkl')
 
 # Load the combined SMS and URL dataset
-data = pd.read_csv('sms_url_combined.csv', keep_default_na=False)
+data = pd.read_csv('data/analysis/sms_url_combined.csv', keep_default_na=False)
 
 # Preprocess the text column using the vectorizer
 X = text_vectorizer.transform(data['text'])

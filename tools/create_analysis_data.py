@@ -29,6 +29,6 @@ balanced_sms_data['text'] = balanced_sms_data['text'] + ' ' + balanced_url_data[
 balanced_sms_data['is_spam'] = balanced_sms_data['is_spam'] | balanced_url_data['is_spam']
 
 # Save the updated dataset to a new CSV file
-balanced_sms_data.to_csv("sms_url_combined.csv", index=False)
+balanced_sms_data.to_csv("data/analysis/sms_url_combined.csv", index=False)
 
-print("Combined SMS and URL dataset created and saved to 'sms_url_combined.csv'.")
+print("Combined SMS and URL dataset created and saved to 'data/analysis/sms_url_combined.csv'.")

@@ -140,5 +140,5 @@ def evaluate_hybrid_model(file_path):
 
 if __name__ == "__main__":
     # Path to the `sms_url_combined.csv` file
-    file_path = 'sms_url_combined.csv'
+    file_path = 'data/analysis/sms_url_combined.csv'
     evaluate_hybrid_model(file_path)

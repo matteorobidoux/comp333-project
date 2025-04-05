@@ -6,6 +6,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack
 import time
 from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve, precision_recall_curve, average_precision_score, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 print("Loading data...")
 
@@ -75,13 +78,64 @@ print(f"Training completed in {end - start:.2f} seconds.")
 
 # Predict and evaluate performance
 y_pred = xgb_model.predict(X_test)
+y_pred_proba = xgb_model.predict_proba(X_test)[:, 1]  # Probabilities for class 1
 
-# Print Accuracy
-print(f'\nAccuracy: {xgb_model.score(X_test, y_test):.4f}')
+# --- Evaluation Metrics ---
+accuracy = accuracy_score(y_test, y_pred)
+auc = roc_auc_score(y_test, y_pred_proba)
+avg_precision = average_precision_score(y_test, y_pred_proba)
 
-# Print classification report for detailed evaluation
-print("\nXGBoost Model Evaluation Report:")
-print(classification_report(y_test, y_pred))
+# Generate curves
+fpr, tpr, _ = roc_curve(y_test, y_pred_proba)
+precision, recall, _ = precision_recall_curve(y_test, y_pred_proba)
+
+# Confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# --- Visualization ---
+plt.figure(figsize=(18, 6))
+sns.set_style("whitegrid")
+plt.rcParams['font.size'] = 12
+
+# 1. ROC Curve
+plt.subplot(1, 3, 1)
+plt.plot(fpr, tpr, color='#3498db', lw=2, label=f'AUC = {auc:.3f}')
+plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+plt.fill_between(fpr, tpr, alpha=0.1, color='#3498db')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.legend(loc="lower right")
+
+# 2. Precision-Recall Curve
+plt.subplot(1, 3, 2)
+plt.plot(recall, precision, color='#e74c3c', lw=2, label=f'AP = {avg_precision:.3f}')
+plt.fill_between(recall, precision, alpha=0.1, color='#e74c3c')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('Precision-Recall Curve')
+plt.legend(loc="upper right")
+
+# 3. Confusion Matrix
+plt.subplot(1, 3, 3)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Legitimate', 'Spam'], 
+            yticklabels=['Legitimate', 'Spam'])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+
+plt.tight_layout()
+plt.savefig('analysis/email/email_model_performance.png', dpi=300, bbox_inches='tight')
+plt.show()
+
+# --- Print Metrics ---
+print(f"\n{' MODEL EVALUATION ':=^60}\n")
+print(f"Accuracy: {accuracy:.4f}")
+print(f"AUC-ROC: {auc:.4f}")
+print(f"Average Precision: {avg_precision:.4f}\n")
+print("Classification Report:")
+print(classification_report(y_test, y_pred, target_names=['Legitimate', 'Spam']))
 
 # Save the trained model and vectorizers
 joblib.dump(text_vectorizer, 'models/email/email_text_vectorizer.pkl')
