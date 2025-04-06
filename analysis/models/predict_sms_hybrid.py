@@ -15,23 +15,22 @@ sms_model = joblib.load('models/sms/sms_model.pkl')
 url_model = joblib.load('models/url/url_model.pkl')
 url_vectorizer = joblib.load('models/url/url_vectorizer.pkl')
 
+def strip_scheme(url):
+    return re.sub(r'^https?:\/\/', '', url.lower())
+
 def extract_url_features(url):
-    """
-    Extract extensive set of URL features.
-    """
-    parsed = urlparse(url)
+    parsed = urlparse('http://' + url)  # Add dummy scheme
     domain_info = tldextract.extract(url)
-    
+
     domain = domain_info.domain
     suffix = domain_info.suffix
     subdomain = domain_info.subdomain
     path = parsed.path
     query = parsed.query
 
-    # Calculate entropy (higher entropy = more randomness, likely spam)
-    def entropy(string):
-        prob = [float(string.count(c)) / len(string) for c in set(string)]
-        return -sum(p * np.log2(p) for p in prob)
+    def entropy(s):
+        probs = [float(s.count(c)) / len(s) for c in set(s)]
+        return -sum(p * np.log2(p) for p in probs)
 
     features = {
         'url_length': len(url),
@@ -46,13 +45,13 @@ def extract_url_features(url):
         'tld_length': len(suffix),
         'suspicious_tld': int(suffix in ['xyz', 'top', 'click', 'club', 'biz', 'info', 'work', 'zip', 'mobi']),
         'has_ip_address': int(bool(re.search(r'\d+\.\d+\.\d+\.\d+', url))),
-        'contains_free': int('free' in url.lower()),
-        'contains_win': int(any(word in url.lower() for word in ['win', 'reward', 'gift', 'claim'])),
-        'contains_login': int('login' in url.lower()),
-        'contains_auth': int('auth' in url.lower()),
-        'contains_account': int('account' in url.lower()),
-        'contains_offer': int('offer' in url.lower()),
-        'contains_secure': int('secure' in url.lower()),
+        'contains_free': int('free' in url),
+        'contains_win': int(any(word in url for word in ['win', 'reward', 'gift', 'claim'])),
+        'contains_login': int('login' in url),
+        'contains_auth': int('auth' in url),
+        'contains_account': int('account' in url),
+        'contains_offer': int('offer' in url),
+        'contains_secure': int('secure' in url),
         'num_dots': url.count('.'),
         'num_hyphens': url.count('-'),
         'num_slashes': url.count('/'),
@@ -63,6 +62,9 @@ def predict_url_spam(url):
     """
     Predict whether a given URL is spam or not using the trained URL model.
     """
+    # Normalize URL
+    stripped_url = strip_scheme(url)
+
     # Extract structured features
     structured_features = np.array(extract_url_features(url)).reshape(1, -1)
 
