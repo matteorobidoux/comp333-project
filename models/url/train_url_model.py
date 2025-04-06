@@ -194,13 +194,8 @@ print(f"Average Precision: {np.mean(avg_precisions):.4f}\n")
 print("Classification Report (aggregated predictions):")
 print(classification_report(all_y_true, all_y_pred, target_names=['Legitimate', 'Spam']))
 
-# --- Train Final Model on Full Dataset ---
-print("\nTraining final model on full dataset...")
-full_train = lgb.Dataset(X, label=y)
-final_model = lgb.train(params, full_train, num_boost_round=300)
-
 # --- Save Model and Vectorizer ---
-joblib.dump(final_model, 'models/url/url_model.pkl')
+joblib.dump(model, 'models/url/url_model.pkl')
 joblib.dump(tfidf_vectorizer, 'models/url/url_vectorizer.pkl')
 
 print("\nModel and vectorizer saved!")
