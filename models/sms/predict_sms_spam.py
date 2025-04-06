@@ -23,7 +23,7 @@ def extract_url_features(url):
     """Extract extensive set of URL features."""
     parsed = urlparse(url)
     domain_info = tldextract.extract(url)
-    
+
     domain = domain_info.domain
     suffix = domain_info.suffix
     subdomain = domain_info.subdomain
@@ -84,6 +84,7 @@ def analyze_text(text):
 
     # Analyze the SMS content after removing URLs
     clean_text = re.sub(r'https?://\S+|www\.\S+', '', text)
+
     X_text = text_vectorizer.transform([clean_text])
 
     # Get spam probability for the SMS content
@@ -101,8 +102,10 @@ def analyze_text(text):
         combined_url_features = np.hstack([url_features, url_tfidf_features.toarray()])
         
         # For LightGBM model, use `predict()` and apply sigmoid to get probabilities
-        raw_probs = url_model.predict(combined_url_features)
-        url_spam_prob = max(expit(raw_probs))  # Apply sigmoid to get probabilities
+        url_spam_prob = url_model.predict(combined_url_features)[0]
+        # url_spam_prob = max(expit(raw_probs))  # Apply sigmoid to get probabilities
+
+
 
         # Combine SMS and URL spam probabilities (weighted sum)
         combined_prob = 0.3 * sms_spam_prob + 0.7 * url_spam_prob

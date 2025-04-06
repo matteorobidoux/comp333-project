@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Handles SMS spam prediction requests
 app.post("/predict-sms", (req, res) => {
-	const pythonProcess = spawn("python", [
+	const pythonProcess = spawn("python3", [
 		"models/sms/predict_sms_spam.py",
 		req.body.text
 	]);
