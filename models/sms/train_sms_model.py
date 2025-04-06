@@ -11,11 +11,22 @@ from sklearn.metrics import (classification_report, accuracy_score, roc_auc_scor
 import matplotlib.pyplot as plt
 import seaborn as sns
 import time
+import sys
+
+
+# Add sys arg
+
+data_path = 'data/normalized/sms_data.csv'
+
+
+if len(sys.argv) > 1:
+    data_path = 'data/normalized/sms_uci_data.csv'
+    print(f"Using data path from command line argument: {data_path}")
 
 print("Loading data...")
 
 # Load SMS data
-sms_df = pd.read_csv('data/normalized/sms_data.csv', keep_default_na=False)
+sms_df = pd.read_csv(data_path, keep_default_na=False)
 print("Data loaded!")
 
 # Vectorization with TF-IDF
