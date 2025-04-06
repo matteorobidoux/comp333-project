@@ -89,7 +89,7 @@ Spam detection has been extensively studied across various communication platfor
 A notable study by Gupta et al. follows the conventional ham or spam detection algorithm using TF-IDF vectorization [1]. Their research applies machine learning models to the UCI SMS Spam Collection dataset [2], using text-based features extracted from SMS messages. Their results show strong performance in spam classification, using traditional approaches such as Naïve Bayes and SVM, emphasizing that this is an effective technique.
 \newline
 \newline
-Another study by Gawai and Salunke [2] compared the use of various different NLP and machine learning techniques to classify SMS messages as either spam or ham, specifically for the algorithms SVM, Decision Tree, Random Forest, KNN and Naive Bayes. Their study demonstrates the effectiveness of these approaches in improving spam detection accuracy, concluding that the Naive Bayes had the most successful results, achieving an accuracy of 98\% on the UCI SMS Spam Collection dataset. They also report quite good accuracy results for the rest of the models, with 97\% for SVM, 96\% for Decision Tree, 97\% for Random Forest, and 95\% for KNN. This shows that traditional methods are still very effective when it comes to spam detection, especially when the dataset is large enough.
+Another study by Gawai and Salunke [8] compared the use of various different NLP and machine learning techniques to classify SMS messages as either spam or ham, specifically for the algorithms SVM, Decision Tree, Random Forest, KNN and Naive Bayes. Their study demonstrates the effectiveness of these approaches in improving spam detection accuracy, concluding that the Naive Bayes had the most successful results, achieving an accuracy of 98\% on the UCI SMS Spam Collection dataset. They also report quite good accuracy results for the rest of the models, with 97\% for SVM, 96\% for Decision Tree, 97\% for Random Forest, and 95\% for KNN. This shows that traditional methods are still very effective when it comes to spam detection, especially when the dataset is large enough.
 \newline
 \newline
 However, while training models on the same dataset [2], we identified a significant limitation in the way spam messages were labeled, especially when a URL was present in the message body. The dataset shows a strong bias, as many SMS messages containing URLs are labeled as spam. This introduces a risk that models trained on this data may incorrectly generalize, leading to a high false positive rate for messages containing legitimate URLs, significantly impacting simple sms messages such as a getting sent a video link from a friend. Consequently, SMS messages may be disproportionately influenced by the presence of a URL rather than the actual content of the message.
@@ -222,26 +222,26 @@ We extract the following features from each URL:
 \subsubsection*{Training}
 
 \noindent
-We trained an LightGBM model (lighter alternative to XGBoost, to minimize training time), using an 80-20 train test split. The model was trained on 208876 rows of data. The following hyperparameters were used: 
+We trained an LightGBM model (lighter alternative to XGBoost, to minimize training time), with 300 boosts per round. Additionally, we also utilized Stratified K-fold, using 5 folds in total. The model was trained on 208876 rows of data. The following hyperparameters were used: 
 
 \begin{itemize}
     \item Objective: binary
     \item Metric: Binary Logloss
     \item Boosting type: gbdt
     \item 31 leaves
-    \item Learning rate of 0.05
-    \item Feature fraction of 0.8
-    \item Bagging fraction of 0.8
+    \item Learning rate of 0.1
+    \item Feature fraction of 0.7
+    \item Bagging fraction of 0.7
     \item Bagging frequency of 5
 \end{itemize}
 
 \noindent
-The model achieved the following results after training on a Microsoft Surface Laptop with a i7 8650U and 16gb of ram, taking around 87 secs:
+The model achieved the following results after training on a Lenovo Flex 5 Laptop with a AMD Ryzen 7 4700U Processor and 16GB of DDR4 memory, taking around 187 secs:
 
 \begin{itemize}
-    \item Accuracy: 99.72\%
-    \item AUC: 99.98\%
-    \item Average Precision: 99.98\%
+    \item Average Accuracy: 98.55\%
+    \item Average AUC: 99.82\%
+    \item Average Precision: 99.85\%
 \end{itemize} 
 
 
@@ -252,16 +252,25 @@ The model achieved the following results after training on a Microsoft Surface L
     \toprule
      & Precision & Recall & F1-Score & Support \\
     \midrule
-    Legitimate & 1.00 & 1.00 & 1.00 & 20888 \\
-    Spam & 1.00 & 1.00 & 1.00 & 20888 \\
+    Legitimate & 0.98 & 0.99 & 0.99 & 104438 \\
+    Spam & 0.99 & 0.98 & 0.99 & 104438 \\
     \midrule
-    Accuracy & & & 1.00 & 41776 \\
-    Macro Avg & 1.00 & 1.00 & 1.00 & 41776 \\
-    Weighted Avg & 1.00 & 1.00 & 1.00 & 41776 \\
+    Accuracy & & & 0.99 & 208876 \\
+    Macro Avg & 0.99 & 0.99 & 0.99 & 208876 \\
+    Weighted Avg & 0.99 & 0.99 & 0.99 & 208876 \\
     \bottomrule
     \end{tabular}
     \label{tab:classification_report}
 \end{table}
+
+\noindent
+Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/url/url_model_performance.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for URL Model}
+    \label{fig:roc_curve}
+\end{figure}
 
 \subsubsection{SMS Model}
 \subsubsection*{Feature Extraction}
@@ -275,7 +284,7 @@ We applied TF-IDF vectorization to capture word patterns and important terms whi
 \end{itemize}
 
 \noindent
-Once again training was done via an 80/20 train-test split with the same laptop, however this time a Random Forest Classifier was used with the following hyperparameters:
+Training was done on the same laptop using Stratified K-fold with 10 folds. However this time a Random Forest Classifier was used with the following hyperparameters:
 
 \begin{itemize}
     \item 300 estimators
@@ -283,12 +292,12 @@ Once again training was done via an 80/20 train-test split with the same laptop,
 \end{itemize}
 
 \noindent
-The model achieved the following results after training 6306 rows, taking around 7 secs:
+The model achieved the following results after training 6306 rows, taking around 54 secs:
 
 \begin{itemize}
-    \item Accuracy: 96.43\%
-    \item AUC: 99.57\%
-    \item Average Precision: 96.60\%
+    \item Accuracy: 97.02\%
+    \item AUC: 99.52\%
+    \item Average Precision: 99.58\%
 \end{itemize}
 
 \begin{table}[htbp]
@@ -298,16 +307,60 @@ The model achieved the following results after training 6306 rows, taking around
     \toprule
      & Precision & Recall & F1-Score & Support \\
     \midrule
-    Legitimate & 0.95 & 0.98 & 0.96 & 631 \\
-    Spam & 0.98 & 0.95 & 0.96 & 631 \\
+    Legitimate & 0.96 & 0.98 & 0.97 & 3153 \\
+    Spam & 0.98 & 0.96 & 0.97 & 3153 \\
     \midrule
-    Accuracy & & & 0.96 & 1262 \\
-    Macro Avg & 0.96 & 0.96 & 0.96 & 1262 \\
-    Weighted Avg & 0.96 & 0.96 & 0.96 & 1262 \\
+    Accuracy & & & 0.97 & 6306 \\
+    Macro Avg & 0.97 & 0.97 & 0.97 & 6306 \\
+    Weighted Avg & 0.97 & 0.97 & 0.97 & 6306 \\
     \bottomrule
     \end{tabular}
     \label{tab:classification_report_2}
 \end{table}
+
+\noindent
+Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/sms/sms_model_performance.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Model}
+    \label{fig:roc_curve_2}
+\end{figure}
+
+\noindent
+Furthermore, when training the model, we also decided to use another approach where we only train using the SMS UCI Spam Collection Dataset [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, urls, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. The model achieved the following results after training 5575 rows, taking around 17 secs: 
+\begin{itemize}
+    \item Accuracy: 97.12\%
+    \item AUC: 99.41\%
+    \item Average Precision: 99.52\%
+\end{itemize}
+
+\begin{table}[htbp]
+    \centering
+    \caption{SMS model Classification Report}
+    \begin{tabular}{l c c c c}
+    \toprule
+     & Precision & Recall & F1-Score & Support \\
+    \midrule
+    Legitimate & 0.96 & 0.99 & 0.97 & 747 \\
+    Spam & 0.99 & 0.95 & 0.97 & 747 \\
+    \midrule
+    Accuracy & & & 0.97 & 1494 \\
+    Macro Avg & 0.97 & 0.97 & 0.97 & 1494 \\
+    Weighted Avg & 0.97 & 0.97 & 0.97 & 1494 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:classification_report_3}
+\end{table}
+
+\noindent
+We also generated the following ROC curve, Precision-Recall curve, and confusion matrix to visualize the model's performance:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/sms/sms_uci_model_performance.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS UCI Model}
+    \label{fig:roc_curve_3}
+\end{figure}
 
 \subsubsection{Email Model}
 \subsubsection*{Feature Extraction}
@@ -315,31 +368,37 @@ We applied TF-IDF vectorization separately to both the email subject and body, a
 
 Text vectorization settings:
 \begin{itemize}
-    \item Unigrams and bigrams
+    \item Minimum document frequency: 3
+    \item Maximum document frequency: 0.90
     \item 5000 max features
-    \item Stopwords removed
 \end{itemize}
 
 Subject vectorization settings:
 \begin{itemize}
-    \item Unigrams and bigrams
+    \item Minimum document frequency: 2
+    \item Maximum document frequency: 0.95
     \item 1000 max features
-    \item Max document frequency: 0.95 (to retain common subjects)
 \end{itemize}
 
 \subsubsection*{Training}
-We trained an XGBoost classifier, with the same hardware but with a 70/30 train-test split:
+We trained an XGBoost classifier (No Stratified K-fold), with the same hardware but with a 70/30 train-test split:
 
 \begin{itemize}
     \item 500 estimators
     \item Max depth of 10
     \item Learning rate of 0.05
     \item Subsampling of 0.8
-    \item Early stopping at 30 rounds
+    \item Early stopping at 30 rounds if no improvement
 \end{itemize}
 
 \noindent
-The model achieved the following results after training 23000 rows, taking 249 secs (4.15 mins):
+The model achieved the following results after training 23000 rows, taking 249 secs:
+
+\begin{itemize}
+    \item Accuracy: 96.90\%
+    \item AUC: 99.59\%
+    \item Average Precision: 99.55\%
+\end{itemize}
 
 \begin{table}[htbp]
     \centering
@@ -348,16 +407,25 @@ The model achieved the following results after training 23000 rows, taking 249 s
     \toprule
      & Precision & Recall & F1-Score & Support \\
     \midrule
-    0 & 0.99 & 0.96 & 0.98 & 4498 \\
-    1 & 0.94 & 0.98 & 0.96 & 2649 \\
+    Legitimate & 0.99 & 0.95 & 0.97 & 2649 \\
+    Spam & 0.95 & 0.99 & 0.97 & 2649 \\
     \midrule
-    Accuracy & \multicolumn{4}{c}{0.97} \\
-    Macro Avg & 0.96 & 0.97 & 0.97 & 7147 \\
-    Weighted Avg & 0.97 & 0.97 & 0.97 & 7147 \\
+    Accuracy  & & & 0.97 & 5297 \\
+    Macro Avg & 0.97 & 0.97 & 0.97 & 5297 \\
+    Weighted Avg & 0.97 & 0.97 & 0.97 & 5297 \\
     \bottomrule
     \end{tabular}
     \label{tab:xgboost_evaluation}
 \end{table}
+
+\noindent
+Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/email/email_model_performance.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for Email Model}
+    \label{fig:roc_curve_4}
+\end{figure}
 
 \subsubsection{YouTube Comments Model}
 \subsubsection*{Feature Extraction}
@@ -371,10 +439,10 @@ Here we once again utilize a TF-IDF vectorizer for text, as well as one for auth
 
 \subsubsection*{Training}
 
-Here we train using a Gradient Boosting Classifier mainly so we can capture hierarchical relationships within the text data, since they are comments. This is all done using the same hardware. The hyperparameters include:
+Here we train using a Gradient Boosting Classifier mainly so we can capture hierarchical relationships within the text data, since they are comments. This is all done using the same hardware and with a 70/30 train-test split. The hyperparameters include:
 
 \begin{itemize}
-    \item 150 estimators
+    \item 200 estimators
     \item Max depth of 5
     \item Learning rate of 0.1
     \item Subsampling of 0.8
@@ -425,13 +493,6 @@ The inference process across SMS, email, and comments, generally follows the sam
 
 The final spam probability score is then compared against a predefined threshold (typically 0.5). If the score meets or exceeds this threshold, the message is classified as spam; otherwise, it is classified as non-spam.
 
-
-
-% ========== CONTINUE ABOVE HERE ===============
-
-% ================================
-% References
-% ================================
 \newpage
 
 \noindent

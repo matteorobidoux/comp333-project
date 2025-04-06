@@ -17,10 +17,11 @@ import sys
 # Add sys arg
 
 data_path = 'data/normalized/sms_data.csv'
-
+figure_path = 'analysis/sms/sms_model_performance.png'
 
 if len(sys.argv) > 1:
     data_path = 'data/normalized/sms_uci_data.csv'
+    figure_path = 'analysis/sms/sms_uci_model_performance.png'
     print(f"Using data path from command line argument: {data_path}")
 
 print("Loading data...")
@@ -133,7 +134,7 @@ plt.ylabel('Actual')
 plt.title('Confusion Matrix')
 
 plt.tight_layout()
-plt.savefig('analysis/sms/sms_model_performance.png', dpi=300, bbox_inches='tight')
+plt.savefig(figure_path, dpi=300, bbox_inches='tight')
 plt.show()
 
 # Print Final Metrics

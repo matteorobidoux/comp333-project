@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.3.30)  5 APR 2025 19:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.3.30)  6 APR 2025 18:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -285,87 +285,117 @@ Underfull \hbox (badness 10000) in paragraph at lines 187--192
 
  []
 
-[4] [5] [6] [7] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 442--464
+[4]
+<../analysis/url/url_model_performance.png, id=25, 1278.9381pt x 419.4069pt>
+File: ../analysis/url/url_model_performance.png Graphic file (type png)
+<use ../analysis/url/url_model_performance.png>
+Package pdftex.def Info: ../analysis/url/url_model_performance.png  used on inp
+ut line 270.
+(pdftex.def)             Requested size: 362.37569pt x 118.83464pt.
+ [5 <../analysis/url/url_model_performance.png>]
+<../analysis/sms/sms_model_performance.png, id=31, 1277.9745pt x 419.4069pt>
+File: ../analysis/sms/sms_model_performance.png Graphic file (type png)
+<use ../analysis/sms/sms_model_performance.png>
+Package pdftex.def Info: ../analysis/sms/sms_model_performance.png  used on inp
+ut line 325.
+(pdftex.def)             Requested size: 362.37569pt x 118.92424pt.
+<../analysis/sms/sms_uci_model_performance.png, id=32, 1277.4927pt x 419.4069pt
+>
+File: ../analysis/sms/sms_uci_model_performance.png Graphic file (type png)
+<use ../analysis/sms/sms_uci_model_performance.png>
+Package pdftex.def Info: ../analysis/sms/sms_uci_model_performance.png  used on
+ input line 360.
+(pdftex.def)             Requested size: 362.37569pt x 118.96904pt.
+ [6 <../analysis/sms/sms_model_performance.png>]
+<../analysis/email/email_model_performance.png, id=38, 1277.9745pt x 419.4069pt
+>
+File: ../analysis/email/email_model_performance.png Graphic file (type png)
+<use ../analysis/email/email_model_performance.png>
+Package pdftex.def Info: ../analysis/email/email_model_performance.png  used on
+ input line 425.
+(pdftex.def)             Requested size: 362.37569pt x 118.92424pt.
+ [7 <../analysis/sms/sms_uci_model_performance.png>]
+[8 <../analysis/email/email_model_performance.png>] [9]
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
 
  []
 
 
-Overfull \hbox (145.79964pt too wide) in paragraph at lines 442--464
+Overfull \hbox (145.79964pt too wide) in paragraph at lines 503--525
 \OT1/cmr/m/n/10 [2] UCI Ma-chine Learn-ing Repos-i-tory, "SMS Spam Col-lec-tion
  Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/uciml/sms-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--464
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
 
  []
 
 
-Overfull \hbox (111.10745pt too wide) in paragraph at lines 442--464
+Overfull \hbox (111.10745pt too wide) in paragraph at lines 503--525
 \OT1/cmr/m/n/10 [3] S. Ku-mar, "Ma-li-cious and Be-nign URLs," [On-line]. Avail
 -able: https://www.kaggle.com/datasets/siddharthkumar25/malicious-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--464
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
 
  []
 
 
-Overfull \hbox (27.41171pt too wide) in paragraph at lines 442--464
+Overfull \hbox (27.41171pt too wide) in paragraph at lines 503--525
 \OT1/cmr/m/n/10 [4] T. Ku-mar, "SMS Spam Dataset," [On-line]. Avail-able: https
 ://www.kaggle.com/datasets/tinu10kumar/sms-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--464
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
 
  []
 
 
-Overfull \hbox (59.57959pt too wide) in paragraph at lines 442--464
+Overfull \hbox (59.57959pt too wide) in paragraph at lines 503--525
 \OT1/cmr/m/n/10 [5] N. Bharathi, "Email Spam Dataset," [On-line]. Avail-able: h
 ttps://www.kaggle.com/datasets/nitishabharathi/email-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--464
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
 
  []
 
 
-Overfull \hbox (13.46832pt too wide) in paragraph at lines 442--464
+Overfull \hbox (13.46832pt too wide) in paragraph at lines 503--525
 \OT1/cmr/m/n/10 [6] V. Venky, "Spam Mails Dataset," [On-line]. Avail-able: http
 s://www.kaggle.com/datasets/venky73/spam-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--464
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
 
  []
 
 
-Overfull \hbox (116.52402pt too wide) in paragraph at lines 442--464
+Overfull \hbox (116.52402pt too wide) in paragraph at lines 503--525
 \OT1/cmr/m/n/10 [7] A. Wa-heed, "Youtube Com-ments Spam Dataset," [On-line]. Av
 ail-able: https://www.kaggle.com/datasets/ahsenwaheed/youtube-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--464
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
 
  []
 
-[9] (./FinalReport.aux)
+[10] (./FinalReport.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2513 strings out of 480247
- 43474 string characters out of 5896151
- 342007 words of memory out of 5000000
- 20448 multiletter control sequences out of 15000+600000
+ 2550 strings out of 480247
+ 44885 string characters out of 5896151
+ 342039 words of memory out of 5000000
+ 20477 multiletter control sequences out of 15000+600000
  472325 words of font info for 38 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,10n,67p,1132b,237s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -376,10 +406,10 @@ are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-Output written on FinalReport.pdf (10 pages, 123418 bytes).
+Output written on FinalReport.pdf (11 pages, 1069783 bytes).
 PDF statistics:
- 72 PDF objects out of 1000 (max. 8388607)
- 46 compressed objects within 1 object stream
+ 84 PDF objects out of 1000 (max. 8388607)
+ 49 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
