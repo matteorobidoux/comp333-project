@@ -63,7 +63,7 @@ def predict_url_spam(url):
     Predict whether a given URL is spam or not using the trained URL model.
     """
     # Normalize URL
-    stripped_url = strip_scheme(url)
+    url = strip_scheme(url)
 
     # Extract structured features
     structured_features = np.array(extract_url_features(url)).reshape(1, -1)
