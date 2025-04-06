@@ -40,27 +40,35 @@ A frontend interface is also included, allowing users to interact with the syste
 
 ```
 📂 spam-detection
+├── analysis/ - Analysis scripts and results
+│ ├── sms/ - SMS spam analysis results
+│ ├── email/ - Email spam analysis results
+│ ├── comment/ - YouTube comment spam analysis results
+│ ├── url/ - URL spam analysis results
+│ └── models/ - Models for analysis
+│
 ├── backend/ - Backend server and dependencies
 │ ├── index.js - Node.js backend server
 │ ├── package.json - Backend dependencies and scripts
-│ ├── public/ - Frontend assets
-│ │ ├── css/ - Frontend stylesheets
-│ │ ├── js/ - Frontend JavaScript
-│ │ └── index.html - Frontend HTML file
-
+│ └── public/ - Frontend assets
+│   ├── css/ - Frontend stylesheets
+│   ├── js/ - Frontend JavaScript
+│   └── index.html - Frontend HTML file
+|
 ├── data/ - Datasets for training and testing
+| ├── analysis/ - Analysis datasets
 │ ├── comment/ - YouTube comment datasets
 │ ├── email/ - Email datasets
+| ├── normalized/ - Preprocessed datasets
 │ ├── sms/ - SMS datasets
-│ ├── url/ - URL datasets
-│ └── normalized/ - Preprocessed datasets
-
+│ └── url/ - URL datasets
+|
 ├── models/ - Machine learning models
 │ ├── comment/ - YouTube comment spam model
 │ ├── email/ - Email spam model
 │ ├── sms/ - SMS spam model
 │ └── url/ - URL spam model
-
+|
 ├── report/ - Final project report
 ├── tools/ - Dataset preprocessing tools
 └── README.md - Project documentation
@@ -72,35 +80,16 @@ A frontend interface is also included, allowing users to interact with the syste
 
 The project uses the following datasets stored in `data/`:
 
-### SMS Spam
+### Complete Dataset Table
 
-- Location: `data/sms/`
-- Contains: Labeled SMS messages (spam/ham)
-- Format: CSV
-- Size: [X] samples
-
-### Email Spam
-
-- Location: `data/email/`
-- Contains: Labeled emails (spam/ham)
-- Format: CSV
-- Size: [X] samples
-
-### YouTube Comments
-
-- Location: `data/comment/`
-- Contains: Labeled comments (spam/ham)
-- Format: CSV
-- Size: [X] samples
-
-### URL Spam
-
-- Location: `data/url/`
-- Contains: Labeled URLs (malicious/benign)
-- Format: CSV
-- Size: [X] samples
-
-Preprocessed versions available in `data/normalized/`
+| Dataset Type         | Raw Location     | Normalized Location                | Samples | Description                                            | Files                                                                                            |
+| -------------------- | ---------------- | ---------------------------------- | ------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| **SMS Messages**     | `data/sms/`      | `data/normalized/sms_data.csv`     | 6,307   | Labeled SMS messages                                   | `sms_dataset_1.csv` <br>`sms_dataset_2.csv`                                                      |
+| **Emails**           | `data/email/`    | `data/normalized/email_data.csv`   | 17,657  | Labeled emails (spam/ham)                              | `email_dataset_1.csv`<br>`email_dataset_2.csv`<br>`email_dataset_3.csv`<br>`email_dataset_4.csv` |
+| **YouTube Comments** | `data/comment/`  | `data/normalized/comment_data.csv` | 1,962   | Labeled YouTube comments (spam/legitimate)             | `comment_dataset.csv`                                                                            |
+| **URLs**             | `data/url/`      | `data/normalized/url_data.csv`     | 450,177 | Labeled URLs                                           | `url_dataset.csv`                                                                                |
+| **SMS+URL Analysis** | `data/analysis/` | -                                  | 151     | SMS messages with appended URLs for special analysis   | `sms_url_combined.csv`                                                                           |
+| **UCI SMS Data**     | -                | `data/normalized/sms_uci_data.csv` | 1,495   | Normalized version of `sms_dataset_2.csv` for analysis | (derived from `sms_dataset_2.csv`)                                                               |
 
 ---
 
@@ -108,35 +97,14 @@ Preprocessed versions available in `data/normalized/`
 
 The project employs separate machine learning models optimized for different types of spam classification located in `models/`.
 
-### SMS Spam Model
+### Spam Detection Models
 
-- Algorithm: Random Forest Classifier
-- Features: TF-IDF vectorization (unigrams and bigrams)
-- Dataset: SMS spam dataset
-- Model File: `models/sms/sms_model.pkl`
-
-### Email Spam Model
-
-- Algorithm: Naive Bayes (MultinomialNB)
-- Features: TF-IDF vectorization
-- Dataset: Email spam dataset
-- Model File: `models/email/email_model.pkl`
-
-### YouTube Comment Spam Model
-
-- Algorithm: Logistic Regression
-- Features: Word embeddings with TF-IDF
-- Dataset: YouTube comment spam dataset
-- Model File: `models/comment/comment_model.pkl`
-
-### URL Spam Model
-
-- Algorithm: XGBoost Classifier
-- Features: Extracted URL characteristics such as length, domain type, special characters, and presence of certain keywords.
-- Dataset: URL spam dataset
-- Model File: `models/url/url_model.pkl`
-
-Each model is pre-trained and saved in the respective directories for easy integration with the backend API.
+| Model Type           | Algorithm                    | Features                                 | Dataset                 | Model File Path                    |
+| -------------------- | ---------------------------- | ---------------------------------------- | ----------------------- | ---------------------------------- |
+| **SMS Spam**         | Random Forest Classifier     | Character-Level TF-IDF                   | SMS spam dataset        | `models/sms/sms_model.pkl`         |
+| **Email Spam**       | XGB Classifier               | Subject + Body TF-IDF                    | Email spam dataset      | `models/email/email_model.pkl`     |
+| **YouTube Comments** | Gradient Boosting Classifier | Character-Level TF-IDF + Author Analysis | YouTube comment dataset | `models/comment/comment_model.pkl` |
+| **URL Spam**         | Light GBM                    | URL Feature Engineering                  | URL spam dataset        | `models/url/url_model.pkl`         |
 
 ---
 
@@ -156,7 +124,7 @@ Ensure you have the following installed:
 
 ```
 git clone https://github.com/yourusername/spam-detection-model.git
-cd spam-detection
+cd spam-detection-model
 ```
 
 **2.** Backend Setup
@@ -302,14 +270,14 @@ Response:
 
 - **Backend** : Node.js, Express.js
 - **Frontend** : HTML, CSS, JavaScript
-- **Machine Learning** : Python, scikit-learn, XGBoost
+- **Machine Learning** : Python, scikit-learn,XGBoost, LightGBM
 - **Data Preprocessing** : Pandas, NumPy
 
 ---
 
 ## Report
 
-The final project report is available in the `report/` directory. It includes detailed information about the models, datasets, and evaluation metrics used in this project.
+The final project report is available in the `report/` directory. It includes detailed information about the project, including the methodology, results, and conclusions drawn from the analysis.
 
 ---
 
