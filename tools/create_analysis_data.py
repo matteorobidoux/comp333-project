@@ -1,6 +1,6 @@
 import pandas as pd
 
-sms_data = pd.read_csv("data/normalized/sms_data.csv")
+sms_data = pd.read_csv("data/normalized/sms_uci_data.csv")
 url_data = pd.read_csv("data/normalized/url_data.csv")
 
 # Step 1: Keep only 20% of the SMS data with equal representation of is_spam

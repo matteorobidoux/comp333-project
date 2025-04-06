@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 import numpy as np
 import re
@@ -101,6 +102,8 @@ lgb_params = {
 train_data = lgb.Dataset(X_train, label=y_train)
 valid_data = lgb.Dataset(X_test, label=y_test, reference=train_data)
 
+start = time.time()
+
 # Train LightGBM model with proper early stopping
 model = lgb.train(
     lgb_params,
@@ -110,6 +113,8 @@ model = lgb.train(
     valid_names=['valid'],
     callbacks=[lgb.early_stopping(50), lgb.log_evaluation(100)]
 )
+end = time.time()
+print(f"Training completed in {end - start:.2f} seconds.")
 
 y_pred = (model.predict(X_test) > 0.5).astype(int)
 y_pred_proba = model.predict(X_test)  # Probability scores
