@@ -74,7 +74,8 @@ xgb_model.fit(
 
 # End time for training
 end = time.time()
-print(f"Training completed in {end - start:.2f} seconds.")
+total_time = end - start
+print(f"Training completed in {total_time:.2f} seconds.")
 
 # Predict and evaluate performance
 y_pred = xgb_model.predict(X_test)
@@ -106,6 +107,12 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('ROC Curve')
 plt.legend(loc="lower right")
+
+# Add accuracy annotation and total time
+plt.text(0.6, 0.2, 
+         f'Accuracy = {accuracy:.3f}\nTotal Time = {total_time:.2f}s', 
+         fontsize=12,
+         bbox=dict(facecolor='white', edgecolor='gray', boxstyle='round,pad=0.3'))
 
 # 2. Precision-Recall Curve
 plt.subplot(1, 3, 2)

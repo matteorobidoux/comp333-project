@@ -1,11 +1,13 @@
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score, precision_recall_curve, roc_curve, average_precision_score
 from scipy.sparse import hstack
 from urllib.parse import urlparse, parse_qs
 import tldextract
 import re
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load Pretrained SMS Model and Vectorizer
 text_vectorizer = joblib.load('models/sms/sms_text_vectorizer.pkl')
@@ -59,42 +61,23 @@ def extract_url_features(url):
     return list(features.values())
 
 def predict_url_spam(url):
-    """
-    Predict whether a given URL is spam or not using the trained URL model.
-    """
-    # Normalize URL
     url = strip_scheme(url)
-
-    # Extract structured features
     structured_features = np.array(extract_url_features(url)).reshape(1, -1)
-
-    # Generate TF-IDF features
     tfidf_features = url_vectorizer.transform([url])
-
-    # Combine structured and TF-IDF features
     combined_features = hstack([structured_features, tfidf_features])
-
-    # Make a prediction
     prediction = url_model.predict(combined_features)
-    return int(prediction[0] > 0.5)  # Return 1 for spam, 0 for not spam
+    return int(prediction[0] > 0.5)
 
 def extract_url_from_text(text):
-    """
-    Extract the first URL from the text and return the URL and the text with the URL removed.
-    """
     url_pattern = r'https?://\S+|www\.\S+'
     match = re.search(url_pattern, text)
     if match:
         url = match.group(0)
         text_without_url = re.sub(url_pattern, '', text).strip()
         return url, text_without_url
-    return None, text  # No URL found, return the original text
+    return None, text
 
 def evaluate_hybrid_model(file_path):
-    """
-    Evaluate the hybrid SMS and URL spam detection model.
-    """
-    # Load the dataset
     data = pd.read_csv(file_path, keep_default_na=False)
     y_true = data['is_spam'].values
     texts = data['text'].astype(str).values
@@ -103,41 +86,77 @@ def evaluate_hybrid_model(file_path):
     url_predictions = []
 
     for text in texts:
-        # Extract URL and clean SMS text
         url, clean_text = extract_url_from_text(text)
 
-        # Predict using the SMS model
         X_sms = text_vectorizer.transform([clean_text])
         sms_pred = sms_model.predict(X_sms)[0]
         sms_predictions.append(sms_pred)
 
-        # Predict using the URL model if a URL is found
         if url:
             try:
                 url_pred = predict_url_spam(url)
             except Exception as e:
                 print(f"Error processing URL: {url}, Error: {e}")
-                url_pred = 0  # Default to not spam in case of error
+                url_pred = 0
         else:
-            url_pred = 0  # No URL found, default to not spam
+            url_pred = 0
         url_predictions.append(url_pred)
 
-    # Combine predictions: 1 if either SMS or URL predicts spam, 0 otherwise
     combined_predictions = [
         1 if sms == 1 or url == 1 else 0
         for sms, url in zip(sms_predictions, url_predictions)
     ]
 
-    # Calculate accuracy and classification report
     accuracy = accuracy_score(y_true, combined_predictions)
     report = classification_report(y_true, combined_predictions)
 
-    # Print results
     print(f"\nHybrid Model Accuracy: {accuracy:.4f}")
     print("\nClassification Report:")
     print(report)
 
+    # Visualization
+    cm = confusion_matrix(y_true, combined_predictions)
+    auc = roc_auc_score(y_true, combined_predictions)
+    avg_prec = average_precision_score(y_true, combined_predictions)
+    fpr, tpr, _ = roc_curve(y_true, combined_predictions)
+    precision, recall, _ = precision_recall_curve(y_true, combined_predictions)
+
+    plt.figure(figsize=(18, 6))
+    sns.set_style("whitegrid")
+    plt.rcParams['font.size'] = 12
+
+    # ROC Curve
+    plt.subplot(1, 3, 1)
+    plt.plot(fpr, tpr, color='#3498db', lw=2, label=f'AUC = {auc:.3f}')
+    plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+    plt.fill_between(fpr, tpr, alpha=0.1, color='#3498db')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend(loc="lower right")
+
+    # Precision-Recall Curve
+    plt.subplot(1, 3, 2)
+    plt.plot(recall, precision, color='#e74c3c', lw=2, label=f'AP = {avg_prec:.3f}')
+    plt.fill_between(recall, precision, alpha=0.1, color='#e74c3c')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall Curve')
+    plt.legend(loc="upper right")
+
+    # Confusion Matrix
+    plt.subplot(1, 3, 3)
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                xticklabels=['Ham', 'Spam'],
+                yticklabels=['Ham', 'Spam'])
+    plt.xlabel('Predicted')
+    plt.ylabel('Actual')
+    plt.title('Confusion Matrix')
+
+    plt.tight_layout()
+    plt.savefig('analysis/sms/sms_hybrid_model_performance.png', dpi=300, bbox_inches='tight')
+    plt.show()
+
 if __name__ == "__main__":
-    # Path to the `sms_url_combined.csv` file
     file_path = 'data/analysis/sms_url_combined.csv'
     evaluate_hybrid_model(file_path)

@@ -139,7 +139,8 @@ for train_index, test_index in kf.split(X, y):
 
 print("Training completed!")
 end = time.time()
-print(f"\nTotal training time: {end - start:.2f} seconds")
+total_time = end - start
+print(f"\nTotal training time: {total_time:.2f} seconds")
 
 
 # --- Final Evaluation ---
@@ -163,6 +164,12 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('ROC Curve')
 plt.legend(loc="lower right")
+
+# Add accuracy annotation and total time
+plt.text(0.6, 0.2, 
+         f'Accuracy = {final_accuracy:.3f}\nTotal Time = {total_time:.2f}s', 
+         fontsize=12,
+         bbox=dict(facecolor='white', edgecolor='gray', boxstyle='round,pad=0.3'))
 
 # Precision-Recall Curve
 plt.subplot(1, 3, 2)
