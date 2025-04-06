@@ -102,5 +102,5 @@ def evaluate_against_sms_url_combined(file_path):
     print(classification_report(y_true, y_pred))
 
 if __name__ == "__main__":
-    file_path = 'sms_url_combined.csv'  # Path to the dataset
+    file_path = 'data/analysis/sms_url_combined.csv'  # Path to the dataset
     evaluate_against_sms_url_combined(file_path)
