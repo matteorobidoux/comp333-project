@@ -7,7 +7,8 @@ import joblib
 import lightgbm as lgb
 from urllib.parse import urlparse, parse_qs
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import accuracy_score, roc_auc_score, average_precision_score
+from sklearn.metrics import (accuracy_score, roc_auc_score, average_precision_score,
+                             confusion_matrix, roc_curve, precision_recall_curve, classification_report)
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack
 import matplotlib.pyplot as plt
@@ -94,9 +95,11 @@ params = {
     'random_state': 42
 }
 
-accuracies = []
-aucs = []
-avg_precisions = []
+accuracies, aucs, avg_precisions = [], [], []
+all_y_true, all_y_pred, all_y_proba = [], [], []
+
+start = time.time()
+print("\nStarting Stratified K-Fold training...\n")
 
 fold = 1
 for train_index, test_index in kf.split(X, y):
@@ -128,15 +131,71 @@ for train_index, test_index in kf.split(X, y):
     aucs.append(auc)
     avg_precisions.append(avg_precision)
 
+    all_y_true.extend(y_test)
+    all_y_pred.extend(y_pred)
+    all_y_proba.extend(y_pred_proba)
+
     fold += 1
 
-# --- Train Final Model on Full Dataset ---
-print("\nTraining final model on full dataset...")
-full_train = lgb.Dataset(X, label=y)
-final_model = lgb.train(params, full_train, num_boost_round=300)
+print("Training completed!")
+end = time.time()
+print(f"\nTotal training time: {end - start:.2f} seconds")
+
+
+# --- Final Evaluation ---
+final_cm = confusion_matrix(all_y_true, all_y_pred)
+fpr, tpr, _ = roc_curve(all_y_true, all_y_proba)
+precision, recall, _ = precision_recall_curve(all_y_true, all_y_proba)
+final_auc = roc_auc_score(all_y_true, all_y_proba)
+final_avg_prec = average_precision_score(all_y_true, all_y_proba)
+final_accuracy = accuracy_score(all_y_true, all_y_pred)
+
+plt.figure(figsize=(18, 6))
+sns.set_style("whitegrid")
+plt.rcParams['font.size'] = 12
+
+# ROC Curve
+plt.subplot(1, 3, 1)
+plt.plot(fpr, tpr, color='#3498db', lw=2, label=f'AUC = {final_auc:.3f}')
+plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+plt.fill_between(fpr, tpr, alpha=0.1, color='#3498db')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.legend(loc="lower right")
+
+# Precision-Recall Curve
+plt.subplot(1, 3, 2)
+plt.plot(recall, precision, color='#e74c3c', lw=2, label=f'AP = {final_avg_prec:.3f}')
+plt.fill_between(recall, precision, alpha=0.1, color='#e74c3c')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('Precision-Recall Curve')
+plt.legend(loc="upper right")
+
+# Confusion Matrix
+plt.subplot(1, 3, 3)
+sns.heatmap(final_cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=['Legitimate', 'Spam'],
+            yticklabels=['Legitimate', 'Spam'])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+
+plt.tight_layout()
+plt.savefig('analysis/url/url_model_performance.png', dpi=300, bbox_inches='tight')
+plt.show()
+
+# --- Summary ---
+print(f"\n{' FINAL EVALUATION (Stratified K-Fold) ':=^60}\n")
+print(f"Average Accuracy: {np.mean(accuracies):.4f}")
+print(f"Average AUC-ROC: {np.mean(aucs):.4f}")
+print(f"Average Precision: {np.mean(avg_precisions):.4f}\n")
+print("Classification Report (aggregated predictions):")
+print(classification_report(all_y_true, all_y_pred, target_names=['Legitimate', 'Spam']))
 
 # --- Save Model and Vectorizer ---
-joblib.dump(final_model, 'models/url/url_model.pkl')
+joblib.dump(model, 'models/url/url_model.pkl')
 joblib.dump(tfidf_vectorizer, 'models/url/url_vectorizer.pkl')
 
 print("\nModel and vectorizer saved!")

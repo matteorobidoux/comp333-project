@@ -106,9 +106,6 @@ def evaluate_hybrid_model(file_path):
         # Extract URL and clean SMS text
         url, clean_text = extract_url_from_text(text)
 
-        # print(f"Processing text: {clean_text}")
-        # print(f"Extracted URL: {url}")
-
         # Predict using the SMS model
         X_sms = text_vectorizer.transform([clean_text])
         sms_pred = sms_model.predict(X_sms)[0]
