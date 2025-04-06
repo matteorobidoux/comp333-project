@@ -22,10 +22,8 @@ url_vectorizer = joblib.load('models/url/url_vectorizer.pkl')
 def strip_scheme(url):
     return re.sub(r'^https?:\/\/', '', url.lower())
 
-urls = raw_urls.apply(strip_scheme).values
-
 # --- Feature Engineering ---
-def extract_features(url):
+def extract_url_features(url):
     parsed = urlparse('http://' + url)  # Add dummy scheme
     domain_info = tldextract.extract(url)
 
@@ -68,6 +66,7 @@ def extract_features(url):
 
 def fix_url(url):
     """Ensure that the URL starts with a valid scheme and add 'www.' if missing."""
+    url = strip_scheme(url)
     if not re.match(r'^(http://|https://)', url):  # Add protocol if missing
         url = 'http://' + url
     if not re.match(r'^(http://www\.|https://www\.)', url):  # Add 'www.' if missing
@@ -107,9 +106,6 @@ def analyze_text(text):
         
         # For LightGBM model, use `predict()` and apply sigmoid to get probabilities
         url_spam_prob = url_model.predict(combined_url_features)[0]
-        # url_spam_prob = max(expit(raw_probs))  # Apply sigmoid to get probabilities
-
-
 
         # Combine SMS and URL spam probabilities (weighted sum)
         combined_prob = 0.3 * sms_spam_prob + 0.7 * url_spam_prob

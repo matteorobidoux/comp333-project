@@ -25,7 +25,7 @@ def strip_scheme(url):
     return re.sub(r'^https?:\/\/', '', url.lower())
 
 # --- Feature Engineering ---
-def extract_features(url):
+def extract_url_features(url):
     parsed = urlparse('http://' + url)  # Add dummy scheme
     domain_info = tldextract.extract(url)
 
