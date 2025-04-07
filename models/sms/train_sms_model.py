@@ -18,10 +18,12 @@ import sys
 
 data_path = 'data/normalized/sms_data.csv'
 figure_path = 'analysis/sms/sms_model_performance.png'
+generate_pkl = True
 
 if len(sys.argv) > 1:
     data_path = 'data/normalized/sms_uci_data.csv'
     figure_path = 'analysis/sms/sms_uci_model_performance.png'
+    generate_pkl = False
     print(f"Using data path from command line argument: {data_path}")
 
 print("Loading data...")
@@ -152,8 +154,8 @@ print(f"Average Precision: {np.mean(avg_precisions):.4f}\n")
 print("Classification Report (aggregated predictions):")
 print(classification_report(all_y_true, all_y_pred, target_names=['Legitimate', 'Spam']))
 
-# Save the last trained model and vectorizer
-joblib.dump(tfidf, 'analysis/models/sms_text_vectorizer.pkl')
-joblib.dump(rf_model, 'analysis/models/sms_model.pkl')
-
-print("\nFinal SMS Spam Model and Vectorizer saved!")
+if(generate_pkl):
+    # Save the last trained model and vectorizer
+    joblib.dump(tfidf, 'analysis/models/sms_text_vectorizer.pkl')
+    joblib.dump(rf_model, 'analysis/models/sms_model.pkl')
+    print("\nFinal SMS Spam Model and Vectorizer saved!")

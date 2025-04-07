@@ -328,7 +328,7 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
 \end{figure}
 
 \noindent
-Furthermore, when training the model, we also decided to use another approach where we only train using the SMS UCI Spam Collection Dataset [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, urls, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. The model achieved the following results after training 5575 rows, taking around 17 secs: 
+Furthermore, when training the model, we also decided to use another approach where we only train using the SMS UCI Spam Collection Dataset [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, urls, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. The model achieved the following results after training 1494 rows (Much smaller than original SMS UCI dataset as there is a heavy bias), taking around 17 secs: 
 \begin{itemize}
     \item Accuracy: 97.12\%
     \item AUC: 99.41\%
@@ -443,30 +443,47 @@ Here we train using a Gradient Boosting Classifier mainly so we can capture hier
 
 \begin{itemize}
     \item 200 estimators
-    \item Max depth of 5
-    \item Learning rate of 0.1
-    \item Subsampling of 0.8
+    \item Max depth of 6
+    \item Learning rate of 0.05
+    \item Subsampling of 0.7
 \end{itemize}
 
-The model achieved the following results after training 1962 rows, taking 0.75 secs:
+The model achieved the following results after training 1962 rows, taking 0.73 secs:
+
+\begin{itemize}
+    \item Accuracy: 94.22\%
+    \item AUC: 98.65\%
+    \item Average Precision: 98.78\%
+\end{itemize}
 
 \begin{table}[htbp]
     \centering
-    \caption{Comments Gradient Boosting Model Evaluation Report}
+    \caption{YouTube Comments Model Evaluation Report}
     \begin{tabular}{l c c c c}
     \toprule
      & Precision & Recall & F1-Score & Support \\
     \midrule
-    0 & 0.85 & 0.98 & 0.91 & 285 \\
-    1 & 0.97 & 0.83 & 0.90 & 302 \\
+    Legitimate & 0.91 & 0.98 & 0.94 & 286 \\
+    Spam & 0.98 & 0.91 & 0.94 & 285 \\
     \midrule
-    Accuracy & \multicolumn{4}{c}{0.90} \\
-    Macro Avg & 0.91 & 0.90 & 0.90 & 587 \\
-    Weighted Avg & 0.91 & 0.90 & 0.90 & 587 \\
+    Accuracy  & & & 0.94 & 571 \\
+    Macro Avg & 0.94 & 0.94 & 0.94 & 571 \\
+    Weighted Avg & 0.94 & 0.94 & 0.94 & 571 \\
     \bottomrule
     \end{tabular}
-    \label{tab:gradient_boosting_evaluation}
+    \label{tab:gbm_evaluation}
 \end{table}
+
+\noindent
+Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/comment/comment_model_performance.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for YouTube Comments Model}
+    \label{fig:roc_curve_5}
+\end{figure}
+
+\newpage
 
 \section{Inference}
 
@@ -481,7 +498,7 @@ The inference process across SMS, email, and comments, generally follows the sam
     \item URL Feature Extraction: If URLs are found in the text, a feature extraction function analyzes them based on characteristics such as length, presence of suspicious keywords, and domain reputation, as done within the training scripts feature extractor.
 \end{enumerate}
 
-\subsection{Probaility Estimation}
+\subsection{Probability Estimation}
 
 \begin{enumerate}
     \item Text Classification: The vectorized text is passed through a trained classification model that returns a spam probability score.
@@ -492,6 +509,62 @@ The inference process across SMS, email, and comments, generally follows the sam
 \subsection{Final Decision}
 
 The final spam probability score is then compared against a predefined threshold (typically 0.5). If the score meets or exceeds this threshold, the message is classified as spam; otherwise, it is classified as non-spam.
+
+\section{Results and Discussion}
+\subsection{Comparison to Traditional Methods}
+
+\noindent
+As mentioned previously, the study by Gawai and Salunke [8] aimed to compare the performance of various machine learning algorithms for SMS spam detection. The results of their study are shown within the table below:
+
+\begin{table}[htbp]
+    \centering
+    \caption{Performance of different algorithms} % Replace with your desired caption
+    \label{tab:performance} % Add a label for referencing
+    
+    \begin{tabular}{l cccc cccc c}
+    \toprule
+    \textbf{Algorithms} & \multicolumn{2}{c}{\textbf{Precision}} & \multicolumn{2}{c}{\textbf{Recall}} & \multicolumn{2}{c}{\textbf{F1-Score}} & \textbf{Accuracy} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+    & Ham & Spam & Ham & Spam & Ham & Spam & \\
+    \midrule
+    SVM & 0.96 & 0.99 & 0.99 & 0.70 & 0.98 & 0.82 & 0.97 \\
+    Decision Trees & 0.98 & 0.91 & 0.99 & 0.81 & 0.98 & 0.86 & 0.96 \\
+    Random Forest & 0.97 & 0.99 & 0.99 & 0.79 & 0.99 & 0.88 & 0.97 \\
+    KNN & 0.94 & 0.99 & 0.99 & 0.54 & 0.97 & 0.70 & 0.95 \\
+    Naïve Bayes & 0.98 & 0.99 & 0.99 & 0.85 & 0.99 & 0.92 & 0.98 \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\noindent
+Additionally, as stated before, they trained their models on the UCI SMS Spam Collection Dataset [2]. When using the same dataset but following our normalization technique by balancing the dataset with equal number of spam and non spam results, we achieved the results shown in table \ref{tab:classification_report_3}. The datasets in the end are quite different in size, as the UCI dataset contains 5574 rows, while our dataset only contains 1494 rows. However, we can see that our results are quite similar to theirs. For example, when they trained their model using the Random Forest algorithm, we received similar accuracy scores, both acheiving around 97\% accuracy. However, on average we acheived much better results when it comes to Spam detection, specfically when taking a look at the Recall and F1-Score, where they received 0.79 and 0.88 respectively, while we received 0.95 and 0.97 respectively. Coupled with the fact that we also trained our model using Stratified K-fold, we can see that our approach yields much better results when it comes to spam detection using the Random Forest algorithm.
+
+\newline
+\noindent
+Furthermore, when we compare the results of our Random Forest model to their results using the Naive Bayes algorithm, we can see very similar results. They received a precision of 0.98 and a recall of 0.85, while we received a precision of 0.99 and a recall of 0.95. This shows that our model is able to achieve similar results to traditional methods, while also being able to outperform them in some cases. This shows that although Naive Bayes is a very effective algorithm, it is not the only one that can be used to achieve good results. In fact, we can see that our Random Forest model was able to achieve better results than Naive Bayes when it comes to spam detection, while also being able to achieve similar results when it comes to ham detection. This highlights the importance of proper data normalization and preprocesssing, as well as using multiple training methods to achieve the best results possible.
+
+\subsection{Analysis of Hybrid Approach}
+
+\noindent
+The hybrid approach that we implemented, by training a seperate model for URL spam detection, and then combining the results with the text model, also showed very promising results. In order to evaluate its effectiveness, we decided to compare the results of the hybrid approach, to that of the traditional approach. To begin with, we trained the SMS model using both the balanced UCI SMS Spam Collection Dataset [2], as well as a balanced combination of UCI[2] with the SMS Spam Dataset [4] . This model was then used for both the tradtional and hybrid approach, with the only difference being that the hybrid approach also used the URL model to classify the URLs present in the messages. We then using the UCI dataset [2], append malicsious and benign URLs to the end of the messages, to individually test each models ability to detect spam. For the traditional approach, we use the same model to classify the input messages as Legitimate or Spam. For the hybrid approach, we first classify the URLs using the URL model, and then combine the results with the SMS model to classify the input messages as Legitimate or Spam. If both models classify the input as Legitimate, then the input is classified as Legitimate. If either model classifies the input as Spam, then the input is classified as Spam. This way, we can see how well the hybrid approach performs compared to the traditional approach. The results post prediction for both approaches, using the 4 different models are shown below:
+
+\begin{table}[htbp]
+    \centering
+    \caption{Traditional Approach prediction Results, using balanced UCI SMS Spam Collection Dataset [2]}
+    \begin{tabular}{l c c c c}
+    \toprule
+     & Precision & Recall & F1-Score & Support \\
+    \midrule
+    0 & 1.00 & 0.21 & 0.35 & 75 \\
+    1 & 0.56 & 1.00 & 0.72 & 75 \\
+    \midrule
+    Accuracy & & & 0.97 & 6306 \\
+    Macro Avg & 0.97 & 0.97 & 0.97 & 6306 \\
+    Weighted Avg & 0.97 & 0.97 & 0.97 & 6306 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:classification_report_4}
+\end{table}
 
 \newpage
 
