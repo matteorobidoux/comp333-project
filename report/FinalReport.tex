@@ -5,6 +5,7 @@
 \usepackage{booktabs}
 \usepackage[utf8]{inputenc}
 
+
 \begin{document}
 
 % ================================
@@ -172,6 +173,7 @@ For SMS messages, we utilized 2 datasets being the UCI SMS Spam Collection Datas
     \label{tab:csv_sample}
 \end{table}
 
+\noindent
 When preprocessing, we merged the two datasets into a single one, and then renamed the columns to text and is\_spam. Additonally, we also decide to remove the url's that were present in the messages, as we would be using the URL dataset to classify them. This was done by using a regex pattern to identify and remove any url's that were present in the text. Finally, we also decide to balance the dataset by ensuring that there were an equal number of spam and ham messages. This was done by removing a random sample of of the messages, until there were equal amounts of spam and ham messages. This was done to ensure that the model would not be biased towards one class or the other, as well as to ensure that the model would be able to generalize well to new data.
 
 \subsection*{Email Dataset}
@@ -276,7 +278,6 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
 \subsubsection*{Feature Extraction}
 
 We applied TF-IDF vectorization to capture word patterns and important terms while filtering out common English stopwords. The vectorization settings included:
-
 \begin{itemize}
     \item Maximum features: 10000
     \item Minimum document frequency: 2
@@ -365,7 +366,8 @@ We also generated the following ROC curve, Precision-Recall curve, and confusion
 \subsubsection{Email Model}
 \subsubsection*{Feature Extraction}
 We applied TF-IDF vectorization separately to both the email subject and body, allowing the model to leverage textual patterns in each section.
-
+\newline
+\newline
 Text vectorization settings:
 \begin{itemize}
     \item Minimum document frequency: 3
@@ -373,6 +375,7 @@ Text vectorization settings:
     \item 5000 max features
 \end{itemize}
 
+\noindent
 Subject vectorization settings:
 \begin{itemize}
     \item Minimum document frequency: 2
@@ -448,6 +451,7 @@ Here we train using a Gradient Boosting Classifier mainly so we can capture hier
     \item Subsampling of 0.7
 \end{itemize}
 
+\noindent
 The model achieved the following results after training 1962 rows, taking 0.73 secs:
 
 \begin{itemize}
@@ -537,40 +541,100 @@ As mentioned previously, the study by Gawai and Salunke [8] aimed to compare the
 \end{table}
 
 \noindent
-Additionally, as stated before, they trained their models on the UCI SMS Spam Collection Dataset [2]. When using the same dataset but following our normalization technique by balancing the dataset with equal number of spam and non spam results, we achieved the results shown in table \ref{tab:classification_report_3}. The datasets in the end are quite different in size, as the UCI dataset contains 5574 rows, while our dataset only contains 1494 rows. However, we can see that our results are quite similar to theirs. For example, when they trained their model using the Random Forest algorithm, we received similar accuracy scores, both acheiving around 97\% accuracy. However, on average we acheived much better results when it comes to Spam detection, specfically when taking a look at the Recall and F1-Score, where they received 0.79 and 0.88 respectively, while we received 0.95 and 0.97 respectively. Coupled with the fact that we also trained our model using Stratified K-fold, we can see that our approach yields much better results when it comes to spam detection using the Random Forest algorithm.
-
+Additionally, as stated before, they trained their models on the UCI SMS Spam Collection Dataset [2]. When using the same dataset but following our normalization technique by balancing the dataset with equal number of spam and non spam results, we achieved the results shown in table \ref{tab:classification_report_3}. The datasets in the end are quite different in size, as the original UCI dataset contains 5574 rows, while our dataset only contains 1494 rows after normalization. However, we can see that our results are quite similar to theirs. For example, when they trained their model using the Random Forest algorithm, we received similar accuracy scores, both acheiving around 97\% accuracy. However, on average we acheived much better results when it comes to Spam detection, specfically when taking a look at the Recall and F1-Score, where they received 0.79 and 0.88 respectively, while we received 0.95 and 0.97 respectively. Coupled with the fact that we also trained our model using Stratified K-fold, we can see that our approach yields much better results when it comes to spam detection using the Random Forest algorithm.
 \newline
+
 \noindent
 Furthermore, when we compare the results of our Random Forest model to their results using the Naive Bayes algorithm, we can see very similar results. They received a precision of 0.98 and a recall of 0.85, while we received a precision of 0.99 and a recall of 0.95. This shows that our model is able to achieve similar results to traditional methods, while also being able to outperform them in some cases. This shows that although Naive Bayes is a very effective algorithm, it is not the only one that can be used to achieve good results. In fact, we can see that our Random Forest model was able to achieve better results than Naive Bayes when it comes to spam detection, while also being able to achieve similar results when it comes to ham detection. This highlights the importance of proper data normalization and preprocesssing, as well as using multiple training methods to achieve the best results possible.
 
 \subsection{Analysis of Hybrid Approach}
 
 \noindent
-The hybrid approach that we implemented, by training a seperate model for URL spam detection, and then combining the results with the text model, also showed very promising results. In order to evaluate its effectiveness, we decided to compare the results of the hybrid approach, to that of the traditional approach. To begin with, we trained the SMS model using both the balanced UCI SMS Spam Collection Dataset [2], as well as a balanced combination of UCI[2] with the SMS Spam Dataset [4] . This model was then used for both the tradtional and hybrid approach, with the only difference being that the hybrid approach also used the URL model to classify the URLs present in the messages. We then using the UCI dataset [2], append malicsious and benign URLs to the end of the messages, to individually test each models ability to detect spam. For the traditional approach, we use the same model to classify the input messages as Legitimate or Spam. For the hybrid approach, we first classify the URLs using the URL model, and then combine the results with the SMS model to classify the input messages as Legitimate or Spam. If both models classify the input as Legitimate, then the input is classified as Legitimate. If either model classifies the input as Spam, then the input is classified as Spam. This way, we can see how well the hybrid approach performs compared to the traditional approach. The results post prediction for both approaches, using the 4 different models are shown below:
+The hybrid approach that we implemented, by training a seperate model for URL spam detection, and then combining the results with the text model, also showed very promising results. In order to evaluate its effectiveness, we decided to compare the results of the hybrid approach, to that of the traditional approach. To begin with, we trained the SMS model using a balanced combination of UCI [2] with the SMS Spam Dataset [4] . This model was then used for both the tradtional and hybrid approach, with the only difference being that the hybrid approach also used the URL model to classify the URLs present in the messages. We then, using the UCI dataset [2], append maliscious and benign URLs to the end of the messages, to individually test each models ability to detect spam. 
+
 
 \begin{table}[htbp]
     \centering
-    \caption{Traditional Approach prediction Results, using balanced UCI SMS Spam Collection Dataset [2]}
+    \caption{Sample of combined dataset with SMS and URL}
+    \begin{tabular}{ll}
+    \toprule
+    is\_spam & text \\
+    \midrule
+    1 & You have 1 new voicemail. Please call 08719181513. http://aslong.googlecode.com/svn/Soft.exe \\
+    1 & You are a winner U have been specially selected 2 receive 1000 cash ... http://tech-keem.pw/local/ \\ 
+    0 & Ok going to sleep. Hope i can meet her. https://www.tomgibsoncommunications.com/ \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:csv_sample}
+\end{table}
+
+
+\newpage
+
+\noindent
+For the traditional approach, we use the same model to classify the input messages as Legitimate or Spam. For the hybrid approach, we first classify the URLs using the URL model, and then combine the results with the SMS model to classify the input messages as Legitimate or Spam. If both models classify the input as Legitimate, then the input is classified as Legitimate. If either model classifies the input as Spam, then the input is classified as Spam. This way, we can see how well the hybrid approach performs compared to the traditional approach. Although this is not the most fair comparison, as the hybrid approach utilizes another URL model trained on the URL dataset, it is still a good way to see how well the hybrid approach performs compared to the traditional approach, in terms of real world applications of a detection system. The results post prediction for both approaches, are shown below:
+
+
+\begin{table}[htbp]
+    \centering
+    \caption{Traditional model Approach prediction Results, using balanced UCI SMS Spam Collection Dataset [2]}
     \begin{tabular}{l c c c c}
     \toprule
      & Precision & Recall & F1-Score & Support \\
     \midrule
-    0 & 1.00 & 0.21 & 0.35 & 75 \\
-    1 & 0.56 & 1.00 & 0.72 & 75 \\
+    0 & 1.00 & 0.26 & 0.41 & 374 \\
+    1 & 0.57 & 1.00 & 0.73 & 374 \\
     \midrule
-    Accuracy & & & 0.97 & 6306 \\
-    Macro Avg & 0.97 & 0.97 & 0.97 & 6306 \\
-    Weighted Avg & 0.97 & 0.97 & 0.97 & 6306 \\
+    Accuracy & & & 0.63 & 748 \\
+    Macro Avg & 0.79 & 0.63 & 0.57 & 748 \\
+    Weighted Avg & 0.79 & 0.63 & 0.57 & 748 \\
     \bottomrule
     \end{tabular}
     \label{tab:classification_report_4}
 \end{table}
 
-\newpage
+\begin{table}[htbp]
+    \centering
+    \caption{Hybrid Model Approach prediction Results, trained using balanced UCI SMS Spam Collection Dataset [2]}
+    \begin{tabular}{l c c c c}
+    \toprule
+     & Precision & Recall & F1-Score & Support \\
+    \midrule
+    0 & 1.00 & 0.99 & 0.99 & 374 \\
+    1 & 0.99 & 1.00 & 0.99 & 374 \\
+    \midrule
+    Accuracy & & & 0.99 & 748 \\
+    Macro Avg & 0.99 & 0.99 & 0.99 & 748 \\
+    Weighted Avg & 0.99 & 0.99 & 0.99 & 748 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:classification_report_5}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/sms/sms_traditional_model_performance.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Tradtional Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
+    \label{fig:roc_curve_6}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/sms/sms_hybrid_model_performance.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Hybrid Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
+    \label{fig:roc_curve_7}
+\end{figure}
 
 \noindent
+As shown in the tables above, we can see that the hybrid approach was able to achieve much better results than the traditional approach. The hybrid approach was able to achieve an overall accuracy of 99\%, while the traditional approach was only able to achieve an accuracy of 63\%. This shows that the hybrid approach is much more effective in detecting spam messages, especially when it comes to messages containing URLs. Furthermore, we can also see that the hybrid approach was able to achieve a much better F1-Score, with a score of 0.99, while the traditional approach only achieved a score of 0.57.
+
+\newpage
+
+\subsection*{Conclusion}
+In conclusion, our study demonstrates the effectiveness of a hybrid approach to spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adaquatley balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
 
 
+\newpage
 \subsection*{References}
 
 [1] S. D. Gupta, S. Saha, and S. K. Das, "SMS Spam Detection Using Machine Learning," *J. Phys. Conf. Ser.*, vol. 1797, no. 1, p. 012017, Feb. 2021, doi: 10.1088/1742-6596/1797/1/012017.
