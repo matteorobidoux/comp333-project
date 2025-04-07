@@ -1,15 +1,19 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.3.30)  6 APR 2025 20:15
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.9.16)  6 APR 2025 18:19
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
-**FinalReport.tex
-(./FinalReport.tex
-LaTeX2e <2021-11-15> patch level 1
-L3 programming layer <2022-01-21>
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+**"c:/Users/Matteo/Documents/Concordia - Winter 2025/COMP 333/Project/comp333-project/report/FinalReport.tex"
+(c:/Users/Matteo/Documents/Concordia - Winter 2025/COMP 333/Project/comp333-project/report/FinalReport.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-03-30> (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count185
 \c@section=\count186
@@ -19,90 +23,76 @@ File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
 \c@subparagraph=\count190
 \c@figure=\count191
 \c@table=\count192
-\abovecaptionskip=\skip47
-\belowcaptionskip=\skip48
-\bibindent=\dimen138
-)
-(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
-
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks16
-)
-(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
-
-(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
-Package: iftex 2020/03/06 v1.0d TeX engine tests
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
 ))
 \Gm@cnth=\count193
 \Gm@cntv=\count194
 \c@Gm@tempcnt=\count195
-\Gm@bindingoffset=\dimen139
-\Gm@wd@mp=\dimen140
-\Gm@odd@mp=\dimen141
-\Gm@even@mp=\dimen142
-\Gm@layoutwidth=\dimen143
-\Gm@layoutheight=\dimen144
-\Gm@layouthoffset=\dimen145
-\Gm@layoutvoffset=\dimen146
+\Gm@bindingoffset=\dimen141
+\Gm@wd@mp=\dimen142
+\Gm@odd@mp=\dimen143
+\Gm@even@mp=\dimen144
+\Gm@layoutwidth=\dimen145
+\Gm@layoutheight=\dimen146
+\Gm@layouthoffset=\dimen147
+\Gm@layoutvoffset=\dimen148
 \Gm@dimlist=\toks17
-)
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
-
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
-
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
 Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
-)
-(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 107.
-
-(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen147
-\Gin@req@width=\dimen148
-)
-(/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
-Package: setspace 2011/12/19 v6.7a set line spacing
-)
-(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+\Gin@req@height=\dimen149
+\Gin@req@width=\dimen150
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/setspace\setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen149
-\lightrulewidth=\dimen150
-\cmidrulewidth=\dimen151
-\belowrulesep=\dimen152
-\belowbottomsep=\dimen153
-\aboverulesep=\dimen154
-\abovetopsep=\dimen155
-\cmidrulesep=\dimen156
-\cmidrulekern=\dimen157
-\defaultaddspace=\dimen158
+\heavyrulewidth=\dimen151
+\lightrulewidth=\dimen152
+\cmidrulewidth=\dimen153
+\belowrulesep=\dimen154
+\belowbottomsep=\dimen155
+\aboverulesep=\dimen156
+\abovetopsep=\dimen157
+\cmidrulesep=\dimen158
+\cmidrulekern=\dimen159
+\defaultaddspace=\dimen160
 \@cmidla=\count196
 \@cmidlb=\count197
-\@aboverulesep=\dimen159
-\@belowrulesep=\dimen160
+\@aboverulesep=\dimen161
+\@belowrulesep=\dimen162
 \@thisruleclass=\count198
 \@lastruleclass=\count199
-\@thisrulewidth=\dimen161
-)
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+\@thisrulewidth=\dimen163
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
 Package: inputenc 2021/02/14 v1.3d Input encoding file
 \inpenc@prehook=\toks18
 \inpenc@posthook=\toks19
-)
-(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2023-03-30 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count266
-\l__pdf_internal_box=\box50
-)
-(./FinalReport.aux
+\l__pdf_internal_box=\box51
+) (FinalReport.aux
 
 LaTeX Warning: Label `tab:csv_sample' multiply defined.
 
@@ -161,61 +151,48 @@ LaTeX Font Info:    ... okay on input line 8.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+(C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count267
-\scratchdimen=\dimen162
-\scratchbox=\box51
+\scratchdimen=\dimen164
+\scratchbox=\box52
 \nofMPsegments=\count268
 \nofMParguments=\count269
 \everyMPshowfont=\toks20
 \MPscratchCnt=\count270
-\MPscratchDim=\dimen163
+\MPscratchDim=\dimen165
 \MPnumerator=\count271
 \makeMPintoPDFobject=\count272
 \everyMPtoPDFconversion=\toks21
-) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-
-(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-)
-(/usr/share/texlive/texmf-dist/tex/latex/grfext/grfext.sty
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/grfext\grfext.sty
 Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-))
-(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
-Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+)) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
-)
-(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
-Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
-))
-(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
-Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
-)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
-85.
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
 Package grfext Info: Graphics extension search list:
-(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 504.
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+)) [1
 
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
-[1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+{C:/Users/Matteo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
 Underfull \hbox (badness 10000) in paragraph at lines 52--60
 
  []
@@ -286,6 +263,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 187--192
  []
 
 [4]
+<<<<<<< HEAD
 <../analysis/url/url_model_performance.png, id=25, 1279.4199pt x 419.4069pt>
 File: ../analysis/url/url_model_performance.png Graphic file (type png)
 <use ../analysis/url/url_model_performance.png>
@@ -301,19 +279,51 @@ ut line 325.
 (pdftex.def)             Requested size: 362.37569pt x 118.92424pt.
 <../analysis/sms/sms_uci_model_performance.png, id=32, 1277.4927pt x 419.4069pt
 >
+=======
+
+LaTeX Warning: File `../analysis/url/url_model_performance.png' not found on input line 270.
+
+
+c:/Users/Matteo/Documents/Concordia - Winter 2025/COMP 333/Project/comp333-project/report/FinalReport.tex:270: Package pdftex.def Error: File `../analysis/url/url_model_performance.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.270 ..../analysis/url/url_model_performance.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../analysis/sms/sms_model_performance.png' not found on input line 325.
+
+
+c:/Users/Matteo/Documents/Concordia - Winter 2025/COMP 333/Project/comp333-project/report/FinalReport.tex:325: Package pdftex.def Error: File `../analysis/sms/sms_model_performance.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.325 ..../analysis/sms/sms_model_performance.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[5] [6] [7]
+<../analysis/sms/sms_uci_model_performance.png, id=35, 1277.4927pt x 419.4069pt>
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
 File: ../analysis/sms/sms_uci_model_performance.png Graphic file (type png)
 <use ../analysis/sms/sms_uci_model_performance.png>
-Package pdftex.def Info: ../analysis/sms/sms_uci_model_performance.png  used on
- input line 360.
+Package pdftex.def Info: ../analysis/sms/sms_uci_model_performance.png  used on input line 360.
 (pdftex.def)             Requested size: 362.37569pt x 118.96904pt.
- [6 <../analysis/sms/sms_model_performance.png>]
-<../analysis/email/email_model_performance.png, id=38, 1277.9745pt x 419.4069pt
->
+ [8 <../analysis/sms/sms_uci_model_performance.png>]
+<../analysis/email/email_model_performance.png, id=41, 1277.9745pt x 419.4069pt>
 File: ../analysis/email/email_model_performance.png Graphic file (type png)
 <use ../analysis/email/email_model_performance.png>
-Package pdftex.def Info: ../analysis/email/email_model_performance.png  used on
- input line 425.
+Package pdftex.def Info: ../analysis/email/email_model_performance.png  used on input line 425.
 (pdftex.def)             Requested size: 362.37569pt x 118.92424pt.
+<<<<<<< HEAD
  [7 <../analysis/sms/sms_uci_model_performance.png>]
 <../analysis/comment/comment_model_performance.png, id=43, 1277.4927pt x 419.40
 69pt>
@@ -327,13 +337,22 @@ d on input line 481.
 [8 <../analysis/email/email_model_performance.png>] [9 <../analysis/comment/com
 ment_model_performance.png>] [10]
 Underfull \hbox (badness 10000) in paragraph at lines 550--572
+=======
+ [9 <../analysis/email/email_model_performance.png>] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 503--525
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
 
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (145.79964pt too wide) in paragraph at lines 550--572
 \OT1/cmr/m/n/10 [2] UCI Ma-chine Learn-ing Repos-i-tory, "SMS Spam Col-lec-tion
  Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/uciml/sms-
+=======
+Overfull \hbox (145.79964pt too wide) in paragraph at lines 503--525
+\OT1/cmr/m/n/10 [2] UCI Ma-chine Learn-ing Repos-i-tory, "SMS Spam Col-lec-tion Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/uciml/sms-
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
  []
 
 
@@ -342,9 +361,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 550--572
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (111.10745pt too wide) in paragraph at lines 550--572
 \OT1/cmr/m/n/10 [3] S. Ku-mar, "Ma-li-cious and Be-nign URLs," [On-line]. Avail
 -able: https://www.kaggle.com/datasets/siddharthkumar25/malicious-
+=======
+Overfull \hbox (111.10745pt too wide) in paragraph at lines 503--525
+\OT1/cmr/m/n/10 [3] S. Ku-mar, "Ma-li-cious and Be-nign URLs," [On-line]. Avail-able: https://www.kaggle.com/datasets/siddharthkumar25/malicious-
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
  []
 
 
@@ -353,9 +377,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 550--572
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (27.41171pt too wide) in paragraph at lines 550--572
 \OT1/cmr/m/n/10 [4] T. Ku-mar, "SMS Spam Dataset," [On-line]. Avail-able: https
 ://www.kaggle.com/datasets/tinu10kumar/sms-
+=======
+Overfull \hbox (27.41171pt too wide) in paragraph at lines 503--525
+\OT1/cmr/m/n/10 [4] T. Ku-mar, "SMS Spam Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/tinu10kumar/sms-
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
  []
 
 
@@ -364,9 +393,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 550--572
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (59.57959pt too wide) in paragraph at lines 550--572
 \OT1/cmr/m/n/10 [5] N. Bharathi, "Email Spam Dataset," [On-line]. Avail-able: h
 ttps://www.kaggle.com/datasets/nitishabharathi/email-
+=======
+Overfull \hbox (59.57959pt too wide) in paragraph at lines 503--525
+\OT1/cmr/m/n/10 [5] N. Bharathi, "Email Spam Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/nitishabharathi/email-
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
  []
 
 
@@ -375,9 +409,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 550--572
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (13.46832pt too wide) in paragraph at lines 550--572
 \OT1/cmr/m/n/10 [6] V. Venky, "Spam Mails Dataset," [On-line]. Avail-able: http
 s://www.kaggle.com/datasets/venky73/spam-
+=======
+Overfull \hbox (13.46832pt too wide) in paragraph at lines 503--525
+\OT1/cmr/m/n/10 [6] V. Venky, "Spam Mails Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/venky73/spam-
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
  []
 
 
@@ -386,9 +425,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 550--572
  []
 
 
+<<<<<<< HEAD
 Overfull \hbox (116.52402pt too wide) in paragraph at lines 550--572
 \OT1/cmr/m/n/10 [7] A. Wa-heed, "Youtube Com-ments Spam Dataset," [On-line]. Av
 ail-able: https://www.kaggle.com/datasets/ahsenwaheed/youtube-
+=======
+Overfull \hbox (116.52402pt too wide) in paragraph at lines 503--525
+\OT1/cmr/m/n/10 [7] A. Wa-heed, "Youtube Com-ments Spam Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/ahsenwaheed/youtube-
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
  []
 
 
@@ -396,12 +440,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 550--572
 
  []
 
+<<<<<<< HEAD
 [11] (./FinalReport.aux)
+=======
+[11] (FinalReport.aux)
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
+<<<<<<< HEAD
  2560 strings out of 480247
  45279 string characters out of 5896151
  342064 words of memory out of 5000000
@@ -422,4 +471,19 @@ PDF statistics:
  51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
+=======
+ 2652 strings out of 476331
+ 50161 string characters out of 5787293
+ 1863660 words of memory out of 5000000
+ 23054 multiletter control sequences out of 15000+600000
+ 515521 words of font info for 43 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 62i,10n,67p,1224b,274s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Matteo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on FinalReport.pdf (12 pages, 610043 bytes).
+PDF statistics:
+ 86 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+>>>>>>> ada924bc73da6c437442a9d3ae86ceba88fd54c6
 

@@ -7,8 +7,8 @@ url_data = pd.read_csv("data/normalized/url_data.csv")
 spam_data = sms_data[sms_data['is_spam'] == 1]
 non_spam_data = sms_data[sms_data['is_spam'] == 0]
 
-spam_sample = spam_data.sample(frac=0.1, random_state=42)
-non_spam_sample = non_spam_data.sample(frac=0.1, random_state=42)
+spam_sample = spam_data.sample(frac=0.5, random_state=42)
+non_spam_sample = non_spam_data.sample(frac=0.5, random_state=42)
 
 balanced_sms_data = pd.concat([spam_sample, non_spam_sample]).sample(frac=1, random_state=42).reset_index(drop=True)
 
