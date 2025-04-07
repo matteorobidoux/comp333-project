@@ -105,11 +105,11 @@ This observation highlights a critical shortcoming of traditional text-based spa
 
 \subsection{Datasets and Preprocessing}
 
-For this study, in order to ensure that each of the models have more than enough data to train and eventually perform inference on, we used a wide variety of different datasets. Specifically, we used datasets for URLs, SMS messages, Emails, and YouTube comments
+For this study, in order to ensure that each of the models have more than enough data to train and eventually perform inference on, we used a wide variety of different datasets. Specifically, we used datasets for URLs, SMS messages, Emails, and YouTube comments.
 
 \subsection*{URL Dataset}
 
-For the URL’s we decided to have a dedicated dataset containing plenty of addresses that were classified to be either spam or non spam. This way, the model had more than enough data to decide which urls were malicious, preventing common links such as from platforms like YouTube and TikTok from being marked as spam. The kaggle dataset that we used, titled Malicious and Benign URL’s [3], contained over 450,000 url’s, that were marked as either being 0 for benign, or 1 for malicious. 
+For the URLs, we decided to have a dedicated dataset containing plenty of addresses that were classified to be either spam or non spam. This way, the model had more than enough data to decide which urls were malicious, preventing common links such as from platforms like YouTube and TikTok from being marked as spam. The kaggle dataset that we used, titled Malicious and Benign URL’s [3], contained over 450,000 url’s, that were marked as either being 0 for benign, or 1 for malicious. 
 
 
 \noindent
@@ -285,7 +285,7 @@ We applied TF-IDF vectorization to capture word patterns and important terms whi
 \end{itemize}
 
 \noindent
-Training was done on the same laptop using Stratified K-fold with 10 folds. However this time a Random Forest Classifier was used with the following hyperparameters:
+Training was done on the same laptop using Stratified K-fold with 10 folds. However, this time a Random Forest Classifier was used with the following hyperparameters:
 
 \begin{itemize}
     \item 300 estimators
@@ -433,7 +433,7 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
 \subsubsection{YouTube Comments Model}
 \subsubsection*{Feature Extraction}
 
-Here we once again utilize a TF-IDF vectorizer for text, as well as one for author.
+Here, we once again utilize a TF-IDF vectorizer for text, as well as one for author.
 
 \begin{itemize}
     \item Textual Features: TF-IDF vectorization applied to comment text
@@ -442,7 +442,7 @@ Here we once again utilize a TF-IDF vectorizer for text, as well as one for auth
 
 \subsubsection*{Training}
 
-Here we train using a Gradient Boosting Classifier mainly so we can capture hierarchical relationships within the text data, since they are comments. This is all done using the same hardware and with a 70/30 train-test split. The hyperparameters include:
+Here, we train using a Gradient Boosting Classifier mainly so we can capture hierarchical relationships within the text data, since they are comments. This is all done using the same hardware and with a 70/30 train-test split. The hyperparameters include:
 
 \begin{itemize}
     \item 200 estimators
@@ -541,7 +541,7 @@ As mentioned previously, the study by Gawai and Salunke [8] aimed to compare the
 \end{table}
 
 \noindent
-Additionally, as stated before, they trained their models on the UCI SMS Spam Collection Dataset [2]. When using the same dataset but following our normalization technique by balancing the dataset with equal number of spam and non spam results, we achieved the results shown in table \ref{tab:classification_report_3}. The datasets in the end are quite different in size, as the original UCI dataset contains 5574 rows, while our dataset only contains 1494 rows after normalization. However, we can see that our results are quite similar to theirs. For example, when they trained their model using the Random Forest algorithm, we received similar accuracy scores, both acheiving around 97\% accuracy. However, on average we acheived much better results when it comes to Spam detection, specfically when taking a look at the Recall and F1-Score, where they received 0.79 and 0.88 respectively, while we received 0.95 and 0.97 respectively. Coupled with the fact that we also trained our model using Stratified K-fold, we can see that our approach yields much better results when it comes to spam detection using the Random Forest algorithm.
+Additionally, as stated before, they trained their models on the UCI SMS Spam Collection Dataset [2]. When using the same dataset but following our normalization technique by balancing the dataset with equal number of spam and non spam results, we achieved the results shown in table \ref{tab:classification_report_3}. The datasets in the end are quite different in size, as the original UCI dataset contains 5574 rows, while our dataset only contains 1494 rows after normalization. However, we can see that our results are quite similar to theirs. For example, when they trained their model using the Random Forest algorithm, we received similar accuracy scores, both acheiving around 97\% accuracy. However, on average we achieved much better results when it comes to Spam detection, specfically when taking a look at the Recall and F1-Score, where they received 0.79 and 0.88 respectively, while we received 0.95 and 0.97 respectively. Coupled with the fact that we also trained our model using Stratified K-fold, we can see that our approach yields much better results when it comes to spam detection using the Random Forest algorithm.
 \newline
 
 \noindent
@@ -631,7 +631,7 @@ As shown in the tables above, we can see that the hybrid approach was able to ac
 \newpage
 
 \subsection*{Conclusion}
-In conclusion, our study demonstrates the effectiveness of a hybrid approach to spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adaquatley balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
+In conclusion, our study demonstrates the effectiveness of a hybrid approach for spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adequately balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
 
 
 \newpage
