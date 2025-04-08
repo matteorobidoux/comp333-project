@@ -1,82 +1,69 @@
 import pandas as pd
-import joblib
-import time
 import numpy as np
+import time
+import joblib
 from sklearn.model_selection import StratifiedKFold
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (classification_report, accuracy_score, roc_auc_score,
                              roc_curve, precision_recall_curve, average_precision_score,
                              confusion_matrix)
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import ComplementNB
 import matplotlib.pyplot as plt
 import seaborn as sns
-import time
-import sys
 
+# Choose model to run: 'dt', 'knn', 'nb'
+model_type = 'dt'
 
-# Add sys arg
-
-data_path = 'data/normalized/sms_data.csv'
-figure_path = 'analysis/sms/randomforest/'
-generate_pkl = True
-
-if len(sys.argv) > 1:
-    data_path = 'data/normalized/sms_uci_data.csv'
-    figure_path = 'analysis/sms/randomforest/uci/'
-    generate_pkl = False
-    print(f"Using data path from command line argument: {data_path}")
-
+# Load Data
 print("Loading data...")
-
-# Load SMS data
-sms_df = pd.read_csv(data_path, keep_default_na=False)
+sms_df = pd.read_csv('data/normalized/sms_uci_data.csv', keep_default_na=False)
 print("Data loaded!")
 
-# TF-IDF Vectorization
-tfidf = TfidfVectorizer(
-    ngram_range=(1, 6),
+# Optimized TF-IDF Vectorizer
+vectorizer = TfidfVectorizer(
+    ngram_range=(1, 7),
     analyzer='char_wb',
-    max_features=5000,  # Reduced for small dataset
-    min_df=2,
+    max_features=40000,
+    min_df=1,
     max_df=0.95,
-    stop_words='english'
+    stop_words='english',
+    sublinear_tf=True
 )
 
-X = tfidf.fit_transform(sms_df['text'])
+X = vectorizer.fit_transform(sms_df['text'])
 y = sms_df['is_spam'].values
 
-# Stratified K-Fold
-skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)  # Reduced to 5 folds
-
-# Random Forest Classifier
-rf_model = RandomForestClassifier(
-    n_estimators=200,  # Reduced from 300 for speed
-    max_depth=30,      # Reduced depth to avoid overfitting on small data
-    random_state=42,
-    n_jobs=-1
-)
-
-# Metrics collectors
+skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 accuracies, aucs, avg_precisions = [], [], []
 all_y_true, all_y_pred, all_y_proba = [], [], []
 
-print("\nStarting Stratified K-Fold training...\n")
+print(f"\nStarting Stratified K-Fold training for {model_type.upper()}...\n")
 start = time.time()
 fold = 1
 for train_idx, test_idx in skf.split(X, y):
     print(f"--- Fold {fold} ---")
-    
     X_train, X_test = X[train_idx], X[test_idx]
     y_train, y_test = y[train_idx], y[test_idx]
 
-    start_time = time.time()
-    rf_model.fit(X_train, y_train)
-    end_time = time.time()
+    if model_type == 'dt':
+        model = DecisionTreeClassifier(max_depth=50, min_samples_split=5, random_state=42)
+    elif model_type == 'knn':
+        model = KNeighborsClassifier(n_neighbors=3, weights='distance', algorithm='auto')
+    elif model_type == 'nb':
+        model = ComplementNB(alpha=0.001, fit_prior=True)
+    else:
+        raise ValueError("Invalid model_type selected")
 
-    y_pred = rf_model.predict(X_test)
-    y_proba = rf_model.predict_proba(X_test)[:, 1]
+    t0 = time.time()
+    model.fit(X_train, y_train)
+    t1 = time.time()
 
-    # Store for final evaluation
+    y_pred = model.predict(X_test)
+    y_proba = model.predict_proba(X_test)[:, 1]
+
     all_y_true.extend(y_test)
     all_y_pred.extend(y_pred)
     all_y_proba.extend(y_proba)
@@ -89,14 +76,13 @@ for train_idx, test_idx in skf.split(X, y):
     aucs.append(auc)
     avg_precisions.append(avg_prec)
 
-    print(f"Fold {fold} - Accuracy: {acc:.4f}, AUC: {auc:.4f}, Avg Precision: {avg_prec:.4f}, Time: {end_time - start_time:.2f}s\n")
+    print(f"Fold {fold} - Accuracy: {acc:.4f}, AUC: {auc:.4f}, Avg Precision: {avg_prec:.4f}, Time: {t1 - t0:.2f}s\n")
     fold += 1
 
 end = time.time()
 total_time = end - start
-print(f"Total training time: {total_time:.2f} seconds")
 
-# Final evaluation
+# Final Metrics
 final_cm = confusion_matrix(all_y_true, all_y_pred)
 fpr, tpr, _ = roc_curve(all_y_true, all_y_proba)
 precision, recall, _ = precision_recall_curve(all_y_true, all_y_proba)
@@ -117,7 +103,7 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('ROC Curve')
 plt.legend(loc="lower right")
-plt.savefig(figure_path + 'roc_curve.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'analysis/sms/{model_type}/roc_curve.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # --- Precision-Recall Curve ---
@@ -128,7 +114,7 @@ plt.xlabel('Recall')
 plt.ylabel('Precision')
 plt.title('Precision-Recall Curve')
 plt.legend(loc="upper right")
-plt.savefig(figure_path + 'precision_recall_curve.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'analysis/sms/{model_type}/precision_recall_curve.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # --- Confusion Matrix ---
@@ -139,19 +125,13 @@ sns.heatmap(final_cm, annot=True, fmt='d', cmap='Blues',
 plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('Confusion Matrix')
-plt.savefig(figure_path + 'confusion_matrix.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'analysis/sms/{model_type}/confusion_matrix.png', dpi=300, bbox_inches='tight')
 plt.close()
 
-# Print Final Metrics
-print(f"\n{' FINAL EVALUATION (Stratified K-Fold) ':=^60}\n")
+# Final Report
+print(f"\n{' FINAL EVALUATION (' + model_type.upper() + ') ':=^60}\n")
 print(f"Average Accuracy: {np.mean(accuracies):.4f}")
 print(f"Average AUC-ROC: {np.mean(aucs):.4f}")
 print(f"Average Precision: {np.mean(avg_precisions):.4f}\n")
 print("Classification Report (aggregated predictions):")
-print(classification_report(all_y_true, all_y_pred, target_names=['Ham', 'Spam']))
-
-if(generate_pkl):
-    # Save the last trained model and vectorizer
-    joblib.dump(tfidf, 'analysis/models/sms_text_vectorizer.pkl')
-    joblib.dump(rf_model, 'analysis/models/sms_model.pkl')
-    print("\nFinal SMS Spam Model and Vectorizer saved!")
+print(classification_report(all_y_true, all_y_pred, target_names=['Legitimate', 'Spam']))

@@ -41,12 +41,11 @@ print("\nClassification Report:")
 print(report)
 
 # Visualization
-plt.figure(figsize=(18, 6))
 sns.set_style("whitegrid")
 plt.rcParams['font.size'] = 12
 
-# ROC Curve
-plt.subplot(1, 3, 1)
+# --- ROC Curve ---
+plt.figure(figsize=(8, 6))
 plt.plot(fpr, tpr, color='#3498db', lw=2, label=f'AUC = {final_auc:.3f}')
 plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
 plt.fill_between(fpr, tpr, alpha=0.1, color='#3498db')
@@ -54,29 +53,27 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('ROC Curve')
 plt.legend(loc="lower right")
-plt.text(0.6, 0.2, 
-         f'Accuracy = {accuracy:.3f}', 
-         fontsize=12,
-         bbox=dict(facecolor='white', edgecolor='gray', boxstyle='round,pad=0.3'))
+plt.savefig('analysis/sms/traditional/roc_curve.png', dpi=300, bbox_inches='tight')
+plt.close()
 
-# Precision-Recall Curve
-plt.subplot(1, 3, 2)
+# --- Precision-Recall Curve ---
+plt.figure(figsize=(8, 6))
 plt.plot(recall, precision, color='#e74c3c', lw=2, label=f'AP = {final_avg_prec:.3f}')
 plt.fill_between(recall, precision, alpha=0.1, color='#e74c3c')
 plt.xlabel('Recall')
 plt.ylabel('Precision')
 plt.title('Precision-Recall Curve')
 plt.legend(loc="upper right")
+plt.savefig('analysis/sms/traditional/precision_recall_curve.png', dpi=300, bbox_inches='tight')
+plt.close()
 
-# Confusion Matrix
-plt.subplot(1, 3, 3)
+# --- Confusion Matrix ---
+plt.figure(figsize=(8, 6))
 sns.heatmap(final_cm, annot=True, fmt='d', cmap='Blues',
-            xticklabels=['Legitimate', 'Spam'],
-            yticklabels=['Legitimate', 'Spam'])
+            xticklabels=['Ham', 'Spam'],
+            yticklabels=['Ham', 'Spam'])
 plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('Confusion Matrix')
-
-plt.tight_layout()
-plt.savefig('analysis/sms/sms_traditional_model_performance.png', dpi=300, bbox_inches='tight')
-plt.show()
+plt.savefig('analysis/sms/traditional/confusion_matrix.png', dpi=300, bbox_inches='tight')
+plt.close()

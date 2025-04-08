@@ -4,31 +4,18 @@ import time
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.metrics import (classification_report, accuracy_score, roc_auc_score,
                              roc_curve, precision_recall_curve, average_precision_score,
                              confusion_matrix)
 import matplotlib.pyplot as plt
 import seaborn as sns
-import time
-import sys
 
-
-# Add sys arg
-
-data_path = 'data/normalized/sms_data.csv'
-figure_path = 'analysis/sms/randomforest/'
-generate_pkl = True
-
-if len(sys.argv) > 1:
-    data_path = 'data/normalized/sms_uci_data.csv'
-    figure_path = 'analysis/sms/randomforest/uci/'
-    generate_pkl = False
-    print(f"Using data path from command line argument: {data_path}")
+# Paths
+data_path = 'data/normalized/sms_uci_data.csv'
+figure_path = 'analysis/sms/sms_svm_model_performance.png'
 
 print("Loading data...")
-
-# Load SMS data
 sms_df = pd.read_csv(data_path, keep_default_na=False)
 print("Data loaded!")
 
@@ -36,7 +23,7 @@ print("Data loaded!")
 tfidf = TfidfVectorizer(
     ngram_range=(1, 6),
     analyzer='char_wb',
-    max_features=5000,  # Reduced for small dataset
+    max_features=10000,
     min_df=2,
     max_df=0.95,
     stop_words='english'
@@ -46,21 +33,11 @@ X = tfidf.fit_transform(sms_df['text'])
 y = sms_df['is_spam'].values
 
 # Stratified K-Fold
-skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)  # Reduced to 5 folds
-
-# Random Forest Classifier
-rf_model = RandomForestClassifier(
-    n_estimators=200,  # Reduced from 300 for speed
-    max_depth=30,      # Reduced depth to avoid overfitting on small data
-    random_state=42,
-    n_jobs=-1
-)
-
-# Metrics collectors
+skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 accuracies, aucs, avg_precisions = [], [], []
 all_y_true, all_y_pred, all_y_proba = [], [], []
 
-print("\nStarting Stratified K-Fold training...\n")
+print("\nStarting SVM Stratified K-Fold training...\n")
 start = time.time()
 fold = 1
 for train_idx, test_idx in skf.split(X, y):
@@ -69,14 +46,15 @@ for train_idx, test_idx in skf.split(X, y):
     X_train, X_test = X[train_idx], X[test_idx]
     y_train, y_test = y[train_idx], y[test_idx]
 
+    svm_model = SVC(kernel='linear', probability=True, random_state=42)
+
     start_time = time.time()
-    rf_model.fit(X_train, y_train)
+    svm_model.fit(X_train, y_train)
     end_time = time.time()
 
-    y_pred = rf_model.predict(X_test)
-    y_proba = rf_model.predict_proba(X_test)[:, 1]
+    y_pred = svm_model.predict(X_test)
+    y_proba = svm_model.predict_proba(X_test)[:, 1]
 
-    # Store for final evaluation
     all_y_true.extend(y_test)
     all_y_pred.extend(y_pred)
     all_y_proba.extend(y_proba)
@@ -94,7 +72,6 @@ for train_idx, test_idx in skf.split(X, y):
 
 end = time.time()
 total_time = end - start
-print(f"Total training time: {total_time:.2f} seconds")
 
 # Final evaluation
 final_cm = confusion_matrix(all_y_true, all_y_pred)
@@ -117,7 +94,7 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('ROC Curve')
 plt.legend(loc="lower right")
-plt.savefig(figure_path + 'roc_curve.png', dpi=300, bbox_inches='tight')
+plt.savefig('analysis/sms/svm/roc_curve.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # --- Precision-Recall Curve ---
@@ -128,7 +105,7 @@ plt.xlabel('Recall')
 plt.ylabel('Precision')
 plt.title('Precision-Recall Curve')
 plt.legend(loc="upper right")
-plt.savefig(figure_path + 'precision_recall_curve.png', dpi=300, bbox_inches='tight')
+plt.savefig('analysis/sms/svm/precision_recall_curve.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # --- Confusion Matrix ---
@@ -139,19 +116,13 @@ sns.heatmap(final_cm, annot=True, fmt='d', cmap='Blues',
 plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('Confusion Matrix')
-plt.savefig(figure_path + 'confusion_matrix.png', dpi=300, bbox_inches='tight')
+plt.savefig('analysis/sms/svm/confusion_matrix.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Print Final Metrics
-print(f"\n{' FINAL EVALUATION (Stratified K-Fold) ':=^60}\n")
+print(f"\n{' FINAL EVALUATION (SVM - Stratified K-Fold) ':=^60}\n")
 print(f"Average Accuracy: {np.mean(accuracies):.4f}")
 print(f"Average AUC-ROC: {np.mean(aucs):.4f}")
 print(f"Average Precision: {np.mean(avg_precisions):.4f}\n")
 print("Classification Report (aggregated predictions):")
-print(classification_report(all_y_true, all_y_pred, target_names=['Ham', 'Spam']))
-
-if(generate_pkl):
-    # Save the last trained model and vectorizer
-    joblib.dump(tfidf, 'analysis/models/sms_text_vectorizer.pkl')
-    joblib.dump(rf_model, 'analysis/models/sms_model.pkl')
-    print("\nFinal SMS Spam Model and Vectorizer saved!")
+print(classification_report(all_y_true, all_y_pred, target_names=['Legitimate', 'Spam']))
