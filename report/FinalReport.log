@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.3.30)  6 APR 2025 22:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.3.30)  9 APR 2025 02:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -108,6 +108,9 @@ LaTeX Warning: Label `tab:csv_sample' multiply defined.
 
 
 LaTeX Warning: Label `tab:csv_sample' multiply defined.
+
+
+LaTeX Warning: Label `tab:performance' multiply defined.
 
 
 LaTeX Warning: Label `tab:csv_sample' multiply defined.
@@ -249,200 +252,259 @@ Underfull \hbox (badness 10000) in paragraph at lines 68--81
  []
 
 [1]
-Underfull \hbox (badness 10000) in paragraph at lines 87--100
+Underfull \hbox (badness 10000) in paragraph at lines 87--97
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--100
+Underfull \hbox (badness 10000) in paragraph at lines 87--97
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--100
+Underfull \hbox (badness 10000) in paragraph at lines 87--97
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--100
+Underfull \hbox (badness 10000) in paragraph at lines 109--111
 
  []
 
 [2]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 121.
+(Font)              <7> on input line 118.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 121.
+(Font)              <5> on input line 118.
 
-Overfull \hbox (53.88017pt too wide) in paragraph at lines 161--174
+Overfull \hbox (53.88017pt too wide) in paragraph at lines 158--171
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 181--186
+Underfull \hbox (badness 10000) in paragraph at lines 178--183
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 189--194
+Underfull \hbox (badness 10000) in paragraph at lines 186--191
 
  []
 
 [4]
-<../analysis/url/url_model_performance.png, id=25, 1279.4199pt x 419.4069pt>
-File: ../analysis/url/url_model_performance.png Graphic file (type png)
-<use ../analysis/url/url_model_performance.png>
-Package pdftex.def Info: ../analysis/url/url_model_performance.png  used on inp
-ut line 272.
-(pdftex.def)             Requested size: 362.37569pt x 118.78986pt.
- [5 <../analysis/url/url_model_performance.png>]
-<../analysis/sms/sms_model_performance.png, id=31, 1277.9745pt x 419.4069pt>
-File: ../analysis/sms/sms_model_performance.png Graphic file (type png)
-<use ../analysis/sms/sms_model_performance.png>
-Package pdftex.def Info: ../analysis/sms/sms_model_performance.png  used on inp
-ut line 326.
-(pdftex.def)             Requested size: 362.37569pt x 118.92424pt.
-<../analysis/sms/sms_uci_model_performance.png, id=32, 1277.4927pt x 419.4069pt
->
-File: ../analysis/sms/sms_uci_model_performance.png Graphic file (type png)
-<use ../analysis/sms/sms_uci_model_performance.png>
-Package pdftex.def Info: ../analysis/sms/sms_uci_model_performance.png  used on
- input line 361.
-(pdftex.def)             Requested size: 362.37569pt x 118.96904pt.
+<../analysis/url/roc_curve.png, id=25, 504.2037pt x 399.4122pt>
+File: ../analysis/url/roc_curve.png Graphic file (type png)
+<use ../analysis/url/roc_curve.png>
+Package pdftex.def Info: ../analysis/url/roc_curve.png  used on input line 271.
 
-Underfull \hbox (badness 10000) in paragraph at lines 368--372
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/url/precision_recall_curve.png, id=27, 504.2037pt x 399.4122pt>
+File: ../analysis/url/precision_recall_curve.png Graphic file (type png)
+<use ../analysis/url/precision_recall_curve.png>
+Package pdftex.def Info: ../analysis/url/precision_recall_curve.png  used on in
+put line 278.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/url/confusion_matrix.png, id=28, 498.9039pt x 399.4122pt>
+File: ../analysis/url/confusion_matrix.png Graphic file (type png)
+<use ../analysis/url/confusion_matrix.png>
+Package pdftex.def Info: ../analysis/url/confusion_matrix.png  used on input li
+ne 285.
+(pdftex.def)             Requested size: 362.37569pt x 290.12407pt.
+ [5 <../analysis/url/roc_curve.png>] [6 <../analysis/url/precision_recall_curve
+.png> <../analysis/url/confusion_matrix.png>]
+<../analysis/sms/randomforest/roc_curve.png, id=39, 504.2037pt x 399.4122pt>
+File: ../analysis/sms/randomforest/roc_curve.png Graphic file (type png)
+<use ../analysis/sms/randomforest/roc_curve.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/roc_curve.png  used on in
+put line 340.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/randomforest/precision_recall_curve.png, id=40, 504.2037pt x 3
+99.4122pt>
+File: ../analysis/sms/randomforest/precision_recall_curve.png Graphic file (typ
+e png)
+<use ../analysis/sms/randomforest/precision_recall_curve.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/precision_recall_curve.pn
+g  used on input line 347.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/randomforest/confusion_matrix.png, id=41, 483.7272pt x 399.412
+2pt>
+File: ../analysis/sms/randomforest/confusion_matrix.png Graphic file (type png)
+
+<use ../analysis/sms/randomforest/confusion_matrix.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/confusion_matrix.png  use
+d on input line 354.
+(pdftex.def)             Requested size: 362.37569pt x 299.21103pt.
+ [7] [8 <../analysis/sms/randomforest/roc_curve.png> <../analysis/sms/randomfor
+est/precision_recall_curve.png>]
+<../analysis/sms/randomforest/uci/roc_curve.png, id=50, 504.2037pt x 399.4122pt
+>
+File: ../analysis/sms/randomforest/uci/roc_curve.png Graphic file (type png)
+<use ../analysis/sms/randomforest/uci/roc_curve.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/uci/roc_curve.png  used o
+n input line 393.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/randomforest/uci/precision_recall_curve.png, id=51, 504.2037pt
+ x 399.4122pt>
+File: ../analysis/sms/randomforest/uci/precision_recall_curve.png Graphic file 
+(type png)
+<use ../analysis/sms/randomforest/uci/precision_recall_curve.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/uci/precision_recall_curv
+e.png  used on input line 400.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/randomforest/uci/confusion_matrix.png, id=52, 476.0184pt x 399
+.4122pt>
+File: ../analysis/sms/randomforest/uci/confusion_matrix.png Graphic file (type 
+png)
+<use ../analysis/sms/randomforest/uci/confusion_matrix.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/uci/confusion_matrix.png 
+ used on input line 407.
+(pdftex.def)             Requested size: 362.37569pt x 304.06836pt.
+ [9 <../analysis/sms/randomforest/confusion_matrix.png>] [10 <../analysis/sms/r
+andomforest/uci/roc_curve.png> <../analysis/sms/randomforest/uci/precision_reca
+ll_curve.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 416--420
 
  []
 
-[6 <../analysis/sms/sms_model_performance.png>]
-<../analysis/email/email_model_performance.png, id=38, 1277.9745pt x 419.4069pt
->
-File: ../analysis/email/email_model_performance.png Graphic file (type png)
-<use ../analysis/email/email_model_performance.png>
-Package pdftex.def Info: ../analysis/email/email_model_performance.png  used on
- input line 428.
-(pdftex.def)             Requested size: 362.37569pt x 118.92424pt.
- [7 <../analysis/sms/sms_uci_model_performance.png>]
-<../analysis/comment/comment_model_performance.png, id=43, 1277.4927pt x 419.40
-69pt>
-File: ../analysis/comment/comment_model_performance.png Graphic file (type png)
-
-<use ../analysis/comment/comment_model_performance.png>
-Package pdftex.def Info: ../analysis/comment/comment_model_performance.png  use
-d on input line 485.
-(pdftex.def)             Requested size: 362.37569pt x 118.96904pt.
- [8 <../analysis/email/email_model_performance.png>]
-[9 <../analysis/comment/comment_model_performance.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 543--546
+[11 <../analysis/sms/randomforest/uci/confusion_matrix.png>] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 648--651
 
  []
 
-
-Overfull \hbox (38.04953pt too wide) in paragraph at lines 559--569
+[13]
+Overfull \hbox (38.04953pt too wide) in paragraph at lines 664--674
  [][] 
  []
 
-[10]
-<../analysis/sms/sms_traditional_model_performance.png, id=55, 1277.4927pt x 41
-9.4069pt>
-File: ../analysis/sms/sms_traditional_model_performance.png Graphic file (type 
-png)
-<use ../analysis/sms/sms_traditional_model_performance.png>
-Package pdftex.def Info: ../analysis/sms/sms_traditional_model_performance.png 
- used on input line 616.
-(pdftex.def)             Requested size: 362.37569pt x 118.96904pt.
-<../analysis/sms/sms_hybrid_model_performance.png, id=56, 1277.4927pt x 419.406
-9pt>
-File: ../analysis/sms/sms_hybrid_model_performance.png Graphic file (type png)
-<use ../analysis/sms/sms_hybrid_model_performance.png>
-Package pdftex.def Info: ../analysis/sms/sms_hybrid_model_performance.png  used
- on input line 623.
-(pdftex.def)             Requested size: 362.37569pt x 118.96904pt.
- [11 <../analysis/sms/sms_traditional_model_performance.png>] [12 <../analysis/
-sms/sms_hybrid_model_performance.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 640--662
+[14]
+<../analysis/sms/traditional/roc_curve.png, id=76, 504.2037pt x 399.4122pt>
+File: ../analysis/sms/traditional/roc_curve.png Graphic file (type png)
+<use ../analysis/sms/traditional/roc_curve.png>
+Package pdftex.def Info: ../analysis/sms/traditional/roc_curve.png  used on inp
+ut line 728.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/traditional/precision_recall_curve.png, id=77, 504.2037pt x 39
+9.4122pt>
+File: ../analysis/sms/traditional/precision_recall_curve.png Graphic file (type
+ png)
+<use ../analysis/sms/traditional/precision_recall_curve.png>
+Package pdftex.def Info: ../analysis/sms/traditional/precision_recall_curve.png
+  used on input line 735.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/traditional/confusion_matrix.png, id=78, 476.0184pt x 399.4122
+pt>
+File: ../analysis/sms/traditional/confusion_matrix.png Graphic file (type png)
+<use ../analysis/sms/traditional/confusion_matrix.png>
+Package pdftex.def Info: ../analysis/sms/traditional/confusion_matrix.png  used
+ on input line 742.
+(pdftex.def)             Requested size: 362.37569pt x 304.06836pt.
+<../analysis/sms/hybrid/roc_curve.png, id=79, 504.2037pt x 399.4122pt>
+File: ../analysis/sms/hybrid/roc_curve.png Graphic file (type png)
+<use ../analysis/sms/hybrid/roc_curve.png>
+Package pdftex.def Info: ../analysis/sms/hybrid/roc_curve.png  used on input li
+ne 749.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/hybrid/precision_recall_curve.png, id=80, 504.2037pt x 399.412
+2pt>
+File: ../analysis/sms/hybrid/precision_recall_curve.png Graphic file (type png)
+
+<use ../analysis/sms/hybrid/precision_recall_curve.png>
+Package pdftex.def Info: ../analysis/sms/hybrid/precision_recall_curve.png  use
+d on input line 756.
+(pdftex.def)             Requested size: 362.37569pt x 287.06462pt.
+<../analysis/sms/hybrid/confusion_matrix.png, id=81, 476.0184pt x 399.4122pt>
+File: ../analysis/sms/hybrid/confusion_matrix.png Graphic file (type png)
+<use ../analysis/sms/hybrid/confusion_matrix.png>
+Package pdftex.def Info: ../analysis/sms/hybrid/confusion_matrix.png  used on i
+nput line 763.
+(pdftex.def)             Requested size: 362.37569pt x 304.06836pt.
+ [15] [16 <../analysis/sms/traditional/roc_curve.png> <../analysis/sms/traditio
+nal/precision_recall_curve.png>] [17 <../analysis/sms/traditional/confusion_mat
+rix.png> <../analysis/sms/hybrid/roc_curve.png>] [18 <../analysis/sms/hybrid/pr
+ecision_recall_curve.png> <../analysis/sms/hybrid/confusion_matrix.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 781--803
 
  []
 
 
-Overfull \hbox (145.79964pt too wide) in paragraph at lines 640--662
+Overfull \hbox (145.79964pt too wide) in paragraph at lines 781--803
 \OT1/cmr/m/n/10 [2] UCI Ma-chine Learn-ing Repos-i-tory, "SMS Spam Col-lec-tion
  Dataset," [On-line]. Avail-able: https://www.kaggle.com/datasets/uciml/sms-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 640--662
+Underfull \hbox (badness 10000) in paragraph at lines 781--803
 
  []
 
 
-Overfull \hbox (111.10745pt too wide) in paragraph at lines 640--662
+Overfull \hbox (111.10745pt too wide) in paragraph at lines 781--803
 \OT1/cmr/m/n/10 [3] S. Ku-mar, "Ma-li-cious and Be-nign URLs," [On-line]. Avail
 -able: https://www.kaggle.com/datasets/siddharthkumar25/malicious-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 640--662
+Underfull \hbox (badness 10000) in paragraph at lines 781--803
 
  []
 
 
-Overfull \hbox (27.41171pt too wide) in paragraph at lines 640--662
+Overfull \hbox (27.41171pt too wide) in paragraph at lines 781--803
 \OT1/cmr/m/n/10 [4] T. Ku-mar, "SMS Spam Dataset," [On-line]. Avail-able: https
 ://www.kaggle.com/datasets/tinu10kumar/sms-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 640--662
+Underfull \hbox (badness 10000) in paragraph at lines 781--803
 
  []
 
 
-Overfull \hbox (59.57959pt too wide) in paragraph at lines 640--662
+Overfull \hbox (59.57959pt too wide) in paragraph at lines 781--803
 \OT1/cmr/m/n/10 [5] N. Bharathi, "Email Spam Dataset," [On-line]. Avail-able: h
 ttps://www.kaggle.com/datasets/nitishabharathi/email-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 640--662
+Underfull \hbox (badness 10000) in paragraph at lines 781--803
 
  []
 
 
-Overfull \hbox (13.46832pt too wide) in paragraph at lines 640--662
+Overfull \hbox (13.46832pt too wide) in paragraph at lines 781--803
 \OT1/cmr/m/n/10 [6] V. Venky, "Spam Mails Dataset," [On-line]. Avail-able: http
 s://www.kaggle.com/datasets/venky73/spam-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 640--662
+Underfull \hbox (badness 10000) in paragraph at lines 781--803
 
  []
 
 
-Overfull \hbox (116.52402pt too wide) in paragraph at lines 640--662
+Overfull \hbox (116.52402pt too wide) in paragraph at lines 781--803
 \OT1/cmr/m/n/10 [7] A. Wa-heed, "Youtube Com-ments Spam Dataset," [On-line]. Av
 ail-able: https://www.kaggle.com/datasets/ahsenwaheed/youtube-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 640--662
+Underfull \hbox (badness 10000) in paragraph at lines 781--803
 
  []
 
-[13] (./FinalReport.aux)
+[19] (./FinalReport.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2578 strings out of 480247
- 46108 string characters out of 5896151
- 345104 words of memory out of 5000000
- 20501 multiletter control sequences out of 15000+600000
+ 2631 strings out of 480247
+ 48716 string characters out of 5896151
+ 349184 words of memory out of 5000000
+ 20557 multiletter control sequences out of 15000+600000
  472325 words of font info for 38 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,10n,67p,1187b,265s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,10n,67p,1195b,263s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/raagav/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.60
 0pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></
 usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sh
@@ -450,10 +512,10 @@ are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-Output written on FinalReport.pdf (14 pages, 1839154 bytes).
+Output written on FinalReport.pdf (20 pages, 1403044 bytes).
 PDF statistics:
- 100 PDF objects out of 1000 (max. 8388607)
- 56 compressed objects within 1 object stream
+ 135 PDF objects out of 1000 (max. 8388607)
+ 69 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 

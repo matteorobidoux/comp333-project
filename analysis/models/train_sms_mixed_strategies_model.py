@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Choose model to run: 'dt', 'knn', 'nb'
-model_type = 'dt'
+model_type = 'nb'
 
 # Load Data
 print("Loading data...")
