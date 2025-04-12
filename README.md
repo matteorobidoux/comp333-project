@@ -21,7 +21,8 @@ A frontend interface is also included, allowing users to interact with the syste
 7. [API Endpoints](#api-endpoints)
 8. [Technologies Used](#technologies-used)
 9. [Report](#report)
-10. [Contributors](#contributors)
+10. [Reproduce Analysis Results](#reproduce-analysis-results)
+11. [Contributors](#contributors)
 
 ---
 
@@ -278,6 +279,54 @@ Response:
 ## Report
 
 The final project report is available in the `report/` directory. It includes detailed information about the project, including the methodology, results, and conclusions drawn from the analysis.
+
+---
+
+## Reproduce Analysis Results
+
+Our analysis is based on a combination of the widely-used UCI SMS dataset and URL data, demonstrating the effectiveness of our hybrid model. The UCI SMS dataset, a benchmark in many published spam detection studies, contains a collection of labeled SMS messages. In addition, URL data is incorporated to evaluate the performance of our URL classification model in identifying malicious links.
+
+To reproduce the analysis results, follow these steps after running the installation steps:
+
+**1.** Run the script to generate the analysis dataset:
+
+```bash
+python tools/create_analysis_data.py
+```
+
+Data will be saved in `data/analysis/sms_url_combined.csv`.
+
+**2.** Run the analysis scripts to train SMS models using different strategies and evaluate their performance:
+
+```bash
+python analysis/models/train_sms_mixed_strategies_model.py
+python analysis/models/train_sms_svm_model.py
+```
+
+Performance metrics will be saved in `analysis/sms/[starategy_name]/`.
+
+Example: `analysis/sms/svm/`.
+
+**3.** Run the prediction scripts to evaluate the performance of our hybrid model compared to the to base SMS model:
+
+```bash
+python analysis/models/predict_sms_hybrid.py
+python analysis/models/predict_sms_traditional.py
+```
+
+Performance metrics will be saved in `analysis/sms/[starategy_name]/`.
+
+Example: `analysis/sms/hybrid/`.
+
+**4.** Run the analysis script to train the RandomForest SMS model using the UCI SMS dataset:
+
+```bash
+python models/sms/train_sms_model.py UCI
+```
+
+Performance metrics will be saved in `analysis/sms/randomforest/uci/`.
+
+These steps will allow you to reproduce the analysis results and evaluate the performance of our spam detection models shown in the report.
 
 ---
 
