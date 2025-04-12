@@ -469,31 +469,6 @@ The model achieved the following results after training 23000 rows, taking 249 s
     \label{tab:xgboost_evaluation}
 \end{table}
 
-% \noindent
-% Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
-
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{../analysis/email/roc_curve.png}
-%     \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for Email Model}
-%     \label{fig:roc_curve_4}
-% \end{figure}
-
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{../analysis/email/precision_recall_curve.png}
-%     \caption{Precision-Recall Curve for Email Model}
-%     \label{fig:precision_recall_curve_4}
-% \end{figure}
-
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{../analysis/email/confusion_matrix.png}
-%     \caption{Confusion Matrix for Email Model}
-%     \label{fig:confusion_matrix_4}
-% \end{figure}
-
-% \newpage
 
 \subsubsection{YouTube Comments Model}
 \subsubsection*{Feature Extraction}
@@ -543,31 +518,7 @@ The model achieved the following results after training 1962 rows, taking 0.73 s
     \label{tab:gbm_evaluation}
 \end{table}
 
-% \noindent
-% Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
-
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{../analysis/comment/roc_curve.png}
-%     \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for YouTube Comments Model}
-%     \label{fig:roc_curve_5}
-% \end{figure}
-
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{../analysis/comment/precision_recall_curve.png}
-%     \caption{Precision-Recall Curve for YouTube Comments Model}
-%     \label{fig:precision_recall_curve_5}
-% \end{figure}
-
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{../analysis/comment/confusion_matrix.png}
-%     \caption{Confusion Matrix for YouTube Comments Model}
-%     \label{fig:confusion_matrix_5}
-% \end{figure}
-
-% \newpage
+\newpage
 
 \section{Inference}
 
@@ -620,12 +571,14 @@ As mentioned previously, the study by Gawai and Salunke [8] aimed to compare the
     \end{tabular}
 \end{table}
 
+\newpage
+
 \noindent
 When utilizing the same dataset and training algorithms, we get the following results:
 
 \begin{table}[htbp]
     \centering
-    \caption{Performance of different algorithms by Gawai and Salunke [8]} % Replace with your desired caption
+    \caption{Performance of different algorithms, Our Results} % Replace with your desired caption
     \label{tab:performance} % Add a label for referencing
     
     \begin{tabular}{l cccc cccc c}
@@ -646,7 +599,7 @@ When utilizing the same dataset and training algorithms, we get the following re
 
 
 \noindent
-Additionally, as stated before, they trained their models on the UCI SMS Spam Collection Dataset [2]. When using the same dataset but following our normalization technique by balancing the dataset with equal number of spam and non spam results, we achieved the results shown in table \ref{tab:classification_report_3}. The datasets in the end are quite different in size, as the original UCI dataset contains \textbf{5574 rows}, while our dataset only contains \textbf{1494 rows} after normalization. However, we can see that our results are quite similar to theirs. For example, for all algorithms, we receive the same accuracy scores. However, on average we achieved much \textbf{better results} when it comes to \textbf{Spam} detection, specfically when taking a look at the \textbf{Recall} and \textbf{F1-Score}, where when we look at \textbf{Random Forest} for example, \textbf{they received 0.79 and 0.88} respectively, while \textbf{we received 0.96 and 0.97} respectively. Coupled with the fact that we also trained our model using Stratified K-fold, we can see that our approach yields much better results when it comes to spam detection.
+Additionally, as stated before, they trained their models on the UCI SMS Spam Collection Dataset [2]. When using the same dataset but following our normalization technique by balancing the dataset with equal number of spam and non spam results, we achieved the results shown in Table 10 above. The datasets in the end are quite different in size, as the original UCI dataset contains \textbf{5574 rows}, while our dataset only contains \textbf{1494 rows} after normalization. However, we can see that our results are quite similar to theirs. For example, for all algorithms, we receive the same accuracy scores. However, on average we achieved much \textbf{better results} when it comes to \textbf{Spam} detection, specfically when taking a look at the \textbf{Recall} and \textbf{F1-Score}, where when we look at \textbf{Random Forest} for example, \textbf{they received 0.79 and 0.88} respectively, while \textbf{we received 0.96 and 0.97} respectively. Coupled with the fact that we also trained our model using Stratified K-fold, we can see that our approach yields much better results when it comes to spam detection.
 \newline
 
 \noindent
