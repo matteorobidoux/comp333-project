@@ -65,16 +65,19 @@ To address these variations, \textbf{we developed three specialized models for S
 % ================================
 % \newpage
 \section{Introduction}
-The rise of digital communication has led to an increase in the amount of unwanted and potentially harmful spam messages across various platforms. This includes SMS messages, emails, and content within online comment sections. Spam messages can range anywhere from harmless advertisements, to phishing attempts and even malware distribution. This emphasizes the need for effective spam detection, which is needed for ensuring the security of a user, as well as the integrity of a platform. The traditional spam detection techniques, \textbf{commonly known as "ham or spam"}, often rely solely on text based models, using an algorithm such as SVM, Random Forest, Decision Tree, KNN, or even Naive Bayes. While these methods are effective when used to identify many different spam messages given the right input dataset, they often fail to account for additional information catering to the input, leading to both false negatives as well as false positives. In short, on many occasions, messages that are not spam are marked as spam, and messages that are, are not.
+The rise of digital communication has led to an increase in the amount of unwanted and potentially harmful spam messages across various platforms. This includes SMS messages, emails, and content within online comment sections. Spam messages can range anywhere from harmless advertisements, to phishing attempts and even malware distribution. This emphasizes the need for effective spam detection, which is needed for ensuring the security of a user, as well as the integrity of a platform. The traditional spam detection techniques, \textbf{commonly known as "ham or spam"}, often rely solely on text based models, using an algorithm such as SVM, Random Forest, Decision Tree, KNN, or even Naive Bayes. These methods often leverage textual features to identify malicious content [1], [8], [9]. 
 \newline
 \newline
-One key aspect of spam identification that is not present within traditional methods is the identification of URLs. Many spam messages contain malicious links, requiring models to take these links into account. Furthermore, a message can also contain a valid url sent from a valid user, which means that messages containing urls should not be marked as spam simply because they contain a url. Instead, the url itself should be analyzed to determine whether or not it is spam.\textbf{Our study demonstrates that having a hybrid prediction approach}, having one model predict the spam likelihood of a url, and having another model predict the spam likelihood of the text body, \textbf{significantly improves the ability to detect spam messages} when there is a url present in the body.
+While these methods methods are effective when it comes to detecting spam, and have acheived relativley high accuracy on datasets such as the UCI SMS Spam Collection dataset [2]; they tend to oversimplify crucial contextual cues such as URLs and sender metadata. This is emphazied by Johari et al. [9], where it was shown that the performance of spam classifiers is highly dependant on dataset compisition, feature balance, and noise levels. Similarly, Al-Kaabi et al. [10] categorize spam detection methods into rule-based, machine learning-based, and deep learning-based strategies, highlighting the strengths and weaknesses of each. l Saidat et al. [19] further argue that combining multiple algorithmic paradigms, especially in hybrid or ensemble architectures, often yields superior results. 
 \newline
 \newline
-Moreover, spam characteristics \textbf{differ across various platforms}. SMS messages primarily consist of just text, whereas emails include components like subject lines. YouTube comments, on the other hand, often involve engagement-driven spam, such as self-promotion; as well as peculiar author names that could indicate spam. These differences require the need to develop specific models for each input type, as opposed to just one model.
+One key aspect of spam identification that is not present within traditional methods is the identification of spam URLs. While many spam messages contains maliscious links, there are many messages that can contain valid URLs sent from valid users, such as video links being shared by friends. Therefore, flagging all messages with links as spam increases the chances of us having a high false positive rate. Hence, our study propes as alternative solution involving a hybrid prediction approach analyzing both the spam likelihood of the URL and the text body using seperate models, significantly enhancing spam detection accuracy. This approach aligns with findings by Altunay [12] and Bilgen and Kaya [11], who demonstrated that isolating URL evaluation and combining deep learning modules with traditional classifiers can greatly improve precision. Altunay’s CNN-GRU model achieved 99.1\% accuracy on Turkish and English SMS datasets, while Bilgen and Kaya’s EGMA hybrid model reached 99.3\% on standard SMS corpora.
 \newline
 \newline
-To address this, we propose a hybrid spam detection algorithm consisting of three specialized models for SMS, email, and YouTube comments. Each model is designed to uniquely identify characteristics of its respective dataset, while using a separate model for the embedded URLs in the event they exist. When a message contains a URL, the URL model’s prediction is combined with that of the text model’s, determining the legitimatacy of the message. \textbf{Our results demonstrate} that this approach significantly enhances detection accuracy, \textbf{outperforming traditional methods}.
+Furthermore, spam characteristics \textbf{differ across various platforms}. SMS messages primarily consist of just text, whereas emails include components like subject lines. YouTube comments, on the other hand, often involve engagement-driven spam, such as self-promotion; as well as peculiar author names that could indicate spam. Tusher et al. [14] and Liu [15] point out that email spam requires careful attention to structural elements like headers and sender patterns, while Xiao and Liang [20] stress the role of contextual comment analysis in YouTube spam detection. Altogether, these differences require the need to develop specific models for each input type, as opposed to just one model. 
+\newline
+\newline
+To address this, we propose a hybrid spam detection algorithm consisting of three specialized models for SMS, email, and YouTube comments. Each model is designed to uniquely identify characteristics of its respective dataset, while using a separate model for the embedded URLs in the event they exist. When a message contains a URL, the URL model’s prediction is combined with that of the text model’s, determining the legitimatacy of the message. \textbf{Our results demonstrate} that this approach significantly \textbf{outperforms traditional methods}, consistent with recent advances in ensemble and cascaded classification frameworks such as Oh’s YouTube comment spam system [18] and the CNN-LSTM hybrid proposed by Sam’an and Imaddudin [17].
 \newline
 \newline
 The rest of this paper is organized as follows: Section 2 reviews \textbf{related work} in spam detection. Section 3 describes our \textbf{methodology}, including dataset preprocessing, model architectures, and \textbf{training procedures}. Section 4 discusses the Inference procedure. Finally, Section 5 discusses our \textbf{key findings}.
@@ -84,16 +87,19 @@ The rest of this paper is organized as follows: Section 2 reviews \textbf{relate
 % Related Work
 % ================================
 \section{Related Work}
-A notable study by Gupta et al. follows the conventional ham or spam detection algorithm using TF-IDF vectorization [1]. Their research applies machine learning models to the UCI SMS Spam Collection dataset [2], using text-based features extracted from SMS messages. Their results show strong performance in spam classification, using traditional approaches such as Naïve Bayes and SVM, emphasizing that this is an effective technique.
+Spam detection has been widely researched accross the various communication channels. In terms of SMS spam detection, traditional approaches using TF-IDF vectorization, Naive Bayes, and SVM classifiers remain prevelant [1]. Gawai and Salunke [8] in their study acheived high accuracy across five algorithms, including SVM, Decision Tree, Random Forest, KNN and Naive Bayes. However, Johari et al. [9] emphasize that many public SMS spam datasets suffer from class imbalance and limited feature diversity, which severly impacts model generalization.
 \newline
 \newline
-Another study by Gawai and Salunke [8] compared the use of various different NLP and machine learning techniques to classify SMS messages as either spam or ham, specifically for the algorithms \textbf{SVM, Decision Tree, Random Forest, KNN and Naive Bayes}. Their study demonstrates the effectiveness of these approaches in improving spam detection accuracy, concluding that the Naive Bayes had the most successful results, achieving an accuracy of \textbf{98\%} on the UCI SMS Spam Collection dataset. They also report quite good accuracy results for the rest of the models, with \textbf{97\%} for SVM, \textbf{96\%} for Decision Tree, \textbf{97\%} for Random Forest, and \textbf{95\%} for KNN.
+Al-Kaabi et al. [10] present a comprehensive taxonomy of SMS spam detection techniques, where they differentiate between static rule based models and learning based ones. This taxonomy was expanded upon by Al Saidat et al. [19], where neural models, attention based transformers, and ensemble techniques were all incorporated, identifying promising paths for future improvement. This is supported by Altunay [12], by applying deep learning to multilingual spam datasets, resulting in very high performance. Bilgen and Kaya [11] contribute with EGMA, a multi-branch ensemble combining GRUs and MLPs to simultaneously handle SMS and email spam.
 \newline
 \newline
-However, while training models on the \textbf{same dataset} [2], we identified a \textbf{significant limitation} in the way spam messages were labeled, especially when a URL was present in the message body. The dataset shows a \textbf{strong bias}, as many SMS messages containing URLs are labeled as spam. This introduces a risk that models trained on this data may incorrectly generalize, leading to a high false positive rate for messages containing legitimate URLs, significantly impacting simple sms messages such as a getting sent a video link from a friend. Consequently, SMS messages may be disproportionately influenced by the presence of a URL rather than the actual content of the message.
+In the realm of email spam detection, Tusher et al. [14] provide a detailed IEEE Access survey that compares classical ML and modern deep learning techniques, identifying hybrid systems as the most resilient across diverse datasets. Liu [15] experimentally compares SVM, Random Forest, and KNN on public email spam corpora, concluding that although all the algorithms acheive good results, ensemble based approaches provide more consistent performance in noisy environments. Rao and Vinodhini [21] further confirm these results by benchmarking Random Forest, Naive Bayes, MLP, and SVM, finding Random Forest to yield the highest F1 score.
 \newline
 \newline
-Our solution resolves this issue by introducing a separate URL-based classification model, which is then used in conjunction with either the SMS message model, Email model, or YouTube comments model, to predict whether they are spam. By independently determining the likelihood of a URL being spam, this hybrid approach reduces dataset bias and ensures more balanced spam classification, particularly for messages containing URLs.	
+In the YouTube domain, Xiao and Liang [20] evaluate comment spam detection using traditional ML models and find that feature engineering remains critical in sparse comment environments. Airlangga [16] reports that SVMs outperform other classifiers on YouTube comment datasets, achieving up to 95\% accuracy. Sam’an and Imaddudin [17] use a CNN-LSTM hybrid to address temporal and contextual variance, reporting a 96\% accuracy rate. Oh [18] presents a cascaded ensemble combining Naive Bayes, Decision Trees, and SVMs, which further underscores the benefit of blending weak learners for improved performance.
+\newline
+\newline
+Finally, Shaaban et al. [13] propose a dynamic ensemble model called Deep Convolutional Forest that integrates CNNs with decision tree layers, applying it across various spam datasets. Their results show superior performance over flat models like Random Forest or Naive Bayes. Collectively, these studies validate the use of hybrid and ensemble models, particularly when combined with domain-specific preprocessing and feature isolation such as our use of separate URL evaluation.
 
 % ========== CONTINUE BELOW HERE ===============
 
@@ -730,7 +736,6 @@ In conclusion, our study demonstrates the effectiveness of a hybrid approach for
 
 % \newpage
 \subsection*{References}
-
 [1] S. D. Gupta, S. Saha, and S. K. Das, "SMS Spam Detection Using Machine Learning," *J. Phys. Conf. Ser.*, vol. 1797, no. 1, p. 012017, Feb. 2021, doi: 10.1088/1742-6596/1797/1/012017.
 \newline
 \newline
@@ -753,6 +758,45 @@ In conclusion, our study demonstrates the effectiveness of a hybrid approach for
 \newline
 \newline
 [8] S. Gawai and S. S. Salunke, "Classifying SMS as Spam or Ham Leveraging NLP and Machine Learning Techniques," in *2024 International Conference on Communication, Computing and Internet of Things (IC3IoT)*, 2024, pp. 1-6.
+\newline
+\newline
+[9] M. F. Johari, K. L. Chiew, A. R. Hosen, and A. S. Khan, “Key insights into recommended SMS spam detection datasets,” Scientific Reports, vol. 15, Art. 8162, 2025.
+\newline
+\newline
+[10] H. Al-Kaabi, A. D. Darroudi, and A. K. Jasim, “Survey of SMS Spam Detection Techniques: A Taxonomy,” AlKadhim Journal for Computer Science, vol. 2, no. 4, pp. 23–34, Dec. 2024.
+\newline
+\newline
+[11] Y. Bilgen and M. Kaya, “EGMA: Ensemble learning-based hybrid model approach for spam detection,” Applied Sciences, vol. 14, no. 21, Art. 9669, 2024.
+\newline
+\newline
+[12] H. C. Altunay, “SMS spam detection system based on deep learning architectures for Turkish and English messages,” Applied Sciences, vol. 14, no. 24, Art. 11804, 2024.
+\newline
+\newline
+[13] M. A. Shaaban, Y. F. Hassan, and S. K. Guirguis, “Deep convolutional forest: A dynamic deep ensemble approach for spam detection in text,” Evol. Intell., vol. 8, no. 6, pp. 4897–4909, 2022.
+\newline
+\newline
+[14] E. H. Tusher, M. A. Ismail, M. A. Rahman, A. H. Alenezi, and M. Uddin, “Email Spam: A comprehensive review of optimized detection methods, challenges, and open research problems,” IEEE Access, vol. 12, pp. 143627–143657, 2024.
+\newline
+\newline
+[15] X. Liu, “Deciphering spam through AI: From traditional methods to deep learning advancements in email security,” in Proc. Int. Conf. on Eng. Management, IT \& Intelligence (EMITI), 2024, pp. 54–60.
+\newline
+\newline
+[16] G. Airlangga, “Spam Detection on YouTube Comments Using Advanced Machine Learning Models: A Comparative Study,” Brilliance: Research of Artificial Intelligence, vol. 4, no. 2, pp. 500–508, 2024.
+\newline
+\newline
+[17] M. Sam’an and K. Imaddudin, “Hybrid deep learning model for YouTube spam comment detection,” Int. J. Electr. Comput. Eng., vol. 14, no. 3, pp. 3313–3319, 2024.
+\newline
+\newline
+[18] H. Oh, “A YouTube spam comments detection scheme using cascaded ensemble machine learning model,” IEEE Access, vol. 9, pp. 144121–144128, 2021.
+\newline
+\newline
+[19] M. R. Al Saidat, S. Y. Yerima, and K. Shaalan, “Advancements of SMS spam detection: A comprehensive survey of NLP and ML techniques,” Procedia Comput. Sci., vol. 244, pp. 248–259, 2024.
+\newline
+\newline
+[20] A. S. Xiao and Q. Liang, “Spam detection for YouTube video comments using machine learning approaches,” Machine Learning with Applications, vol. 16, Art. 100550, 2024.
+\newline
+\newline
+[21] N. R. R. Rao and G. A. F. Vinodhini, “Measuring the efficiency of random forest, naive bayes, multilayer perceptron and support vector machine in email spam detection,” in Proc. ICONNECT-2024, 2025.
 
 \newpage
 
