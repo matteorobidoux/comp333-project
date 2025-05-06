@@ -145,10 +145,10 @@ python tools/normalize_data.py
 **4.** Train the models
 
 ```
-python/url/train_url_model.py
-python/comment/train_comment_model.py
-python/sms/train_sms_model.py
-python/email/train_email_model.py
+python models/url/train_url_model.py
+python models/comment/train_comment_model.py
+python models/sms/train_sms_model.py
+python models/email/train_email_model.py
 ```
 
 **5.** Run the backend

@@ -729,12 +729,25 @@ For the traditional approach, we use the same model to classify the input messag
 \noindent
 As shown in the tables above, we can see that the hybrid approach was able to achieve much better results than the traditional approach. The \textbf{hybrid approach} was able to achieve an \textbf{overall accuracy of 99\%}, while the \textbf{traditional approach} was only able to achieve an \textbf{accuracy of 63\%}. This shows that the hybrid approach is much more effective in detecting spam messages, especially when it comes to messages containing URLs. Furthermore, we can also see that the \textbf{hybrid approach} was able to achieve a much better \textbf{F1-Score}, with a score of \textbf{0.99}, while the \textbf{traditional approach} only achieved a score of \textbf{0.57}.
 
+\subsection{Model Explainability and Interpretability}
+
+\noindent
+Understanding the decision-making process of spam-detection models is vital for building trust and transparency. While single metrics, such as classification accuracy provides useful performance metrics, it alone is an incomplete description of most real-world tasks [22]. Therefore, we must question why the model makes each decision. Studies regarding spam detectors have shown that the lack of interpretability in deep learning models can negatively impact model improvement efforts, "Interpretability remains a significant concern, as the complexity of these models often makes it challenging to understand the rationale behind specific classifications” [23]. Various techniques such as feature-importance scores can be used to help better understand which features are most important for the model's decision-making process. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/url/feature_importance.png}
+    \caption{Feature Importance for URL Model}
+    \label{fig:feature_importance_1}
+\end{figure}
+
+To analyze which features were most important for out URL model, we plotted the top 20 predictors using gain-based feature importance. As shown in Figure~\ref{fig:feature_importance_1}, character-level TF-IDF n-grams such as \texttt{TFIDF\_ww.} and \texttt{TFIDF\_wp} dominate the TF-IDF features, while \texttt{num\_subdomains} and \texttt{num\_dots} lead among the engineered features. These results indicate the model's dependence on both structural URL characteristics and textual content. By analysing the feature importance, we are able to confirm that the model prioritizes meaningful features, giving us confidence in its decision-making process.
 
 \subsection*{Conclusion}
 In conclusion, our study demonstrates the effectiveness of a hybrid approach for spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adequately balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
 
 
-% \newpage
+\newpage
 \subsection*{References}
 [1] S. D. Gupta, S. Saha, and S. K. Das, "SMS Spam Detection Using Machine Learning," *J. Phys. Conf. Ser.*, vol. 1797, no. 1, p. 012017, Feb. 2021, doi: 10.1088/1742-6596/1797/1/012017.
 \newline
@@ -797,6 +810,13 @@ In conclusion, our study demonstrates the effectiveness of a hybrid approach for
 \newline
 \newline
 [21] N. R. R. Rao and G. A. F. Vinodhini, “Measuring the efficiency of random forest, naive bayes, multilayer perceptron and support vector machine in email spam detection,” in Proc. ICONNECT-2024, 2025.
+\newline
+\newline
+[22] F. Doshi-Velez and B. Kim, "Towards a Rigorous Science of Interpretable Machine Learning," arXiv Preprint arXiv:1702.08608, Feb. 2017. [Online]. Available: https://arxiv.org/abs/1702.08608
+\newline
+\newline
+[23] X. Liu, “Deciphering Spam Through AI: From Traditional Methods to Deep Learning Advancements in Email Security,” Proceedings of the 1st International Conference on Engineering Management, Information Technology and Intelligence, pp. 553–558, 2024, doi: https://doi.org/10.5220/0012958700004508.
+
 
 \newpage
 

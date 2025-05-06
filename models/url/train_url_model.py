@@ -14,6 +14,7 @@ from scipy.sparse import hstack
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tqdm import tqdm
+import shap
 
 # --- Load Data ---
 df = pd.read_csv('data/normalized/url_data.csv', keep_default_na=False)
@@ -76,6 +77,25 @@ print("\nGenerating TF-IDF features...")
 tfidf_vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(3, 5), max_features=1000)
 tfidf_matrix = tfidf_vectorizer.fit_transform(urls)
 
+engineered_feature_names = [
+    'url_length', 'num_digits', 'num_special_chars', 'entropy_url',
+    'num_subdomains', 'domain_length', 'path_length', 'query_length',
+    'num_query_params', 'tld_length', 'suspicious_tld', 'has_ip_address',
+    'contains_free', 'contains_win', 'contains_login', 'contains_auth',
+    'contains_account', 'contains_offer', 'contains_secure', 'num_dots',
+    'num_hyphens', 'num_slashes'
+]
+
+# Clean feature names for TF-IDF
+def clean_name(s):
+    return re.sub(r'[\"\'\\\n\r\t]', '', s)
+
+# Set TF-IDF feature names
+tfidf_feature_names = [f"TFIDF_{clean_name(f)}" for f in tfidf_vectorizer.get_feature_names_out()]
+
+# Combine all feature names
+all_feature_names = engineered_feature_names + tfidf_feature_names
+
 # Combine all features
 X = hstack([feature_df.values, tfidf_matrix]).tocsr()
 
@@ -107,8 +127,8 @@ for train_index, test_index in kf.split(X, y):
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
 
-    train_data = lgb.Dataset(X_train, label=y_train)
-    valid_data = lgb.Dataset(X_test, label=y_test, reference=train_data)
+    train_data = lgb.Dataset(X_train, label=y_train, feature_name=all_feature_names)
+    valid_data = lgb.Dataset(X_test, label=y_test, reference=train_data, feature_name=all_feature_names)
 
     model = lgb.train(
         params,
@@ -186,6 +206,32 @@ plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('Confusion Matrix')
 plt.savefig('analysis/url/confusion_matrix.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# --- Clean Feature Importance Plot (Top 10) ---
+print("\nGenerating clean feature importance plot...")
+
+importance_df = pd.DataFrame({
+    'Feature': all_feature_names,
+    'Importance': model.feature_importance(importance_type='gain')
+})
+
+# Remove the highest one
+top_features = importance_df.sort_values('Importance', ascending=False).head(21)
+top_features = top_features.iloc[1:]  # Remove top feature
+
+plt.figure(figsize=(12, 8))
+sns.barplot(
+    x='Importance',
+    y='Feature',
+    data=top_features,
+    palette='viridis'
+)
+plt.title('Top 20 Important Features', fontsize=14)
+plt.xlabel('Importance Score (Gain)', fontsize=12)
+plt.ylabel('')
+plt.tight_layout()
+plt.savefig('analysis/url/feature_importance.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # --- Summary ---
