@@ -368,7 +368,7 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
     Furthermore, when training the model, we also decided to use another approach where we only train using the \textbf{SMS UCI Spam Collection Dataset} [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, urls, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. The model achieved the following results after training \textbf{1494 rows} (Much smaller than original SMS UCI dataset as there is a heavy bias), taking around \textbf{17 secs}: 
 
 \begin{itemize}
-    \item Accuracy: 9\textbf{7.19\%}
+    \item Accuracy: \textbf{97.19\%}
     \item AUC: \textbf{99.34\%}
     \item Average Precision: \textbf{99.48\%}
 \end{itemize}
@@ -742,6 +742,42 @@ Understanding the decision-making process of spam-detection models is vital for 
 \end{figure}
 
 To analyze which features were most important for out URL model, we plotted the top 20 predictors using gain-based feature importance. As shown in Figure~\ref{fig:feature_importance_1}, character-level TF-IDF n-grams such as \texttt{TFIDF\_ww.} and \texttt{TFIDF\_wp} dominate the TF-IDF features, while \texttt{num\_subdomains} and \texttt{num\_dots} lead among the engineered features. These results indicate the model's dependence on both structural URL characteristics and textual content. By analysing the feature importance, we are able to confirm that the model prioritizes meaningful features, giving us confidence in its decision-making process.
+
+\subsection{LSTM Benchmark}
+
+\noindent
+To provide a deep learning baseline, we trained a bidirectional LSTM model on the SMS UCI dataset, using 5-fold Stratified Cross-Validation. The LSTM achieved the following results after training \textbf{1494 rows}, taking \textbf{12 secs}:
+
+\begin{itemize}
+    \item Accuracy: \textbf{95.65\%}
+    \item AUC: \textbf{98.82\%}
+    \item Average Precision: \textbf{98.92\%}
+\end{itemize}
+
+\begin{table}[htbp]
+    \centering
+    \caption{\textbf{SMS LSMT Model Classification Report}}
+    \begin{tabular}{l c c c c}
+    \toprule
+     & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
+    \midrule
+    \textbf{Legitimate} & \textbf{0.95} & \textbf{0.96} & \textbf{0.96} & 747 \\
+    \textbf{Spam} & \textbf{0.96} & \textbf{0.95} & \textbf{0.96} & 747 \\
+    \midrule
+    \textbf{Accuracy} & & & \textbf{0.96} & 1494 \\
+    Macro Avg & 0.96 & 0.96 & 0.96 & 1494 \\
+    Weighted Avg & 0.96 & 0.96 & 0.96 & 1494 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:classification_report_6}
+\end{table}
+
+While the LSTM demonstrated strong performance, our Random Forest model slightly outperformed it with an accuracy of 97.00\%. This highlights that, for structured short-form text like SMS with limited data, traditional models with proper preprocessing can not only match but also exceed the performance of deep learning models. 
+
+\subsection{Future Deployment Strategy}
+
+\noindent
+A functional web application has already been developed and deployed locally, allowing users to input messages, which then communicates with the backend API endpoints for real-time spam classification. Future deployment will incolve transitioning the application from localhost to a production enviornment. This will include containerizing the application using Docker and hosting it on a scalable cloud platform, such as AWS or Heroku. Kubernetes will be used to manage the containerized application for scalability and reliability. Additionally, to ensure our model remains effective over time, we will implement a momitoring system such as Grafana, to track performance and trigger updates. This pipeline ensures the application remains scalable and responsive to real-world usage.
 
 \subsection*{Conclusion}
 In conclusion, our study demonstrates the effectiveness of a hybrid approach for spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adequately balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
