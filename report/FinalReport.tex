@@ -16,28 +16,34 @@
     \vspace{2cm}
     
     % Title
-    {\huge \textbf{Spam Detection Model}}\\[1.5cm]
+    {\huge \textbf{Analysis of Effectiveness of Traditional Ham or Spam Detection Models}}\\[1.5cm]
     
     % Course Name
-    {\large \textbf{COMP 333: Data Analytics}}\\[0.5cm]
+    % {\large \textbf{COMP 333: Data Analytics}}\\[0.5cm]
     
     % Instructor Name
-    {\large Instructor: Dr. Yaser Esmaeili Salehani}\\[1.5cm]
+    % {\large Instructor: Dr. Yaser Esmaeili Salehani}\\[1.5cm]
     
     % Submitted by
     {\large \textbf{Submitted by:}}\\[0.5cm]
     \begin{large}
         Matteo Robidoux\\
-        Student ID: 40282589\\[0.5cm]
+        % Student ID: 40282589\\[0.5cm]
         Raagav Prasanna\\
-        Student ID: 40282749\\[1.5cm]
+        % Student ID: 40282749\\[1.5cm]
+        % Co-author: Dr. Yaser Esmaeili Salehani\\
     \end{large}
-    
-    % Date
-    {\large \textbf{Date:}}\\[0.5cm]
+
+    \vspace{1cm}
+
+    {\large \textbf{Co-author:}}\\[0.5cm]
     \begin{large}
-        April 7th, 2025\\[1.5cm]
+        Dr Yaser Esmaeili Salehani\\
     \end{large}
+
+    % {\large \textbf{Co-author: Dr. Yaser Esmaeili Salehani}}\\[0.5cm]
+    
+    \vspace{1cm}
     
     \vfill
     
@@ -68,7 +74,7 @@ To address these variations, \textbf{we developed three specialized models for S
 The rise of digital communication has led to an increase in the amount of unwanted and potentially harmful spam messages across various platforms. This includes SMS messages, emails, and content within online comment sections. Spam messages can range anywhere from harmless advertisements, to phishing attempts and even malware distribution. This emphasizes the need for effective spam detection, which is needed for ensuring the security of a user, as well as the integrity of a platform. The traditional spam detection techniques, \textbf{commonly known as "ham or spam"}, often rely solely on text based models, using an algorithm such as SVM, Random Forest, Decision Tree, KNN, or even Naive Bayes. These methods often leverage textual features to identify malicious content [1], [8], [9]. 
 \newline
 \newline
-While these methods methods are effective when it comes to detecting spam, and have acheived relativley high accuracy on datasets such as the UCI SMS Spam Collection dataset [2]; they tend to oversimplify crucial contextual cues such as URLs and sender metadata. This is emphazied by Johari et al. [9], where it was shown that the performance of spam classifiers is highly dependant on dataset compisition, feature balance, and noise levels. Similarly, Al-Kaabi et al. [10] categorize spam detection methods into rule-based, machine learning-based, and deep learning-based strategies, highlighting the strengths and weaknesses of each. l Saidat et al. [19] further argue that combining multiple algorithmic paradigms, especially in hybrid or ensemble architectures, often yields superior results. 
+While these methods are effective when it comes to detecting spam, and have acheived relativley high accuracy on datasets such as the UCI SMS Spam Collection dataset [2]; they tend to oversimplify crucial contextual cues such as URLs and sender metadata. This is emphazied by Johari et al. [9], where it was shown that the performance of spam classifiers is highly dependant on dataset composition, feature balance, and noise levels. Similarly, Al-Kaabi et al. [10] categorize spam detection methods into rule-based, machine learning-based, and deep learning-based strategies, highlighting the strengths and weaknesses of each. Al Saidat et al. [19] further argue that combining multiple algorithmic paradigms, especially in hybrid or ensemble architectures, often yields superior results. 
 \newline
 \newline
 One key aspect of spam identification that is not present within traditional methods is the identification of spam URLs. While many spam messages contains maliscious links, there are many messages that can contain valid URLs sent from valid users, such as video links being shared by friends. Therefore, flagging all messages with links as spam increases the chances of us having a high false positive rate. Hence, our study propes as alternative solution involving a hybrid prediction approach analyzing both the spam likelihood of the URL and the text body using seperate models, significantly enhancing spam detection accuracy. This approach aligns with findings by Altunay [12] and Bilgen and Kaya [11], who demonstrated that isolating URL evaluation and combining deep learning modules with traditional classifiers can greatly improve precision. Altunay’s CNN-GRU model achieved 99.1\% accuracy on Turkish and English SMS datasets, while Bilgen and Kaya’s EGMA hybrid model reached 99.3\% on standard SMS corpora.
@@ -741,12 +747,13 @@ Understanding the decision-making process of spam-detection models is vital for 
     \label{fig:feature_importance_1}
 \end{figure}
 
+\noindent
 To analyze which features were most important for out URL model, we plotted the top 20 predictors using gain-based feature importance. As shown in Figure~\ref{fig:feature_importance_1}, character-level TF-IDF n-grams such as \texttt{TFIDF\_ww.} and \texttt{TFIDF\_wp} dominate the TF-IDF features, while \texttt{num\_subdomains} and \texttt{num\_dots} lead among the engineered features. These results indicate the model's dependence on both structural URL characteristics and textual content. By analysing the feature importance, we are able to confirm that the model prioritizes meaningful features, giving us confidence in its decision-making process.
 
 \subsection{LSTM Benchmark}
 
 \noindent
-To provide a deep learning baseline, we trained a bidirectional LSTM model on the SMS UCI dataset, using 5-fold Stratified Cross-Validation. The LSTM achieved the following results after training \textbf{1494 rows}, taking \textbf{12 secs}:
+To provide a deep learning baseline, using the Python TensorFlow library, we trained a bidirectional LSTM model on the SMS UCI dataset, using 5-fold Stratified Cross-Validation. The LSTM achieved the following results after training \textbf{1494 rows}, taking \textbf{12 secs}:
 
 \begin{itemize}
     \item Accuracy: \textbf{95.65\%}
@@ -756,7 +763,7 @@ To provide a deep learning baseline, we trained a bidirectional LSTM model on th
 
 \begin{table}[htbp]
     \centering
-    \caption{\textbf{SMS LSMT Model Classification Report}}
+    \caption{\textbf{SMS LSTM Model Classification Report}}
     \begin{tabular}{l c c c c}
     \toprule
      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
@@ -772,7 +779,8 @@ To provide a deep learning baseline, we trained a bidirectional LSTM model on th
     \label{tab:classification_report_6}
 \end{table}
 
-While the LSTM demonstrated strong performance, our Random Forest model slightly outperformed it with an accuracy of 97.00\%. This highlights that, for structured short-form text like SMS with limited data, traditional models with proper preprocessing can not only match but also exceed the performance of deep learning models. 
+\noindent
+While the LSTM demonstrated strong performance, our Random Forest model slightly outperformed it with an accuracy of 97.00\%. This highlights that, for structured short-form text like SMS with limited data, traditional models with proper preprocessing can not only match but also exceed the performance of deep learning models. Perhaps if we had a much larger dataset, the LSTM model would have been able to outperform the Random Forest model. However, this is not the case here, as we are limited by the size of the dataset.
 
 \subsection{Future Deployment Strategy}
 
