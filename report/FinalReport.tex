@@ -5,7 +5,6 @@
 \usepackage{booktabs}
 \usepackage[utf8]{inputenc}
 
-
 \begin{document}
 
 % ================================
@@ -16,19 +15,13 @@
     \vspace*{\fill} % Add flexible vertical space at the top
     
     % Title
-    {\huge \textbf{Analysis of Effectiveness of Traditional Ham or Spam Detection Models}}\\[1.5cm]
+    {\huge \textbf{Comparative Evaluation of a Hybrid Text-URL Spam Detection Framework Across SMS, Email, and YouTube Comments}}\\[1.5cm]
     
     % Submitted by
     {\large \textbf{Submitted by:}}\\[0.5cm]
     \begin{large}
         Matteo Robidoux\\
         Raagav Prasanna\\
-    \end{large}
-
-    \vspace{1cm}
-
-    {\large \textbf{Co-author:}}\\[0.5cm]
-    \begin{large}
         Dr Yaser Esmaeili Salehani\\
     \end{large}
 
@@ -51,7 +44,7 @@
 Furthermore, we observed \textbf{key differences across input datasets}. SMS messages consist solely of a body containing text, whereas emails include a subject line. Moreover, YouTube comments also often contained spam related to self-promotion, with messages similar to “Please subscribe to my channel”. Additionally, emails and comments provided unique attributes, such as email subjects and the authors of comments, which are also key pieces of data required to identify spam.
 \newline
 \newline
-To address these variations, \textbf{we developed three specialized models for SMS, email, and comment spam detection}, each catering to the different datasets that we acquired. The individual model’s predictions were then combined with the output of the URL spam model whenever a URL was present. This hybrid approach \textbf{significantly improved classification accuracy}, significantly outperforming or offering similar results to traditional methods. This was especially shown in the SMS model, which \textbf{demonstrated an increase in accuracy of over 35\%} compared to traditional methods. This study demonstrates the importance of URL detection in spam classification, and shows that a hybrid approach can effectively address the limitations of traditional spam detection methods. Fianlly, it also highlights the importance of dataset balancing through upsampling or downsampling, comparing our improved results to other studies that used the same datasets, but without any balancing.
+To address these variations, \textbf{we developed three specialized models for SMS, email, and comment spam detection}, each catering to the different datasets that we acquired. The individual model’s predictions were then combined with the output of the URL spam model whenever a URL was present. We also employed standard data preprocessing techniques as well as adequate balancing of the datasets with equal amounts of spam and non spam data, through downsampling and upsampling. This hybrid approach \textbf{significantly improved classification accuracy}, significantly outperforming or offering similar results to traditional methods. This was especially shown in the SMS model, which \textbf{demonstrated an increase in accuracy of over 35\%} compared to traditional methods. More specifically, with our hybrid approach, we acheived a Precision, Recall and F1-score of 1.00, 0.99, and 0.99 for Spam detection, and 0.99, 1.00 and 0.99 for Non Spam detection. This study demonstrates the importance of URL detection in spam classification, and shows that a hybrid approach can effectively address the limitations of traditional spam detection methods. Finally, it also highlights the importance of dataset balancing through upsampling or downsampling, comparing our improved results to other studies that used the same datasets, but without any balancing.
 \end{abstract}
 
 % ================================
@@ -62,7 +55,7 @@ To address these variations, \textbf{we developed three specialized models for S
 The rise of digital communication has led to an increase in the amount of unwanted and potentially harmful spam messages across various platforms. This includes SMS messages, emails, and content within online comment sections. Spam messages can range anywhere from harmless advertisements, to phishing attempts and even malware distribution. This emphasizes the need for effective spam detection, which is needed for ensuring the security of a user, as well as the integrity of a platform. The traditional spam detection techniques, \textbf{commonly known as "ham or spam"}, often rely solely on text based models, using an algorithm such as SVM, Random Forest, Decision Tree, KNN, or even Naive Bayes. These methods often leverage textual features to identify malicious content [1], [8], [9]. 
 \newline
 \newline
-While these methods are effective when it comes to detecting spam, and have acheived relativley high accuracy on datasets such as the UCI SMS Spam Collection dataset [2]; they tend to oversimplify crucial contextual cues such as URLs and sender metadata. This is emphazied by Johari et al. [9], where it was shown that the performance of spam classifiers is highly dependant on dataset composition, feature balance, and noise levels. Similarly, Al-Kaabi et al. [10] categorize spam detection methods into rule-based, machine learning-based, and deep learning-based strategies, highlighting the strengths and weaknesses of each. Al Saidat et al. [19] further argue that combining multiple algorithmic paradigms, especially in hybrid or ensemble architectures, often yields superior results. 
+While these methods are effective when it comes to detecting spam, and have acheived relativley high accuracy on datasets such as the UCI SMS Spam Collection dataset [2]; they tend to oversimplify crucial contextual cues such as URLs and sender metadata. This is emphazied by Johari et al. [9], where it was shown that the performance of spam classifiers is highly dependant on dataset composition, feature balance, and noise levels. Similarly, Al-Kaabi et al. [10] categorize spam detection methods into rule-based, machine learning-based, and deep learning-based strategies, highlighting the strengths and weaknesses of each. Al Saidat et al. [19] further argue that combining multiple algorithmic paradigms, especially in hybrid or ensemble architectures, often yields superior results. In the end, traditional models often fail to generalize well across different datasets, as they are often trained on a single dataset, and do not take into account the differences between the datasets.
 \newline
 \newline
 One key aspect of spam identification that is not present within traditional methods is the identification of spam URLs. While many spam messages contains maliscious links, there are many messages that can contain valid URLs sent from valid users, such as video links being shared by friends. Therefore, flagging all messages with links as spam increases the chances of us having a high false positive rate. Hence, our study propes as alternative solution involving a hybrid prediction approach analyzing both the spam likelihood of the URL and the text body using seperate models, significantly enhancing spam detection accuracy. This approach aligns with findings by Altunay [12] and Bilgen and Kaya [11], who demonstrated that isolating URL evaluation and combining deep learning modules with traditional classifiers can greatly improve precision. Altunay’s CNN-GRU model achieved 99.1\% accuracy on Turkish and English SMS datasets, while Bilgen and Kaya’s EGMA hybrid model reached 99.3\% on standard SMS corpora.
@@ -72,6 +65,9 @@ Furthermore, spam characteristics \textbf{differ across various platforms}. SMS 
 \newline
 \newline
 To address this, we propose a hybrid spam detection algorithm consisting of three specialized models for SMS, email, and YouTube comments. Each model is designed to uniquely identify characteristics of its respective dataset, while using a separate model for the embedded URLs in the event they exist. When a message contains a URL, the URL model’s prediction is combined with that of the text model’s, determining the legitimatacy of the message. \textbf{Our results demonstrate} that this approach significantly \textbf{outperforms traditional methods}, consistent with recent advances in ensemble and cascaded classification frameworks such as Oh’s YouTube comment spam system [18] and the CNN-LSTM hybrid proposed by Sam’an and Imaddudin [17].
+\newline
+\newline
+In the end, our contribution is twofold: First, we present a hybrid spam detection framework that effectively combines URL and text-based models to enhance classification accuracy across SMS, email, and YouTube comments. Second, we provide a comprehensive evaluation of our approach against traditional methods, demonstrating its superiority in terms of precision and recall. Our findings underscore the importance of URL detection in spam classification and highlight the potential of hybrid models in addressing the limitations of traditional spam detection techniques. We also highlight the importance of dataset balancing through upsampling or downsampling, comparing our improved results to other studies that used the same datasets, but without any balancing. This is especially important as many of the datasets that we found were heavily imbalanced, with a large amount of spam messages compared to non spam messages.
 \newline
 \newline
 The rest of this paper is organized as follows: Section 2 reviews \textbf{related work} in spam detection. Section 3 describes our \textbf{methodology}, including dataset preprocessing, model architectures, and \textbf{training procedures}. Section 4 discusses the Inference procedure. Finally, Section 5 discusses our \textbf{key findings}.
@@ -369,7 +365,7 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
 
 \begin{table}[htbp]
     \centering
-    \caption{\textbf{SMS model Classification Report}}
+    \caption{\textbf{SMS model Classification Report (UCI Dataset)}}
     \begin{tabular}{l c c c c}
     \toprule
      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
@@ -545,6 +541,13 @@ The inference process across SMS, email, and comments, generally follows the sam
 
 The final spam probability score is then compared against a predefined threshold (typically 0.5). If the score meets or exceeds this threshold, the message is classified as spam; otherwise, it is classified as non-spam.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../analysis/Model_Pipeline_Flowchart.png}
+    \caption{Hybrid Model Inference Process}
+    \label{fig:inference_process}
+\end{figure}
+
 \section{Results and Discussion}
 \subsection{Comparison to Traditional Methods}
 
@@ -570,8 +573,6 @@ As mentioned previously, the study by Gawai and Salunke [8] aimed to compare the
     \bottomrule
     \end{tabular}
 \end{table}
-
-\newpage
 
 \noindent
 When utilizing the same dataset and training algorithms, we get the following results:
@@ -603,7 +604,7 @@ Additionally, as stated before, they trained their models on the UCI SMS Spam Co
 \newline
 
 \noindent
-Furthermore, when we compare the results of our \textbf{Naive Bayes} to their results using the Naive Bayes algorithm, we see both similar and slightly improved results. For Spam for example, \textbf{they received a precision of 0.99 and a recall of 0.85}, while \textbf{we received a precision of 0.98 and a recall of 0.97}. We also both have the \textbf{same accuracy of 98\%}. This shows that our model is able to achieve similar and if not better results compared to traditional methods, while also being able to outperform them in some cases. This highlights the importance of proper data normalization and preprocesssing, as well as using multiple training methods to achieve the best results possible; as even with the best training algorithms, if the data is not properly preprocessed, the results will not be as good as they could be.
+Furthermore, when we compare the results of our \textbf{Naive Bayes} model, to their results using the Naive Bayes algorithm, we see both similar and slightly improved results. For Spam for example, \textbf{they received a precision of 0.99 and a recall of 0.85}, while \textbf{we received a precision of 0.98 and a recall of 0.97}. We also both have the \textbf{same accuracy of 98\%}. This shows that our model is able to achieve similar and if not better results compared to traditional methods, while also being able to outperform them in some cases. This highlights the importance of proper data normalization and preprocesssing, as well as using multiple training methods to achieve the best results possible; as even with the best training algorithms, if the data is not properly preprocessed, the results will not be as good as they could be.
 
 \subsection{Analysis of Hybrid Approach}
 
@@ -626,16 +627,13 @@ The hybrid approach that we implemented, by training a seperate model for URL sp
     \label{tab:csv_sample}
 \end{table}
 
-
-\newpage
-
 \noindent
 For the traditional approach, we use the same model to classify the input messages as Legitimate or Spam. For the hybrid approach, we first classify the URLs using the URL model, and then combine the results with the SMS model to classify the input messages as Legitimate or Spam. If both models classify the input as Legitimate, then the input is classified as Legitimate. If either model classifies the input as Spam, then the input is classified as Spam. This way, we can see how well the hybrid approach performs compared to the traditional approach. Although this is not the most fair comparison, as the hybrid approach utilizes another URL model trained on the URL dataset, it is still a good way to see how well the hybrid approach performs compared to the traditional approach, in terms of real world applications of a detection system. The results post prediction for both approaches, are shown below:
 
 
 \begin{table}[htbp]
     \centering
-    \caption{Traditional model Approach prediction Results, using balanced UCI SMS Spam Collection Dataset [2]}
+    \caption{Traditional Model Appraoch Prediction Results, using balanced UCI SMS Spam Collection Dataset [2]}
     \begin{tabular}{l c c c c}
     \toprule
      & Precision & Recall & F1-Score & Support \\
@@ -653,7 +651,7 @@ For the traditional approach, we use the same model to classify the input messag
 
 \begin{table}[htbp]
     \centering
-    \caption{Hybrid Model Approach prediction Results, trained using balanced UCI SMS Spam Collection Dataset [2]}
+    \caption{Hybrid Model Approach Prediction Results, trained using balanced UCI SMS Spam Collection Dataset [2]}
     \begin{tabular}{l c c c c}
     \toprule
      & Precision & Recall & F1-Score & Support \\
@@ -731,7 +729,7 @@ Understanding the decision-making process of spam-detection models is vital for 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{../analysis/url/feature_importance.png}
-    \caption{Feature Importance for URL Model}
+    \caption{Comparison of Feature Importance for URL Model}
     \label{fig:feature_importance_1}
 \end{figure}
 
@@ -770,14 +768,37 @@ To provide a deep learning baseline, using the Python TensorFlow library, we tra
 \noindent
 While the LSTM demonstrated strong performance, our Random Forest model slightly outperformed it with an accuracy of 97.00\%. This highlights that, for structured short-form text like SMS with limited data, traditional models with proper preprocessing can not only match but also exceed the performance of deep learning models. Perhaps if we had a much larger dataset, the LSTM model would have been able to outperform the Random Forest model. However, this is not the case here, as we are limited by the size of the dataset.
 
-\subsection{Future Deployment Strategy}
+% \subsection{Future Deployment Strategy}
+
+% \noindent
+% A functional web application has already been developed and deployed locally, allowing users to input messages, which then communicates with the backend API endpoints for real-time spam classification. Future deployment will incolve transitioning the application from localhost to a production enviornment. This will include containerizing the application using Docker and hosting it on a scalable cloud platform, such as AWS or Heroku. Kubernetes will be used to manage the containerized application for scalability and reliability. Additionally, to ensure our model remains effective over time, we will implement a monitoring system such as Grafana, to track performance and trigger updates. This pipeline ensures the application remains scalable and responsive to real-world usage.
+
+% \subsection*{Conclusion}
+% In conclusion, our study demonstrates the effectiveness of a hybrid approach for spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adequately balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
+
+\subsection*{Conclusion and Future Works}
+This study demonstrates the effectiveness of a hybrid spam detection model that integrates traditional text-based classifiers with a dedicated URL-based classifier. By separating message content from embedded URLs, our approach addresses the limitations of conventional single-stream models and significantly improves classification accuracy across diverse platforms, including SMS, email, and YouTube comments. Our results show that the hybrid model consistently outperforms traditional methods, particularly in messages containing URLs. Moreover, we emphasize the importance of dataset balancing and reliable training strategies such as Stratified K-Fold cross-validation, to ensure that dependable classifiers are built.
+\newline
+
 
 \noindent
-A functional web application has already been developed and deployed locally, allowing users to input messages, which then communicates with the backend API endpoints for real-time spam classification. Future deployment will incolve transitioning the application from localhost to a production enviornment. This will include containerizing the application using Docker and hosting it on a scalable cloud platform, such as AWS or Heroku. Kubernetes will be used to manage the containerized application for scalability and reliability. Additionally, to ensure our model remains effective over time, we will implement a monitoring system such as Grafana, to track performance and trigger updates. This pipeline ensures the application remains scalable and responsive to real-world usage.
+To support real-time deployment, a functional web application has already been developed and tested locally, enabling live spam classification via backend APIs. Future work will focus on transitioning this application to a production environment by containerizing it with Docker and deploying it on scalable cloud infrastructure such as AWS or Heroku. Kubernetes will be used for orchestration to ensure high availability, and monitoring tools like Grafana will track model performance and enable automatic retraining when necessary.
+\newline
 
-\subsection*{Conclusion}
-In conclusion, our study demonstrates the effectiveness of a hybrid approach for spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adequately balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
+\noindent
+Further improvements could be made by leveraging transfer learning techniques using large-scale pre-trained language models such as BERT. These models have shown superior contextual understanding and could enhance classification performance, especially for more nuanced or obfuscated spam messages. Fine-tuning such models on spam datasets may yield better generalization across informal or noisy inputs.
+\newline
 
+\noindent
+Another promising direction is the development of multilingual spam detection systems. As spam increasingly targets users in various languages, extending support beyond English would significantly broaden the model’s real-world applicability. This would involve curating multilingual datasets and possibly integrating multilingual transformers such as mBERT or XLM-R.
+\newline
+
+\noindent
+Finally, integrating the entire pipeline into a low-latency, real-time system remains a critical step toward practical use. With optimizations in preprocessing and model inference, it is feasible to build a lightweight, fast-responding system capable of handling high-throughput spam classification in production.
+\newline
+
+\noindent
+Ultimately, this research highlights the value of modular, adaptable spam detection systems in an era of increasingly sophisticated threats. By bridging the gap between academic modeling and practical deployment, our work provides a scalable framework that can evolve alongside the ever-changing landscape of digital communication.
 
 \newpage
 \subsection*{References}
