@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{booktabs}
+\usepackage{float}
 \usepackage[utf8]{inputenc}
 \usepackage[hyphens]{url}
 \usepackage{hyperref}
@@ -207,24 +208,27 @@ In this section, we discuss the specific architecture and training process of ea
 
 We extract the following features from each URL:
 
-\begin{itemize}
-    \item \textbf{Structural features}
-        \begin{itemize}
-        \item Length of the URL, number of dots, number of query parameters, etc.
-        \end{itemize}
-    \item \textbf{Specific keywords}
-        \begin{itemize}
-        \item Presence of words like “reward”, “win”, “gift”, “claim”, etc. for spam detection.
-        \end{itemize}
-    \item \textbf{Domain and subdomain features}
-        \begin{itemize}
-        \item Length of the domain name, presence of suspicious top-level domains (TLDs) such as .xyz or .biz
-        \end{itemize}
-    \item \textbf{Redirect and path features}
-        \begin{itemize}
-            \item Presence of redirects, subdomain keywords like "auth" or "login", and path length.
-        \end{itemize}
-\end{itemize}
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{11pt}
+
+\centering 
+\begin{tabular}{|p{4cm}|p{10cm}|}
+\hline
+\textbf{Feature Category} & \textbf{Description} \\
+\hline
+Structural Features & Length of the URL, number of dots, number of query parameters, etc. \\
+\hline
+Specific Keywords & Presence of words like “reward”, “win”, “gift”, “claim”, etc. for spam detection. \\
+\hline
+Domain and Subdomain Features & Length of the domain name, presence of suspicious top-level domains (TLDs) such as .xyz or .biz \\
+\hline
+Redirect and Path Features & Presence of redirects, subdomain keywords like "auth" or "login", and path length. \\
+\hline
+\end{tabular}
+\caption{Extracted Features from URLs}
+\label{tab:url_features}
+\end{table}
 
 \subsubsection*{Training}
 
@@ -299,11 +303,25 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
 \subsubsection*{Feature Extraction}
 
 We applied TF-IDF vectorization to capture word patterns and important terms while filtering out common English stopwords. The vectorization settings included:
-\begin{itemize}
-    \item Maximum features: 5000
-    \item Minimum document frequency: 2
-    \item Maximum document frequency: 0.95
-\end{itemize}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{11pt}
+\centering
+\begin{tabular}{|p{6cm}|p{8.5cm}|}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+Maximum features & 5000 \\
+\hline
+Minimum document frequency & 2 \\
+\hline
+Maximum document frequency & 0.95 \\
+\hline
+\end{tabular}
+\caption{TF-IDF Vectorizer Parameters}
+\label{tab:tfidf_params}
+\end{table}
 
 \noindent
 Training was done on the same laptop using \textbf{Stratified K-fold with 10 folds}. However, this time a \textbf{Random Forest Classifier} was used with the following hyperparameters:
@@ -424,20 +442,25 @@ We also generated the following ROC curve, Precision-Recall curve, and confusion
 We applied TF-IDF vectorization separately to both the email subject and body, allowing the model to leverage textual patterns in each section.
 \newline
 \newline
-Text vectorization settings:
-\begin{itemize}
-    \item Minimum document frequency: 3
-    \item Maximum document frequency: 0.90
-    \item 5000 max features
-\end{itemize}
 
-\noindent
-Subject vectorization settings:
-\begin{itemize}
-    \item Minimum document frequency: 2
-    \item Maximum document frequency: 0.95
-    \item 1000 max features
-\end{itemize}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{12pt}
+\centering
+\begin{tabular}{|p{6cm}|p{5cm}|p{4cm}|}
+\hline
+\textbf{Parameter} & \textbf{Text Vectorization} & \textbf{Subject Vectorization} \\
+\hline
+Minimum document frequency & 3 & 2 \\
+\hline
+Maximum document frequency & 0.90 & 0.95 \\
+\hline
+Maximum features & 5000 & 1000 \\
+\hline
+\end{tabular}
+\caption{Comparison of Vectorization Settings for Text and Subject Fields}
+\label{tab:vectorization_settings}
+\end{table}
 
 \subsubsection*{Training}
 We trained an \textbf{XGBoost classifier} (No Stratified K-fold), with the same hardware but with a \textbf{70/30 train-test split}:
@@ -483,10 +506,22 @@ The model achieved the following results after training 23,000 rows, taking 249 
 
 Here, we once again utilize a TF-IDF vectorizer for text, as well as one for author.
 
-\begin{itemize}
-    \item Textual Features: TF-IDF vectorization applied to comment text
-    \item Author Based Features: TF-IDF vectorization applied to usernames to detect repeated spam patterns from specific users, as well as to recognize patterns in usernames that look suspicious
-\end{itemize}
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{10pt}
+\centering
+\begin{tabular}{|p{5cm}|p{9cm}|}
+\hline
+\textbf{Feature Type} & \textbf{Description} \\
+\hline
+Textual Features & TF-IDF on comment text to capture term importance \\
+\hline
+Author Features & TF-IDF on usernames to detect spam patterns and suspicious naming \\
+\hline
+\end{tabular}
+\caption{TF-IDF Feature Extraction Overview}
+\label{tab:tfidf_features}
+\end{table}
 
 \subsubsection*{Training}
 
