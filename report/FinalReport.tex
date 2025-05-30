@@ -235,16 +235,38 @@ Redirect and Path Features & Presence of redirects, subdomain keywords like "aut
 \noindent
 We trained an \textbf{LightGBM model} (lighter alternative to XGBoost, to minimize training time), with 300 boosts per round. Additionally, we also utilized \textbf{Stratified K-fold}, using \textbf{5 folds} in total. The model was trained on 208,876 rows of data. The following hyperparameters were used: 
 
-\begin{itemize}
-    \item Objective: binary
-    \item Metric: Binary Logloss
-    \item Boosting type: gbdt
-    \item 31 leaves
-    \item Learning rate of 0.1
-    \item Feature fraction of 0.7
-    \item Bagging fraction of 0.7
-    \item Bagging frequency of 5
-\end{itemize}
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \setlength{\tabcolsep}{11pt}
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Parameter} & \textbf{Value} \\
+        \hline
+        Model & LightGBM (300 boosts per round) \\
+        \hline
+        Cross-validation & Stratified K-Fold (5 folds) \\
+        \hline
+        Objective & Binary \\
+        \hline
+        Metric & Binary Logloss \\
+        \hline
+        Boosting Type & GBDT \\
+        \hline
+        Number of Leaves & 31 \\
+        \hline
+        Learning Rate & 0.1 \\
+        \hline
+        Feature Fraction & 0.7 \\
+        \hline
+        Bagging Fraction & 0.7 \\
+        \hline
+        Bagging Frequency & 5 \\
+        \hline
+    \end{tabular}
+    \caption{LightGBM Model Training Configuration for URL Model}
+\end{table}
+
 
 \noindent
 The model achieved the following results after training on a Lenovo Flex 5 Laptop with a AMD Ryzen 7 4700U Processor and 16GB of DDR4 memory, taking around \textbf{187 secs}:
@@ -326,10 +348,32 @@ Maximum document frequency & 0.95 \\
 \noindent
 Training was done on the same laptop using \textbf{Stratified K-fold with 10 folds}. However, this time a \textbf{Random Forest Classifier} was used with the following hyperparameters:
 
-\begin{itemize}
-    \item 200 estimators
-    \item Max depth of 30
-\end{itemize}
+% \begin{itemize}
+%     \item 200 estimators
+%     \item Max depth of 30
+% \end{itemize}
+
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \setlength{\tabcolsep}{11pt}
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Parameter} & \textbf{Value} \\
+        \hline
+        Model & Random Forest Classifier \\
+        \hline
+        Cross-validation & Stratified K-Fold (10 folds) \\
+        \hline
+        Number of Estimators & 200 \\
+        \hline
+        Max Depth & 30 \\
+        \hline
+    \end{tabular}
+    \caption{Random Forest Training Configuration for Text-Based Model}
+\end{table}
+
+
 
 \noindent
 The model achieved the following results after training 6,306 rows, taking around \textbf{54 secs}:
@@ -465,13 +509,33 @@ Maximum features & 5000 & 1000 \\
 \subsubsection*{Training}
 We trained an \textbf{XGBoost classifier} (No Stratified K-fold), with the same hardware but with a \textbf{70/30 train-test split}:
 
-\begin{itemize}
-    \item 500 estimators
-    \item Max depth of 10
-    \item Learning rate of 0.05
-    \item Subsampling of 0.8
-    \item Early stopping at 30 rounds if no improvement
-\end{itemize}
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \setlength{\tabcolsep}{11pt}
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Parameter} & \textbf{Value} \\
+        \hline
+        Model & XGBoost Classifier \\
+        \hline
+        Train-Test Split & 70/30 \\
+        \hline
+        Number of Estimators & 500 \\
+        \hline
+        Max Depth & 10 \\
+        \hline
+        Learning Rate & 0.05 \\
+        \hline
+        Subsampling & 0.8 \\
+        \hline
+        Early Stopping & 30 rounds \\
+        \hline
+    \end{tabular}
+    \caption{XGBoost Training Configuration for Email Model}
+\end{table}
+
+\newpage
 
 \noindent
 The model achieved the following results after training 23,000 rows, taking 249 secs:
@@ -527,12 +591,31 @@ Author Features & TF-IDF on usernames to detect spam patterns and suspicious nam
 
 Here, we train using a \textbf{Gradient Boosting Classifier} mainly so we can capture hierarchical relationships within the text data, since they are comments. This is all done using the same hardware and with a 70/30 train-test split. The hyperparameters include:
 
-\begin{itemize}
-    \item 200 estimators
-    \item Max depth of 6
-    \item Learning rate of 0.05
-    \item Subsampling of 0.7
-\end{itemize}
+\begin{table}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \setlength{\tabcolsep}{11pt}
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Parameter} & \textbf{Value} \\
+        \hline
+        Model & Gradient Boosting Classifier \\
+        \hline
+        Train-Test Split & 70/30 \\
+        \hline
+        Number of Estimators & 200 \\
+        \hline
+        Max Depth & 6 \\
+        \hline
+        Learning Rate & 0.05 \\
+        \hline
+        Subsampling & 0.7 \\
+        \hline
+    \end{tabular}
+    \caption{Gradient Boosting Training Configuration for YouTube Comment Model}
+\end{table}
+
+\newpage
 
 \noindent
 The model achieved the following results after training 1,962 rows, taking 0.73 secs:
@@ -561,7 +644,6 @@ The model achieved the following results after training 1,962 rows, taking 0.73 
     \label{tab:gbm_evaluation}
 \end{table}
 
-\newpage
 
 \section{Inference}
 
