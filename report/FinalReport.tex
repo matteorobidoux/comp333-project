@@ -4,6 +4,8 @@
 \usepackage{setspace}
 \usepackage{booktabs}
 \usepackage[utf8]{inputenc}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -15,19 +17,29 @@
     \vspace*{\fill} % Add flexible vertical space at the top
     
     % Title
-    {\huge \textbf{Hybrid Spam Detection via Text-URL Separation: A Comparative Evaluation Across SMS, Email, and YouTube Comments}}\\[1.5cm]
+    {\huge \textbf{Hybrid Spam Detection via Text-URL Separation: A Comparative Multiplatform Evaluation}}\\[1.5cm]
     
     % Submitted by
-    {\large \textbf{Submitted by:}}\\[0.5cm]
     \begin{large}
-        Matteo Robidoux\\
-        Raagav Prasanna\\
-        Yaser Esmaeili Salehani\\
+        Matteo Robidoux \\
+        Raagav Prasanna \\
+        Yaser Esmaeili Salehani* \\
     \end{large}
 
     \vspace{1cm}
-    
-    {\large Concordia University}
+
+    {\large (matteorobidoux@gmail.com, raagav.pras@gmail.com, yaser.esmaeilisalehani@concordia.ca)} \\[0.5cm]
+    {\large * Corresponding Author}\\
+
+    \vspace{1cm}
+
+    {\large Department of Computer Science and Software Engineering}\\
+    {\large Concordia University}\\
+    {\large Montreal, QC, Canada H3G 1M8}\\
+
+    \vspace{1cm}
+
+
     
     \vspace*{\fill} % Add flexible vertical space at the bottom
 \end{titlepage}
@@ -70,7 +82,7 @@ To address this, we propose a hybrid spam detection algorithm consisting of thre
 In the end, our contribution is twofold: First, we present a hybrid spam detection framework that effectively combines URL and text-based models to enhance classification accuracy across SMS, email, and YouTube comments. Second, we provide a comprehensive evaluation of our approach against traditional methods, demonstrating its superiority in terms of precision and recall. Our findings underscore the importance of URL detection in spam classification and highlight the potential of hybrid models in addressing the limitations of traditional spam detection techniques. We also highlight the importance of dataset balancing through upsampling or downsampling, comparing our improved results to other studies that used the same datasets, but without any balancing. This is especially important as many of the datasets that we found were heavily imbalanced, with a large amount of spam messages compared to non spam messages.
 \newline
 \newline
-The rest of this paper is organized as follows: Section 2 reviews \textbf{related work} in spam detection. Section 3 describes our \textbf{methodology}, including dataset preprocessing, model architectures, and \textbf{training procedures}. Section 4 discusses the Inference procedure. Finally, Section 5 discusses our \textbf{key findings}.
+The rest of this paper is organized as follows: Section 2 reviews \textbf{related work} in spam detection. Section 3 describes our \textbf{methodology}, including dataset preprocessing, model architectures, and \textbf{training procedures}. Section 4 discusses the Inference procedure. Section 5 discusses our \textbf{key findings}, and finally Section 6 concludes the paper, summarizing our contributions and suggesting directions for future research.
 
 
 % ================================
@@ -100,7 +112,7 @@ Finally, Shaaban et al. [13] propose a dynamic ensemble model called Deep Convol
 
 For this study, in order to ensure that each of the models have more than enough data to train and eventually perform inference on, we used a wide variety of different datasets. Specifically, we used datasets for URLs, SMS messages, Emails, and YouTube comments.
 
-\subsection*{URL Dataset}
+\subsubsection{URL Dataset}
 
 For the URLs, we decided to have a dedicated dataset containing plenty of addresses that were classified to be either spam or non spam. This way, the model had more than enough data to decide which URLs were malicious, preventing common links such as those from platforms like YouTube and TikTok from being marked as spam. The kaggle dataset that we used, titled Malicious and Benign URL’s [3], contained over \textbf{450,000 URLs}, that were marked as either being 0 for benign, or 1 for malicious. 
 \newline
@@ -127,7 +139,7 @@ In terms of preprocessing, we modified the names of the result and URL columns t
     \label{tab:csv_sample}
 \end{table}
 
-\subsection*{SMS Datasets}
+\subsubsection{SMS Datasets}
 For SMS messages, we utilized 2 datasets being the UCI SMS Spam Collection Dataset [2], containing a total of \textbf{5,575 messages}, as well as another kaggle dataset named SMS SPAM DATASET [4], containing \textbf{10,286 messages}. Both datasets contained the headers v1 and v2, where v1 categorized the row as either ham or spam, and v2 contained the text of the SMS message.
 
 \begin{table}[htbp]
@@ -169,7 +181,7 @@ For SMS messages, we utilized 2 datasets being the UCI SMS Spam Collection Datas
 \noindent
 When preprocessing, we merged the two datasets into a single one, and then renamed the columns to text and is\_spam. Additonally, we also decided to remove the URLs that were present in the messages, as we would be using the URL dataset to classify them. This was done by using a regex pattern to identify and remove any URLs that were present in the text. Finally, we also decided to balance the dataset by ensuring that there were an equal number of spam and ham messages. This was done by removing a random sample of the messages, until there were equal amounts of spam and ham messages. This was done to ensure that the model would not be biased towards one class or the other, as well as to ensure that the model would be able to generalize well to new data. In the end, we ended up with a total of \textbf{6,306 rows}.
 
-\subsection*{Email Dataset}
+\subsubsection{Email Dataset}
 
 When extracting the email data, we went for a total of 2 datasets. The first kaggle dataset titled Email Spam Dataset [5], contained 3 data subsets. The second dataset was titled Spam Mails Dataset [6]. In total, these 4 csv files provided us with over \textbf{23,000 rows of data}. 
 \newline
@@ -178,7 +190,7 @@ When extracting the email data, we went for a total of 2 datasets. The first kag
 For preprocessing, most of the methods stayed exactly the same as before. However, now we had the added challenge of needing to extract the subject from the email. This was done through simple regex matching and adding a subject column to our normalized dataset. In the end, we ended up with \textbf{17,656} rows of data.
 
 
-\subsection*{YouTube Comments Dataset}
+\subsubsection{YouTube Comments Dataset}
 For comments, we used a single kaggle dataset titled YouTube Comments Spam Dataset. This dataset contained the following headers: COMMENT\_ID, AUTHOR, DATE, CONTENT, VIDEO\_NAME, CLASS, and contained 1,962 rows of data.
 \newline
 \newline
@@ -776,51 +788,34 @@ While the LSTM demonstrated strong performance, our Random Forest model slightly
 % \subsection*{Conclusion}
 % In conclusion, our study demonstrates the effectiveness of a hybrid approach for spam detection by combining traditional text-based models with a dedicated URL classification model. By addressing the limitations of existing datasets and employing advanced feature extraction techniques, we achieved high accuracy and robustness across SMS, email, and YouTube comments. The results indicate that our hybrid model significantly outperforms traditional methods, particularly in scenarios involving URLs. Additionally, training datasets being adequately balanced is an absolute must when it comes to reliable spam detection, as well as reliable training techniques such as Stratified K-fold. Overall, this research highlights the importance of continuous innovation in spam detection methodologies to adapt to evolving threats in digital communication.
 
-\subsection*{Conclusion and Future Works}
-This study demonstrates the effectiveness of a hybrid spam detection model that integrates traditional text-based classifiers with a dedicated URL-based classifier. By separating message content from embedded URLs, our approach addresses the limitations of conventional single-stream models and significantly improves classification accuracy across diverse platforms, including SMS, email, and YouTube comments. Our results show that the hybrid model consistently outperforms traditional methods, particularly in messages containing URLs. Moreover, we emphasize the importance of dataset balancing and reliable training strategies such as Stratified K-Fold cross-validation, to ensure that dependable classifiers are built.
-\newline
-
-
-\noindent
-To support real-time deployment, a functional web application has already been developed and tested locally, enabling live spam classification via backend APIs. Future work will focus on transitioning this application to a production environment by containerizing it with Docker and deploying it on scalable cloud infrastructure such as AWS or Heroku. Kubernetes will be used for orchestration to ensure high availability, and monitoring tools like Grafana will track model performance and enable automatic retraining when necessary.
+\section{Conclusion and Future Works}
+This study demonstrates the effectiveness of a hybrid spam detection model that integrates traditional text-based classifiers with a dedicated URL-based classifier. By separating message content from embedded URLs, our approach addresses the limitations of conventional single-stream models and significantly improves classification accuracy across diverse platforms, including SMS, email, and YouTube comments. Our results show that the hybrid model consistently outperforms traditional methods, particularly in messages containing URLs. Moreover, we emphasize the importance of dataset balancing and reliable training strategies such as Stratified K-Fold cross-validation, to ensure that dependable classifiers are built. Ultimately, this research highlights the value of modular, adaptable spam detection systems in an era of increasingly sophisticated threats. By bridging the gap between academic modeling and practical deployment, our work provides a scalable framework that can evolve alongside the ever-changing landscape of digital communication.
 \newline
 
 \noindent
-Further improvements could be made by leveraging transfer learning techniques using large-scale pre-trained language models such as BERT. These models have shown superior contextual understanding and could enhance classification performance, especially for more nuanced or obfuscated spam messages. Fine-tuning such models on spam datasets may yield better generalization across informal or noisy inputs.
-\newline
-
-\noindent
-Another promising direction is the development of multilingual spam detection systems. As spam increasingly targets users in various languages, extending support beyond English would significantly broaden the model’s real-world applicability. This would involve curating multilingual datasets and possibly integrating multilingual transformers such as mBERT or XLM-R.
-\newline
-
-\noindent
-Finally, integrating the entire pipeline into a low-latency, real-time system remains a critical step toward practical use. With optimizations in preprocessing and model inference, it is feasible to build a lightweight, fast-responding system capable of handling high-throughput spam classification in production.
-\newline
-
-\noindent
-Ultimately, this research highlights the value of modular, adaptable spam detection systems in an era of increasingly sophisticated threats. By bridging the gap between academic modeling and practical deployment, our work provides a scalable framework that can evolve alongside the ever-changing landscape of digital communication.
+To support real-time deployment, a functional web application has already been developed and tested locally, enabling live spam classification via backend APIs. Future work will focus on transitioning this application to a production environment by containerizing it with Docker and deploying it on scalable cloud infrastructure such as AWS or Heroku. Kubernetes will be used for orchestration to ensure high availability, and monitoring tools like Grafana will track model performance and enable automatic retraining when necessary. Further improvements could be made by leveraging transfer learning techniques using large-scale pre-trained language models such as BERT. These models have shown superior contextual understanding and could enhance classification performance, especially for more nuanced or obfuscated spam messages. Fine-tuning such models on spam datasets may yield better generalization across informal or noisy inputs. Another promising direction is the development of multilingual spam detection systems. As spam increasingly targets users in various languages, extending support beyond English would significantly broaden the model’s real-world applicability. This would involve curating multilingual datasets and possibly integrating multilingual transformers such as mBERT or XLM-R. Finally, integrating the entire pipeline into a low-latency, real-time system remains a critical step toward practical use. With optimizations in preprocessing and model inference, it is feasible to build a lightweight, fast-responding system capable of handling high-throughput spam classification in production.
 
 \newpage
 \subsection*{References}
 [1] S. D. Gupta, S. Saha, and S. K. Das, "SMS Spam Detection Using Machine Learning," *J. Phys. Conf. Ser.*, vol. 1797, no. 1, p. 012017, Feb. 2021, doi: 10.1088/1742-6596/1797/1/012017.
 \newline
 \newline
-[2] UCI Machine Learning Repository, "SMS Spam Collection Dataset," [Online]. Available: https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset. [Accessed: 2025-03-24].
+[2] UCI Machine Learning Repository, "SMS Spam Collection Dataset," [Online]. Available: \url{https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset}. [Accessed: 2025-03-24].
 \newline
 \newline
-[3] S. Kumar, "Malicious and Benign URLs," [Online]. Available: https://www.kaggle.com/datasets/siddharthkumar25/malicious-and-benign-urls/data. [Accessed: Mar. 24, 2025].
+[3] S. Kumar, "Malicious and Benign URLs," [Online]. Available: \url{https://www.kaggle.com/datasets/siddharthkumar25/malicious-and-benign-urls/data}. [Accessed: Mar. 24, 2025].
 \newline
 \newline
-[4] T. Kumar, "SMS Spam Dataset," [Online]. Available: https://www.kaggle.com/datasets/tinu10kumar/sms-spam-dataset. [Accessed: Mar. 24, 2025].
+[4] T. Kumar, "SMS Spam Dataset," [Online]. Available: \url{https://www.kaggle.com/datasets/tinu10kumar/sms-spam-dataset}. [Accessed: Mar. 24, 2025].
 \newline
 \newline
-[5] N. Bharathi, "Email Spam Dataset," [Online]. Available: https://www.kaggle.com/datasets/nitishabharathi/email-spam-dataset?select=enronSpamSubset.csv. [Accessed: Mar. 24, 2025].
+[5] N. Bharathi, "Email Spam Dataset," [Online]. Available: \url{https://www.kaggle.com/datasets/nitishabharathi/email-spam-dataset?select=enronSpamSubset.csv}. [Accessed: Mar. 24, 2025].
 \newline
 \newline
-[6] V. Venky, "Spam Mails Dataset," [Online]. Available: https://www.kaggle.com/datasets/venky73/spam-mails-dataset. [Accessed: Mar. 24, 2025].
+[6] V. Venky, "Spam Mails Dataset," [Online]. Available: \url{https://www.kaggle.com/datasets/venky73/spam-mails-dataset}. [Accessed: Mar. 24, 2025].
 \newline
 \newline
-[7] A. Waheed, "Youtube Comments Spam Dataset," [Online]. Available: https://www.kaggle.com/datasets/ahsenwaheed/youtube-comments-spam-dataset. [Accessed: Mar. 24, 2025].
+[7] A. Waheed, "Youtube Comments Spam Dataset," [Online]. Available: \url{https://www.kaggle.com/datasets/ahsenwaheed/youtube-comments-spam-dataset}. [Accessed: Mar. 24, 2025].
 \newline
 \newline
 [8] S. Gawai and S. S. Salunke, "Classifying SMS as Spam or Ham Leveraging NLP and Machine Learning Techniques," in *2024 International Conference on Communication, Computing and Internet of Things (IC3IoT)*, 2024, pp. 1-6.
@@ -865,10 +860,10 @@ Ultimately, this research highlights the value of modular, adaptable spam detect
 [21] N. R. R. Rao and G. A. F. Vinodhini, “Measuring the efficiency of random forest, naive bayes, multilayer perceptron and support vector machine in email spam detection,” in Proc. ICONNECT-2024, 2025.
 \newline
 \newline
-[22] F. Doshi-Velez and B. Kim, "Towards a Rigorous Science of Interpretable Machine Learning," arXiv Preprint arXiv:1702.08608, Feb. 2017. [Online]. Available: https://arxiv.org/abs/1702.08608
+[22] F. Doshi-Velez and B. Kim, "Towards a Rigorous Science of Interpretable Machine Learning," arXiv Preprint arXiv:1702.08608, Feb. 2017. [Online]. Available: \url{https://arxiv.org/abs/1702.08608}
 \newline
 \newline
-[23] X. Liu, “Deciphering Spam Through AI: From Traditional Methods to Deep Learning Advancements in Email Security,” Proceedings of the 1st International Conference on Engineering Management, Information Technology and Intelligence, pp. 553–558, 2024, doi: https://doi.org/10.5220/0012958700004508.
+[23] X. Liu, “Deciphering Spam Through AI: From Traditional Methods to Deep Learning Advancements in Email Security,” Proceedings of the 1st International Conference on Engineering Management, Information Technology and Intelligence, pp. 553–558, 2024, doi: \url{https://doi.org/10.5220/0012958700004508}.
 
 
 \newpage
