@@ -7,8 +7,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[hyphens]{url}
 \usepackage{hyperref}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
 
 \begin{document}
 
@@ -237,7 +235,9 @@ Redirect and Path Features & Presence of redirects, subdomain keywords like "aut
 \noindent
 We trained an \textbf{LightGBM model} , which is a lighter alternative to XGBoost. This was mainly done in order to have something similar in performance to XGBoost, as it is good algorithm for training larger datasets, but at the same time minimizing our training time, as our URL model has many features which would be too lengthy to process via XGBoost. Additionally, we also utilized \textbf{Stratified K-fold} in order to maximize our training accuracy, using \textbf{5 folds} in total. The following hyperparameters were used: 
 
-\begin{table}[h!]
+\vspace{0.5em} 
+
+\begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.2}
     \setlength{\tabcolsep}{11pt}
@@ -267,49 +267,31 @@ We trained an \textbf{LightGBM model} , which is a lighter alternative to XGBoos
         \hline
     \end{tabular}
     \caption{LightGBM Model Training Configuration for URL Model}
+    \label{tab:lightgbm_config}
 \end{table}
+
+\vspace{0.5em} 
 
 \noindent
 Refer to Table \ref{tab:training_summary} for the training results.
 \newline
-% The model achieved the following results after training on a Lenovo Flex 5 Laptop with a AMD Ryzen 7 4700U Processor and 16GB of DDR4 memory, taking around \textbf{187 secs}:
 
-% \begin{itemize}
-%     \item Average Accuracy: \textbf{98.55\%}
-%     \item Average AUC: \textbf{99.82\%}
-%     \item Average Precision: \textbf{99.85\%}
-% \end{itemize} 
-
-
-% \begin{table}[htbp]
-%     \centering
-%     \caption{URL Model Classification Report}
-%     \begin{tabular}{l c c c c}
-%     \toprule
-%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-%     \midrule
-%     \textbf{Ham} & \textbf{0.98} & \textbf{0.99} & \textbf{0.99} & 104438 \\
-%     \textbf{Spam} & \textbf{0.99} & \textbf{0.98} & \textbf{0.99} & 104438 \\
-%     \midrule
-%     \textbf{Accuracy} & & & \textbf{0.99} & 208876 \\
-%     Macro Avg & 0.99 & 0.99 & 0.99 & 208876 \\
-%     Weighted Avg & 0.99 & 0.99 & 0.99 & 208876 \\
-%     \bottomrule
-%     \end{tabular}
-%     \label{tab:classification_report}
-% \end{table}
+\vspace{0.5em} 
 
 \noindent
 Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
 
-\begin{figure}[htbp]
+\vspace{0.5em} 
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{../analysis/url/combined_metrics.png}
+    \includegraphics[width=1\textwidth]{../analysis/url/combined_metrics.png}
     \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for URL Model}
     \label{fig:combined_metrics_1}
 \end{figure}
 
-\newpage
+\vspace{0.5em} 
+% \newpage
 
 \subsubsection{SMS Model}
 \subsubsection*{Feature Extraction}
@@ -370,84 +352,34 @@ Training was done using \textbf{Stratified K-fold with 10 folds}, allowing us to
 \noindent
 Refer to Table \ref{tab:training_summary} for the training results.
 \newline
-% The model achieved the following results after training 6,306 rows, taking around \textbf{54 secs}:
-
-% \begin{itemize}
-%     \item Accuracy: \textbf{96.73\%}
-%     \item AUC: \textbf{99.16\%}
-%     \item Average Precision: \textbf{99.34\%}
-% \end{itemize}
-
-% \begin{table}[htbp]
-%     \centering
-%     \caption{\textbf{SMS model Classification Report}}
-%     \begin{tabular}{l c c c c}
-%     \toprule
-%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-%     \midrule
-%     \textbf{Ham} & \textbf{0.96} & \textbf{0.97} & \textbf{0.97} & 3153 \\
-%     \textbf{Spam} & \textbf{0.97} & \textbf{0.96} & \textbf{0.97} & 3153 \\
-%     \midrule
-%     \textbf{Accuracy} & & & \textbf{0.97} & 6306 \\
-%     Macro Avg & 0.97 & 0.97 & 0.97 & 6306 \\
-%     Weighted Avg & 0.97 & 0.97 & 0.97 & 6306 \\
-%     \bottomrule
-%     \end{tabular}
-%     \label{tab:classification_report_2}
-% \end{table}
 
 \noindent
 Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{../analysis/sms/randomforest/combined_metrics.png}
+    \includegraphics[width=1\textwidth]{../analysis/sms/randomforest/combined_metrics.png}
     \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Model} 
     \label{fig:combined_metrics_2}
 \end{figure}
 
-\newpage
+% \newpage
+
 
 \noindent
 Furthermore, when training the model, we also decided to use another approach where we only train using the \textbf{SMS UCI Spam Collection Dataset} [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, URLs, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. Refer to Table \ref{tab:training_summary} for the training results.
 \newline
-% Furthermore, when training the model, we also decided to use another approach where we only train using the \textbf{SMS UCI Spam Collection Dataset} [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, URLs, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. The model achieved the following results after training \textbf{1,494 rows} (Much smaller than original SMS UCI dataset as there is a heavy bias), taking around \textbf{17 secs}: 
 
-% \begin{itemize}
-%     \item Accuracy: \textbf{97.19\%}
-%     \item AUC: \textbf{99.34\%}
-%     \item Average Precision: \textbf{99.48\%}
-% \end{itemize}
-
-% \begin{table}[htbp]
-%     \centering
-%     \caption{\textbf{SMS model Classification Report (UCI Dataset)}}
-%     \begin{tabular}{l c c c c}
-%     \toprule
-%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-%     \midrule
-%     \textbf{Legitimate} & \textbf{0.96} & \textbf{0.99} & \textbf{0.97} & 747 \\
-%     \textbf{Spam} & \textbf{0.99} & \textbf{0.96} & \textbf{0.97} & 747 \\
-%     \midrule
-%     \textbf{Accuracy} & & & \textbf{0.97} & 1494 \\
-%     Macro Avg & 0.97 & 0.97 & 0.97 & 1494 \\
-%     Weighted Avg & 0.97 & 0.97 & 0.97 & 1494 \\
-%     \bottomrule
-%     \end{tabular}
-%     \label{tab:classification_report_3}
-% \end{table}
 
 \noindent
 We also generated the following ROC curve, Precision-Recall curve, and confusion matrix to visualize the model's performance:
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{../analysis/sms/randomforest/uci/combined_metrics.png}
+    \includegraphics[width=1\textwidth]{../analysis/sms/randomforest/uci/combined_metrics.png}
     \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Model (UCI Dataset)}
     \label{fig:combined_metrics_3}
 \end{figure}
-
-\newpage
 
 \subsubsection{Email Model}
 \subsubsection*{Feature Extraction}
@@ -506,32 +438,6 @@ We trained an \textbf{XGBoost classifier}, as we have one extra feature with ema
 
 \noindent
 Refer to Table \ref{tab:training_summary} for the training results.
-% The model achieved the following results after training 23,000 rows, taking 249 secs:
-
-% \begin{itemize}
-%     \item Accuracy: \textbf{96.90\%}
-%     \item AUC: \textbf{99.59\%}
-%     \item Average Precision: \textbf{99.55\%}
-% \end{itemize}
-
-% \begin{table}[htbp]
-%     \centering
-%     \caption{Email Model Evaluation Report}
-%     \begin{tabular}{l c c c c}
-%     \toprule
-%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-%     \midrule
-%     \textbf{Legitimate} & \textbf{0.99} & \textbf{0.95} & \textbf{0.97} & 2649 \\
-%     \textbf{Spam} & \textbf{0.95} & \textbf{0.99} & \textbf{0.97} & 2649 \\
-%     \midrule
-%     \textbf{Accuracy}  & & & \textbf{0.97} & 5297 \\
-%     Macro Avg & 0.97 & 0.97 & 0.97 & 5297 \\
-%     Weighted Avg & 0.97 & 0.97 & 0.97 & 5297 \\
-%     \bottomrule
-%     \end{tabular}
-%     \label{tab:xgboost_evaluation}
-% \end{table}
-
 
 \subsubsection{YouTube Comments Model}
 \subsubsection*{Feature Extraction}
@@ -583,7 +489,7 @@ Here, we train using a \textbf{Gradient Boosting Classifier} mainly so we can ca
     \caption{Gradient Boosting Training Configuration for YouTube Comment Model}
 \end{table}
 
-\newpage
+% \newpage
 
 \noindent
 Refer to Table \ref{tab:training_summary} for the training results.
@@ -615,7 +521,7 @@ Refer to Table \ref{tab:training_summary} for the training results.
 
 \subsubsection{Training Results Summary}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Overall training summary}
     \label{tab:training_summary}
@@ -671,65 +577,6 @@ The final spam probability score is then compared against a predefined threshold
     \label{fig:inference_process}
 \end{figure}
 
-% \begin{figure}[h!]
-%     \centering
-%     \scalebox{0.7}{ % Slightly smaller overall
-%     \begin{tikzpicture}[
-%         font=\small,
-%         process/.style={rectangle, draw, rounded corners, minimum width=3.7cm, minimum height=1.2cm, text centered, draw=black, fill=white},
-%         io/.style={ellipse, draw, minimum width=3.6cm, minimum height=1.2cm, text centered, draw=black, fill=white},
-%         arrow/.style={draw, thick, -{Latex[length=4mm, width=2mm]}} % Larger arrowheads
-%     ]
-    
-%     % Nodes
-%     \node[io] (input) at (0,0) {Raw Message Input};
-%     \node[process] (split) at (4,0) {URL Extractor / Text Split};
-    
-%     \node[process] (textpre) at (4,3.5) {Text Preprocessing};
-%     \node[process] (textclf) at (9,3.5) {
-%         \begin{tabular}{c}
-%         Text Classifier \\
-%         (SMS: Random Forest, \\
-%         Email: XGBoost, \\
-%         YouTube: Gradient Boost)
-%         \end{tabular}
-%     };
-    
-%     \node[process] (urlextract) at (4,-3.5) {URL Feature Extract};
-%     \node[process] (urlclf) at (9,-3.5) {
-%         \begin{tabular}{c}
-%         URL Classifier \\
-%         (LightGBM)
-%         \end{tabular}
-%     };
-    
-%     \node[process] (combine) at (13,0) {
-%         \begin{tabular}{c}
-%         Combined Prediction \\
-%         (Weighted Avg.)
-%         \end{tabular}
-%     };
-    
-%     \node[io] (output) at (17,0) {Final Spam/Ham Label};
-    
-%     % Arrows
-%     \draw[arrow] (input.east) -- (split.west);
-%     \draw[arrow] (split.north) -- (textpre.south);
-%     \draw[arrow] (textpre.east) -- (textclf.west);
-%     \draw[arrow] (textclf.south east) to[out=-30,in=90] (combine.north);
-%     \draw[arrow] (split.south) -- (urlextract.north);
-%     \draw[arrow] (urlextract.east) -- (urlclf.west);
-%     \draw[arrow] (urlclf.north east) to[out=30,in=-90] (combine.south);
-%     \draw[arrow] (combine.east) -- (output.west);
-    
-%     \end{tikzpicture}
-%     }
-%     \caption{Hybrid Spam Detection Pipeline Combining Text and URL Classifiers}
-%     \label{fig:spam_pipeline}
-% \end{figure}
-
-
-
 
 \section{Results and Discussion}
 \subsection{Comparison to Traditional Methods}
@@ -737,7 +584,7 @@ The final spam probability score is then compared against a predefined threshold
 \noindent
 As mentioned previously, the study by Gawai and Salunke [8] aimed to compare the performance of various machine learning algorithms for SMS spam detection. The results of their study are shown within the table below:
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Performance of different algorithms by Gawai and Salunke [8]} % Replace with your desired caption
     \label{tab:performance} % Add a label for referencing
@@ -760,7 +607,7 @@ As mentioned previously, the study by Gawai and Salunke [8] aimed to compare the
 \noindent
 When utilizing the same dataset and training algorithms, we get the following results:
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Performance of different algorithms, Our Results} % Replace with your desired caption
     \label{tab:performance} % Add a label for referencing
@@ -795,7 +642,7 @@ Furthermore, when we compare the results of our \textbf{Naive Bayes} model, to t
 The hybrid approach that we implemented, by training a seperate model for URL spam detection, and then combining the results with the text model, also showed very promising results. In order to evaluate its effectiveness, we decided to compare the results of the hybrid approach, to that of the traditional approach. To begin with, we trained the SMS model using a balanced combination of UCI [2] with the SMS Spam Dataset [4] . This model was then used for both the tradtional and hybrid approach, with the only difference being that the hybrid approach also used the URL model to classify the URLs present in the messages. We then, using the UCI dataset [2], append maliscious and benign URLs to the end of the messages, to individually test each models' ability to detect spam. 
 
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{\textbf{Sample of combined dataset with SMS and URL}}
     \begin{tabular}{ll}
@@ -814,7 +661,7 @@ The hybrid approach that we implemented, by training a seperate model for URL sp
 For the traditional approach, we use the same model to classify the input messages as Legitimate or Spam. For the hybrid approach, we first classify the URLs using the URL model, and then combine the results with the SMS model to classify the input messages as Legitimate or Spam. If both models classify the input as Legitimate, then the input is classified as Legitimate. If either model classifies the input as Spam, then the input is classified as Spam. This way, we can see how well the hybrid approach performs compared to the traditional approach. Although this is not the most fair comparison, as the hybrid approach utilizes another URL model trained on the URL dataset, it is still a good way to see how well the hybrid approach performs compared to the traditional approach, in terms of real world applications of a detection system. The results post prediction for both approaches, are shown below:
 
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Traditional Model Approach Prediction Results, using balanced UCI SMS Spam Collection Dataset [2]}
     \begin{tabular}{l c c c c}
@@ -832,7 +679,7 @@ For the traditional approach, we use the same model to classify the input messag
     \label{tab:classification_report_4}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Hybrid Model Approach Prediction Results, trained using balanced UCI SMS Spam Collection Dataset [2]}
     \begin{tabular}{l c c c c}
@@ -850,56 +697,22 @@ For the traditional approach, we use the same model to classify the input messag
     \label{tab:classification_report_5}
 \end{table}
 
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{../analysis/sms/sms_traditional_model_performance.png}
-%     \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Tradtional Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
-%     \label{fig:roc_curve_6}
-% \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{../analysis/sms/traditional/roc_curve.png}
-    \caption{ROC Curve for SMS Traditional Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
-    \label{fig:roc_curve_6}
+    \includegraphics[width=0.8\textwidth]{../analysis/sms/traditional/combined_metrics.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Traditional Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
+    \label{fig:combined_metrics_4}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{../analysis/sms/traditional/precision_recall_curve.png}
-    \caption{Precision-Recall Curve for SMS Traditional Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
-    \label{fig:precision_recall_curve_6}
+    \includegraphics[width=0.8\textwidth]{../analysis/sms/hybrid/combined_metrics.png}
+    \caption{ROC Curve, Precision-Recall Curve, and Confusion Matrix for SMS Hybrid Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
+    \label{fig:combined_metrics_5}
 \end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{../analysis/sms/traditional/confusion_matrix.png}
-    \caption{Confusion Matrix for SMS Traditional Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
-    \label{fig:confusion_matrix_6}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{../analysis/sms/hybrid/roc_curve.png}
-    \caption{ROC Curve for SMS Hybrid Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
-    \label{fig:roc_curve_7}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{../analysis/sms/hybrid/precision_recall_curve.png}
-    \caption{Precision-Recall Curve for SMS Hybrid Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
-    \label{fig:precision_recall_curve_7}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{../analysis/sms/hybrid/confusion_matrix.png}
-    \caption{Confusion Matrix for SMS Hybrid Model, trained using both UCI SMS Spam Collection Dataset [2] and SMS Spam Dataset [4]}
-    \label{fig:confusion_matrix_7}
-\end{figure}
-
-\newpage
+% \newpage
 
 \noindent
 As shown in the tables above, we can see that the hybrid approach was able to achieve much better results than the traditional approach. The \textbf{hybrid approach} was able to achieve an \textbf{overall accuracy of 99\%}, while the \textbf{traditional approach} was only able to achieve an \textbf{accuracy of 63\%}. This shows that the hybrid approach is much more effective in detecting spam messages, especially when it comes to messages containing URLs. Furthermore, we can also see that the \textbf{hybrid approach} was able to achieve a much better \textbf{F1-Score}, with a score of \textbf{0.99}, while the \textbf{traditional approach} only achieved a score of \textbf{0.57}.
@@ -909,7 +722,7 @@ As shown in the tables above, we can see that the hybrid approach was able to ac
 \noindent
 Understanding the decision-making process of spam-detection models is vital for building trust and transparency. While single metrics, such as classification accuracy provides useful performance metrics, it alone is an incomplete description of most real-world tasks [22]. Therefore, we must question why the model makes each decision. Studies regarding spam detectors have shown that the lack of interpretability in deep learning models can negatively impact model improvement efforts, "Interpretability remains a significant concern, as the complexity of these models often makes it challenging to understand the rationale behind specific classifications” [23]. Various techniques such as feature-importance scores can be used to help better understand which features are most important for the model's decision-making process. 
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{../analysis/url/feature_importance.png}
     \caption{Comparison of Feature Importance for URL Model}
@@ -930,7 +743,7 @@ To provide a deep learning baseline, using the Python TensorFlow library, we tra
     \item Average Precision: \textbf{98.92\%}
 \end{itemize}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{\textbf{SMS LSTM Model Classification Report}}
     \begin{tabular}{l c c c c}

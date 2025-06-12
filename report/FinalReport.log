@@ -1,0 +1,637 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.9.16)  12 JUN 2025 00:46
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**"c:/Users/Matteo/Documents/Concordia - Winter 2025/COMP 333/Project/comp333-project/report/FinalReport.tex"
+(c:/Users/Matteo/Documents/Concordia - Winter 2025/COMP 333/Project/comp333-project/report/FinalReport.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-03-30> (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks16
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count193
+\Gm@cntv=\count194
+\c@Gm@tempcnt=\count195
+\Gm@bindingoffset=\dimen141
+\Gm@wd@mp=\dimen142
+\Gm@odd@mp=\dimen143
+\Gm@even@mp=\dimen144
+\Gm@layoutwidth=\dimen145
+\Gm@layoutheight=\dimen146
+\Gm@layouthoffset=\dimen147
+\Gm@layoutvoffset=\dimen148
+\Gm@dimlist=\toks17
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen149
+\Gin@req@width=\dimen150
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/setspace\setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen151
+\lightrulewidth=\dimen152
+\cmidrulewidth=\dimen153
+\belowrulesep=\dimen154
+\belowbottomsep=\dimen155
+\aboverulesep=\dimen156
+\abovetopsep=\dimen157
+\cmidrulesep=\dimen158
+\cmidrulekern=\dimen159
+\defaultaddspace=\dimen160
+\@cmidla=\count196
+\@cmidlb=\count197
+\@aboverulesep=\dimen161
+\@belowrulesep=\dimen162
+\@thisruleclass=\count198
+\@lastruleclass=\count199
+\@thisrulewidth=\dimen163
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count266
+\float@exts=\toks18
+\float@box=\box51
+\@float@everytoks=\toks19
+\@floatcapt=\box52
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks20
+\inpenc@posthook=\toks21
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+Package: hyperref 2023-02-07 v7.00v Hypertext links for LaTeX
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/letltxmacro\letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/auxhook\auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+Package: nameref 2022-05-17 v2.50 Cross-referencing by name of section
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count267
+)
+\@linkdim=\dimen164
+\Hy@linkcounter=\count268
+\Hy@pagecounter=\count269
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
+File: pd1enc.def 2023-02-07 v7.00v Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/etexcmds\etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count270
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
+File: puenc.def 2023-02-07 v7.00v Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4177.
+Package hyperref Info: Link nesting OFF on input line 4182.
+Package hyperref Info: Hyper index ON on input line 4185.
+Package hyperref Info: Plain pages OFF on input line 4192.
+Package hyperref Info: Backreferencing OFF on input line 4197.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4425.
+\c@Hy@tempcnt=\count271
+LaTeX Info: Redefining \url on input line 4763.
+\XeTeXLinkMargin=\dimen165
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+))
+\Fld@menulength=\count272
+\Field@Width=\dimen166
+\Fld@charsize=\dimen167
+Package hyperref Info: Hyper figures OFF on input line 6042.
+Package hyperref Info: Link nesting OFF on input line 6047.
+Package hyperref Info: Hyper index ON on input line 6050.
+Package hyperref Info: backreferencing OFF on input line 6057.
+Package hyperref Info: Link coloring OFF on input line 6062.
+Package hyperref Info: Link coloring with OCG OFF on input line 6067.
+Package hyperref Info: PDF/A mode OFF on input line 6072.
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count273
+\c@Item=\count274
+\c@Hfootnote=\count275
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
+File: hpdftex.def 2023-02-07 v7.00v Hyperref driver for pdfTeX
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/base\atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
+with kernel methods
+)
+\Fld@listcount=\count276
+\c@bookmark@seq@number=\count277
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
+)
+\Hy@SectionHShift=\skip50
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2023-03-30 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count278
+\l__pdf_internal_box=\box53
+) (FinalReport.aux
+
+LaTeX Warning: Label `tab:csv_sample' multiply defined.
+
+
+LaTeX Warning: Label `tab:csv_sample' multiply defined.
+
+
+LaTeX Warning: Label `tab:performance' multiply defined.
+
+
+LaTeX Warning: Label `tab:csv_sample' multiply defined.
+
+)
+\openout1 = `FinalReport.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 452.9679pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=452.9679pt
+* \textheight=700.50687pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count279
+\scratchdimen=\dimen168
+\scratchbox=\box54
+\nofMPsegments=\count280
+\nofMParguments=\count281
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count282
+\MPscratchDim=\dimen169
+\MPnumerator=\count283
+\makeMPintoPDFobject=\count284
+\everyMPtoPDFconversion=\toks23
+) (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Users\Matteo\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+Package hyperref Info: Link coloring OFF on input line 11.
+ (FinalReport.out) (FinalReport.out)
+\@outlinefile=\write3
+\openout3 = `FinalReport.out'.
+
+ [1
+
+{C:/Users/Matteo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 53--61
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--61
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--87
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--87
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--87
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--87
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--87
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--87
+
+ []
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.87 
+      [1]
+Underfull \hbox (badness 10000) in paragraph at lines 93--106
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 93--106
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 93--106
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 93--106
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 118--120
+
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 127.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 127.
+[3]
+Overfull \hbox (53.88017pt too wide) in paragraph at lines 167--180
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 187--192
+
+ []
+
+
+Overfull \hbox (9.31624pt too wide) in paragraph at lines 195--200
+\OT1/cmr/m/n/10 con-tained the fol-low-ing head-ers: COM-MENT[]ID, AU-THOR, DATE, CON-TENT, VIDEO[]NAME, CLASS,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 195--200
+
+ []
+
+[4]
+Underfull \hbox (badness 1163) in paragraph at lines 224--224
+[]\OT1/cmr/m/n/10 Domain and Sub-do-main
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 226--226
+[]\OT1/cmr/m/n/10 Redirect and Path Fea-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--278
+
+ []
+
+<../analysis/url/combined_metrics.png, id=129, 5765.54pt x 4624.27625pt>
+File: ../analysis/url/combined_metrics.png Graphic file (type png)
+<use ../analysis/url/combined_metrics.png>
+Package pdftex.def Info: ../analysis/url/combined_metrics.png  used on input line 288.
+(pdftex.def)             Requested size: 452.9679pt x 363.2464pt.
+[5]
+Overfull \hbox (3.59705pt too wide) in paragraph at lines 305--316
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 352--355
+
+ []
+
+<../analysis/sms/randomforest/combined_metrics.png, id=141, 4217.7575pt x 3422.7875pt>
+File: ../analysis/sms/randomforest/combined_metrics.png Graphic file (type png)
+<use ../analysis/sms/randomforest/combined_metrics.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/combined_metrics.png  used on input line 361.
+(pdftex.def)             Requested size: 452.9679pt x 367.5769pt.
+[6 <../analysis/url/combined_metrics.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 369--372
+
+ []
+
+<../analysis/sms/randomforest/uci/combined_metrics.png, id=153, 4215.75pt x 3445.87375pt>
+File: ../analysis/sms/randomforest/uci/combined_metrics.png Graphic file (type png)
+<use ../analysis/sms/randomforest/uci/combined_metrics.png>
+Package pdftex.def Info: ../analysis/sms/randomforest/uci/combined_metrics.png  used on input line 379.
+(pdftex.def)             Requested size: 452.9679pt x 370.2139pt.
+[7 <../analysis/sms/randomforest/combined_metrics.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 386--388
+
+ []
+
+
+Overfull \hbox (45.82343pt too wide) in paragraph at lines 393--404
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[8 <../analysis/sms/randomforest/uci/combined_metrics.png>] [9]
+Underfull \hbox (badness 10000) in paragraph at lines 570--572
+
+ []
+
+<../analysis/Model_Pipeline_Full_Flowchart.png, id=181, 713.66624pt x 302.12875pt>
+File: ../analysis/Model_Pipeline_Full_Flowchart.png Graphic file (type png)
+<use ../analysis/Model_Pipeline_Full_Flowchart.png>
+Package pdftex.def Info: ../analysis/Model_Pipeline_Full_Flowchart.png  used on input line 575.
+(pdftex.def)             Requested size: 452.9679pt x 191.76202pt.
+[10]
+Underfull \hbox (badness 10000) in paragraph at lines 632--635
+
+ []
+
+[11 <../analysis/Model_Pipeline_Full_Flowchart.png>]
+Overfull \hbox (38.04953pt too wide) in paragraph at lines 648--658
+ [][] 
+ []
+
+[12]
+<../analysis/sms/traditional/combined_metrics.png, id=207, 4215.75pt x 3445.87375pt>
+File: ../analysis/sms/traditional/combined_metrics.png Graphic file (type png)
+<use ../analysis/sms/traditional/combined_metrics.png>
+Package pdftex.def Info: ../analysis/sms/traditional/combined_metrics.png  used on input line 703.
+(pdftex.def)             Requested size: 362.37569pt x 296.18163pt.
+<../analysis/sms/hybrid/combined_metrics.png, id=208, 4215.75pt x 3443.86626pt>
+File: ../analysis/sms/hybrid/combined_metrics.png Graphic file (type png)
+<use ../analysis/sms/hybrid/combined_metrics.png>
+Package pdftex.def Info: ../analysis/sms/hybrid/combined_metrics.png  used on input line 710.
+(pdftex.def)             Requested size: 362.37569pt x 296.00908pt.
+ [13 <../analysis/sms/traditional/combined_metrics.png>]
+<../analysis/url/feature_importance.png, id=216, 854.4723pt x 567.3195pt>
+File: ../analysis/url/feature_importance.png Graphic file (type png)
+<use ../analysis/url/feature_importance.png>
+Package pdftex.def Info: ../analysis/url/feature_importance.png  used on input line 727.
+(pdftex.def)             Requested size: 362.37569pt x 240.59253pt.
+ [14 <../analysis/sms/hybrid/combined_metrics.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 776--778
+
+ []
+
+[15 <../analysis/url/feature_importance.png>] [16]
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Overfull \hbox (25.32584pt too wide) in paragraph at lines 784--851
+\OT1/cmr/m/n/10 [4] T. Ku-mar, "SMS Spam Dataset," [On-line]. Avail-able: []$\OT1/cmtt/m/n/10 https : / / www . kaggle . com / datasets / tinu10kumar /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Overfull \hbox (3.79932pt too wide) in paragraph at lines 784--851
+\OT1/cmr/m/n/10 [6] V. Venky, "Spam Mails Dataset," [On-line]. Avail-able: []$\OT1/cmtt/m/n/10 https : / / www . kaggle . com / datasets / venky73 /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--851
+
+ []
+
+[17] [18] (FinalReport.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package rerunfilecheck Info: File `FinalReport.out' has not changed.
+(rerunfilecheck)             Checksum: 4969DACD13E3BEC1224CCD37B6064717;3843.
+ ) 
+Here is how much of TeX's memory you used:
+ 9007 strings out of 476331
+ 147688 string characters out of 5787293
+ 1867660 words of memory out of 5000000
+ 29259 multiletter control sequences out of 15000+600000
+ 515521 words of font info for 43 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 75i,10n,76p,1751b,463s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Matteo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on FinalReport.pdf (19 pages, 2726241 bytes).
+PDF statistics:
+ 316 PDF objects out of 1000 (max. 8388607)
+ 83 named destinations out of 1000 (max. 500000)
+ 228 words of extra memory for PDF output out of 10000 (max. 10000000)
+
