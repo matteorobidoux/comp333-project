@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.9.16)  12 JUN 2025 00:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.9.16)  12 JUN 2025 17:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -461,39 +461,39 @@ File: ../analysis/Model_Pipeline_Full_Flowchart.png Graphic file (type png)
 <use ../analysis/Model_Pipeline_Full_Flowchart.png>
 Package pdftex.def Info: ../analysis/Model_Pipeline_Full_Flowchart.png  used on input line 575.
 (pdftex.def)             Requested size: 452.9679pt x 191.76202pt.
-[10]
+[10 <../analysis/Model_Pipeline_Full_Flowchart.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 632--635
 
  []
 
-[11 <../analysis/Model_Pipeline_Full_Flowchart.png>]
+[11]
 Overfull \hbox (38.04953pt too wide) in paragraph at lines 648--658
  [][] 
  []
 
-[12]
-<../analysis/sms/traditional/combined_metrics.png, id=207, 4215.75pt x 3445.87375pt>
+<../analysis/sms/traditional/combined_metrics.png, id=200, 4215.75pt x 3445.87375pt>
 File: ../analysis/sms/traditional/combined_metrics.png Graphic file (type png)
 <use ../analysis/sms/traditional/combined_metrics.png>
 Package pdftex.def Info: ../analysis/sms/traditional/combined_metrics.png  used on input line 703.
 (pdftex.def)             Requested size: 362.37569pt x 296.18163pt.
-<../analysis/sms/hybrid/combined_metrics.png, id=208, 4215.75pt x 3443.86626pt>
+[12]
+<../analysis/sms/hybrid/combined_metrics.png, id=209, 4215.75pt x 3443.86626pt>
 File: ../analysis/sms/hybrid/combined_metrics.png Graphic file (type png)
 <use ../analysis/sms/hybrid/combined_metrics.png>
 Package pdftex.def Info: ../analysis/sms/hybrid/combined_metrics.png  used on input line 710.
 (pdftex.def)             Requested size: 362.37569pt x 296.00908pt.
- [13 <../analysis/sms/traditional/combined_metrics.png>]
-<../analysis/url/feature_importance.png, id=216, 854.4723pt x 567.3195pt>
+ [13 <../analysis/sms/traditional/combined_metrics.png> <../analysis/sms/hybrid/combined_metrics.png>]
+<../analysis/url/feature_importance.png, id=218, 854.4723pt x 567.3195pt>
 File: ../analysis/url/feature_importance.png Graphic file (type png)
 <use ../analysis/url/feature_importance.png>
 Package pdftex.def Info: ../analysis/url/feature_importance.png  used on input line 727.
 (pdftex.def)             Requested size: 362.37569pt x 240.59253pt.
- [14 <../analysis/sms/hybrid/combined_metrics.png>]
+ [14 <../analysis/url/feature_importance.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 776--778
 
  []
 
-[15 <../analysis/url/feature_importance.png>] [16]
+[15]
 Underfull \hbox (badness 10000) in paragraph at lines 784--851
 
  []
@@ -613,7 +613,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 784--851
 
  []
 
-[17] [18] (FinalReport.aux)
+[16] [17] (FinalReport.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -621,17 +621,17 @@ Package rerunfilecheck Info: File `FinalReport.out' has not changed.
 (rerunfilecheck)             Checksum: 4969DACD13E3BEC1224CCD37B6064717;3843.
  ) 
 Here is how much of TeX's memory you used:
- 9007 strings out of 476331
- 147688 string characters out of 5787293
- 1867660 words of memory out of 5000000
+ 9006 strings out of 476331
+ 147681 string characters out of 5787293
+ 1870660 words of memory out of 5000000
  29259 multiletter control sequences out of 15000+600000
  515521 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,76p,1751b,463s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,76p,1751b,497s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Matteo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Matteo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on FinalReport.pdf (19 pages, 2726241 bytes).
+Output written on FinalReport.pdf (18 pages, 2725123 bytes).
 PDF statistics:
- 316 PDF objects out of 1000 (max. 8388607)
- 83 named destinations out of 1000 (max. 500000)
+ 311 PDF objects out of 1000 (max. 8388607)
+ 82 named destinations out of 1000 (max. 500000)
  228 words of extra memory for PDF output out of 10000 (max. 10000000)
 
