@@ -193,7 +193,7 @@ plt.fill_between(recall, precision, alpha=0.1, color='#e74c3c')
 plt.xlabel('Recall')
 plt.ylabel('Precision')
 plt.title('Precision-Recall Curve')
-plt.legend(loc="upper right")
+plt.legend(loc="lower right")
 plt.savefig('analysis/url/precision_recall_curve.png', dpi=300, bbox_inches='tight')
 plt.close()
 

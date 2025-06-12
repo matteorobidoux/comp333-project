@@ -144,7 +144,7 @@ def evaluate_hybrid_model(file_path):
     plt.xlabel('Recall')
     plt.ylabel('Precision')
     plt.title('Precision-Recall Curve')
-    plt.legend(loc="upper right")
+    plt.legend(loc="lower right")
     plt.savefig('analysis/sms/hybrid/precision_recall_curve.png', dpi=300, bbox_inches='tight')
     plt.close()
 
