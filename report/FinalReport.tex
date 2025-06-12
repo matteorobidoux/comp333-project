@@ -7,6 +7,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[hyphens]{url}
 \usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
 
 \begin{document}
 
@@ -233,7 +235,7 @@ Redirect and Path Features & Presence of redirects, subdomain keywords like "aut
 \subsubsection*{Training}
 
 \noindent
-We trained an \textbf{LightGBM model} (lighter alternative to XGBoost, to minimize training time), with 300 boosts per round. Additionally, we also utilized \textbf{Stratified K-fold}, using \textbf{5 folds} in total. The model was trained on 208,876 rows of data. The following hyperparameters were used: 
+We trained an \textbf{LightGBM model} , which is a lighter alternative to XGBoost. This was mainly done in order to have something similar in performance to XGBoost, as it is good algorithm for training larger datasets, but at the same time minimizing our training time, as our URL model has many features which would be too lengthy to process via XGBoost. Additionally, we also utilized \textbf{Stratified K-fold} in order to maximize our training accuracy, using \textbf{5 folds} in total. The following hyperparameters were used: 
 
 \begin{table}[h!]
     \centering
@@ -267,38 +269,38 @@ We trained an \textbf{LightGBM model} (lighter alternative to XGBoost, to minimi
     \caption{LightGBM Model Training Configuration for URL Model}
 \end{table}
 
-
 \noindent
-The model achieved the following results after training on a Lenovo Flex 5 Laptop with a AMD Ryzen 7 4700U Processor and 16GB of DDR4 memory, taking around \textbf{187 secs}:
+Refer to Table \ref{tab:training_summary} for the training results.
+\newline
+% The model achieved the following results after training on a Lenovo Flex 5 Laptop with a AMD Ryzen 7 4700U Processor and 16GB of DDR4 memory, taking around \textbf{187 secs}:
 
-\begin{itemize}
-    \item Average Accuracy: \textbf{98.55\%}
-    \item Average AUC: \textbf{99.82\%}
-    \item Average Precision: \textbf{99.85\%}
-\end{itemize} 
+% \begin{itemize}
+%     \item Average Accuracy: \textbf{98.55\%}
+%     \item Average AUC: \textbf{99.82\%}
+%     \item Average Precision: \textbf{99.85\%}
+% \end{itemize} 
 
 
-\begin{table}[htbp]
-    \centering
-    \caption{URL Model Classification Report}
-    \begin{tabular}{l c c c c}
-    \toprule
-     & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-    \midrule
-    \textbf{Ham} & \textbf{0.98} & \textbf{0.99} & \textbf{0.99} & 104438 \\
-    \textbf{Spam} & \textbf{0.99} & \textbf{0.98} & \textbf{0.99} & 104438 \\
-    \midrule
-    \textbf{Accuracy} & & & \textbf{0.99} & 208876 \\
-    Macro Avg & 0.99 & 0.99 & 0.99 & 208876 \\
-    Weighted Avg & 0.99 & 0.99 & 0.99 & 208876 \\
-    \bottomrule
-    \end{tabular}
-    \label{tab:classification_report}
-\end{table}
+% \begin{table}[htbp]
+%     \centering
+%     \caption{URL Model Classification Report}
+%     \begin{tabular}{l c c c c}
+%     \toprule
+%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
+%     \midrule
+%     \textbf{Ham} & \textbf{0.98} & \textbf{0.99} & \textbf{0.99} & 104438 \\
+%     \textbf{Spam} & \textbf{0.99} & \textbf{0.98} & \textbf{0.99} & 104438 \\
+%     \midrule
+%     \textbf{Accuracy} & & & \textbf{0.99} & 208876 \\
+%     Macro Avg & 0.99 & 0.99 & 0.99 & 208876 \\
+%     Weighted Avg & 0.99 & 0.99 & 0.99 & 208876 \\
+%     \bottomrule
+%     \end{tabular}
+%     \label{tab:classification_report}
+% \end{table}
 
 \noindent
 Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
-
 
 \begin{figure}[htbp]
     \centering
@@ -320,6 +322,8 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
     \caption{Confusion Matrix for URL Model}
     \label{fig:confusion_matrix_1}
 \end{figure}
+
+\newpage
 
 \subsubsection{SMS Model}
 \subsubsection*{Feature Extraction}
@@ -345,8 +349,10 @@ Maximum document frequency & 0.95 \\
 \label{tab:tfidf_params}
 \end{table}
 
+
+\subsubsection*{Training}
 \noindent
-Training was done on the same laptop using \textbf{Stratified K-fold with 10 folds}. However, this time a \textbf{Random Forest Classifier} was used with the following hyperparameters:
+Training was done using \textbf{Stratified K-fold with 10 folds}, allowing us to achieve the maximum possible training accuracy to compare to other known results. However, this time a \textbf{Random Forest Classifier} was used instead of XGBoost, as it is a more suitable algorithm for text classification tasks, especially when dealing with smaller datasets that do not have specific features that need to be extracted. The following hyperparameters were used to train the model:
 
 % \begin{itemize}
 %     \item 200 estimators
@@ -376,31 +382,33 @@ Training was done on the same laptop using \textbf{Stratified K-fold with 10 fol
 
 
 \noindent
-The model achieved the following results after training 6,306 rows, taking around \textbf{54 secs}:
+Refer to Table \ref{tab:training_summary} for the training results.
+\newline
+% The model achieved the following results after training 6,306 rows, taking around \textbf{54 secs}:
 
-\begin{itemize}
-    \item Accuracy: \textbf{96.73\%}
-    \item AUC: \textbf{99.16\%}
-    \item Average Precision: \textbf{99.34\%}
-\end{itemize}
+% \begin{itemize}
+%     \item Accuracy: \textbf{96.73\%}
+%     \item AUC: \textbf{99.16\%}
+%     \item Average Precision: \textbf{99.34\%}
+% \end{itemize}
 
-\begin{table}[htbp]
-    \centering
-    \caption{\textbf{SMS model Classification Report}}
-    \begin{tabular}{l c c c c}
-    \toprule
-     & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-    \midrule
-    \textbf{Ham} & \textbf{0.96} & \textbf{0.97} & \textbf{0.97} & 3153 \\
-    \textbf{Spam} & \textbf{0.97} & \textbf{0.96} & \textbf{0.97} & 3153 \\
-    \midrule
-    \textbf{Accuracy} & & & \textbf{0.97} & 6306 \\
-    Macro Avg & 0.97 & 0.97 & 0.97 & 6306 \\
-    Weighted Avg & 0.97 & 0.97 & 0.97 & 6306 \\
-    \bottomrule
-    \end{tabular}
-    \label{tab:classification_report_2}
-\end{table}
+% \begin{table}[htbp]
+%     \centering
+%     \caption{\textbf{SMS model Classification Report}}
+%     \begin{tabular}{l c c c c}
+%     \toprule
+%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
+%     \midrule
+%     \textbf{Ham} & \textbf{0.96} & \textbf{0.97} & \textbf{0.97} & 3153 \\
+%     \textbf{Spam} & \textbf{0.97} & \textbf{0.96} & \textbf{0.97} & 3153 \\
+%     \midrule
+%     \textbf{Accuracy} & & & \textbf{0.97} & 6306 \\
+%     Macro Avg & 0.97 & 0.97 & 0.97 & 6306 \\
+%     Weighted Avg & 0.97 & 0.97 & 0.97 & 6306 \\
+%     \bottomrule
+%     \end{tabular}
+%     \label{tab:classification_report_2}
+% \end{table}
 
 \noindent
 Additionally, the following ROC curve, Precision-Recall curve, and confusion matrix were generated to visualize the model's performance:
@@ -429,31 +437,33 @@ Additionally, the following ROC curve, Precision-Recall curve, and confusion mat
 \newpage
 
 \noindent
-Furthermore, when training the model, we also decided to use another approach where we only train using the \textbf{SMS UCI Spam Collection Dataset} [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, URLs, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. The model achieved the following results after training \textbf{1,494 rows} (Much smaller than original SMS UCI dataset as there is a heavy bias), taking around \textbf{17 secs}: 
+Furthermore, when training the model, we also decided to use another approach where we only train using the \textbf{SMS UCI Spam Collection Dataset} [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, URLs, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. Refer to Table \ref{tab:training_summary} for the training results.
+\newline
+% Furthermore, when training the model, we also decided to use another approach where we only train using the \textbf{SMS UCI Spam Collection Dataset} [2], using the same normalization approach (Balancing spam and non spam values, removing whitespaces, URLs, etc). This was done to compare our results with the results of the study by Gawai and Salunke [8]. The model achieved the following results after training \textbf{1,494 rows} (Much smaller than original SMS UCI dataset as there is a heavy bias), taking around \textbf{17 secs}: 
 
-\begin{itemize}
-    \item Accuracy: \textbf{97.19\%}
-    \item AUC: \textbf{99.34\%}
-    \item Average Precision: \textbf{99.48\%}
-\end{itemize}
+% \begin{itemize}
+%     \item Accuracy: \textbf{97.19\%}
+%     \item AUC: \textbf{99.34\%}
+%     \item Average Precision: \textbf{99.48\%}
+% \end{itemize}
 
-\begin{table}[htbp]
-    \centering
-    \caption{\textbf{SMS model Classification Report (UCI Dataset)}}
-    \begin{tabular}{l c c c c}
-    \toprule
-     & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-    \midrule
-    \textbf{Legitimate} & \textbf{0.96} & \textbf{0.99} & \textbf{0.97} & 747 \\
-    \textbf{Spam} & \textbf{0.99} & \textbf{0.96} & \textbf{0.97} & 747 \\
-    \midrule
-    \textbf{Accuracy} & & & \textbf{0.97} & 1494 \\
-    Macro Avg & 0.97 & 0.97 & 0.97 & 1494 \\
-    Weighted Avg & 0.97 & 0.97 & 0.97 & 1494 \\
-    \bottomrule
-    \end{tabular}
-    \label{tab:classification_report_3}
-\end{table}
+% \begin{table}[htbp]
+%     \centering
+%     \caption{\textbf{SMS model Classification Report (UCI Dataset)}}
+%     \begin{tabular}{l c c c c}
+%     \toprule
+%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
+%     \midrule
+%     \textbf{Legitimate} & \textbf{0.96} & \textbf{0.99} & \textbf{0.97} & 747 \\
+%     \textbf{Spam} & \textbf{0.99} & \textbf{0.96} & \textbf{0.97} & 747 \\
+%     \midrule
+%     \textbf{Accuracy} & & & \textbf{0.97} & 1494 \\
+%     Macro Avg & 0.97 & 0.97 & 0.97 & 1494 \\
+%     Weighted Avg & 0.97 & 0.97 & 0.97 & 1494 \\
+%     \bottomrule
+%     \end{tabular}
+%     \label{tab:classification_report_3}
+% \end{table}
 
 \noindent
 We also generated the following ROC curve, Precision-Recall curve, and confusion matrix to visualize the model's performance:
@@ -485,29 +495,28 @@ We also generated the following ROC curve, Precision-Recall curve, and confusion
 \subsubsection*{Feature Extraction}
 We applied TF-IDF vectorization separately to both the email subject and body, allowing the model to leverage textual patterns in each section.
 \newline
-\newline
 
 \begin{table}[H]
-\renewcommand{\arraystretch}{1.3}
-\setlength{\tabcolsep}{12pt}
-\centering
-\begin{tabular}{|p{6cm}|p{5cm}|p{4cm}|}
-\hline
-\textbf{Parameter} & \textbf{Text Vectorization} & \textbf{Subject Vectorization} \\
-\hline
-Minimum document frequency & 3 & 2 \\
-\hline
-Maximum document frequency & 0.90 & 0.95 \\
-\hline
-Maximum features & 5000 & 1000 \\
-\hline
-\end{tabular}
-\caption{Comparison of Vectorization Settings for Text and Subject Fields}
-\label{tab:vectorization_settings}
+    \renewcommand{\arraystretch}{1.3}
+    \setlength{\tabcolsep}{12pt}
+    \centering
+    \begin{tabular}{|p{6cm}|p{5cm}|p{4cm}|}
+        \hline
+        \textbf{Parameter} & \textbf{Text Vectorization} & \textbf{Subject Vectorization} \\
+        \hline
+        Minimum document frequency & 3 & 2 \\
+        \hline
+        Maximum document frequency & 0.90 & 0.95 \\
+        \hline
+        Maximum features & 5000 & 1000 \\
+        \hline
+    \end{tabular}
+    \caption{Comparison of Vectorization Settings for Text and Subject Fields}
+    \label{tab:vectorization_settings}
 \end{table}
 
 \subsubsection*{Training}
-We trained an \textbf{XGBoost classifier} (No Stratified K-fold), with the same hardware but with a \textbf{70/30 train-test split}:
+We trained an \textbf{XGBoost classifier}, as we have one extra feature with email being the subject, which is not present in the SMS model. This allows us to capture more features and patterns within the data, as well as to have a more complex model that can handle the extra feature. The training was done using a 70/30 train-test split, as because we had a much larger dataset, we did not want to use cross-validation, as it would take too long to train given our hardware limitations (detailed in \textbf{Section 3.2.5}). The following hyperparameters were used to train the model:
 
 \begin{table}[h!]
     \centering
@@ -538,31 +547,32 @@ We trained an \textbf{XGBoost classifier} (No Stratified K-fold), with the same 
 \newpage
 
 \noindent
-The model achieved the following results after training 23,000 rows, taking 249 secs:
+Refer to Table \ref{tab:training_summary} for the training results.
+% The model achieved the following results after training 23,000 rows, taking 249 secs:
 
-\begin{itemize}
-    \item Accuracy: \textbf{96.90\%}
-    \item AUC: \textbf{99.59\%}
-    \item Average Precision: \textbf{99.55\%}
-\end{itemize}
+% \begin{itemize}
+%     \item Accuracy: \textbf{96.90\%}
+%     \item AUC: \textbf{99.59\%}
+%     \item Average Precision: \textbf{99.55\%}
+% \end{itemize}
 
-\begin{table}[htbp]
-    \centering
-    \caption{Email Model Evaluation Report}
-    \begin{tabular}{l c c c c}
-    \toprule
-     & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
-    \midrule
-    \textbf{Legitimate} & \textbf{0.99} & \textbf{0.95} & \textbf{0.97} & 2649 \\
-    \textbf{Spam} & \textbf{0.95} & \textbf{0.99} & \textbf{0.97} & 2649 \\
-    \midrule
-    \textbf{Accuracy}  & & & \textbf{0.97} & 5297 \\
-    Macro Avg & 0.97 & 0.97 & 0.97 & 5297 \\
-    Weighted Avg & 0.97 & 0.97 & 0.97 & 5297 \\
-    \bottomrule
-    \end{tabular}
-    \label{tab:xgboost_evaluation}
-\end{table}
+% \begin{table}[htbp]
+%     \centering
+%     \caption{Email Model Evaluation Report}
+%     \begin{tabular}{l c c c c}
+%     \toprule
+%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
+%     \midrule
+%     \textbf{Legitimate} & \textbf{0.99} & \textbf{0.95} & \textbf{0.97} & 2649 \\
+%     \textbf{Spam} & \textbf{0.95} & \textbf{0.99} & \textbf{0.97} & 2649 \\
+%     \midrule
+%     \textbf{Accuracy}  & & & \textbf{0.97} & 5297 \\
+%     Macro Avg & 0.97 & 0.97 & 0.97 & 5297 \\
+%     Weighted Avg & 0.97 & 0.97 & 0.97 & 5297 \\
+%     \bottomrule
+%     \end{tabular}
+%     \label{tab:xgboost_evaluation}
+% \end{table}
 
 
 \subsubsection{YouTube Comments Model}
@@ -589,7 +599,7 @@ Author Features & TF-IDF on usernames to detect spam patterns and suspicious nam
 
 \subsubsection*{Training}
 
-Here, we train using a \textbf{Gradient Boosting Classifier} mainly so we can capture hierarchical relationships within the text data, since they are comments. This is all done using the same hardware and with a 70/30 train-test split. The hyperparameters include:
+Here, we train using a \textbf{Gradient Boosting Classifier} mainly so we can capture hierarchical relationships within the text data, since they are comments. This is all done using a 70/30 train-test split, purely for making the training time as quick as possible. The hyperparameters include:
 
 \begin{table}[h!]
     \centering
@@ -618,31 +628,56 @@ Here, we train using a \textbf{Gradient Boosting Classifier} mainly so we can ca
 \newpage
 
 \noindent
-The model achieved the following results after training 1,962 rows, taking 0.73 secs:
+Refer to Table \ref{tab:training_summary} for the training results.
+% The model achieved the following results after training 1,962 rows, taking 0.73 secs:
 
-\begin{itemize}
-    \item Accuracy: \textbf{94.22\%}
-    \item AUC: \textbf{98.65\%}
-    \item Average Precision: \textbf{98.78\%}
-\end{itemize}
+% \begin{itemize}
+%     \item Accuracy: \textbf{94.22\%}
+%     \item AUC: \textbf{98.65\%}
+%     \item Average Precision: \textbf{98.78\%}
+% \end{itemize}
+
+% \begin{table}[htbp]
+%     \centering
+%     \caption{YouTube Comments Model Evaluation Report}
+%     \begin{tabular}{l c c c c}
+%     \toprule
+%      & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
+%     \midrule
+%     \textbf{Legitimate} & \textbf{0.91} & \textbf{0.98} & \textbf{0.94} & 286 \\
+%     \textbf{Spam} & \textbf{0.98} & \textbf{0.91} & \textbf{0.94} & 285 \\
+%     \midrule
+%     \textbf{Accuracy}  & & & \textbf{0.94} & 571 \\
+%     Macro Avg & 0.94 & 0.94 & 0.94 & 571 \\
+%     Weighted Avg & 0.94 & 0.94 & 0.94 & 571 \\
+%     \bottomrule
+%     \end{tabular}
+%     \label{tab:gbm_evaluation}
+% \end{table}
+
+\subsubsection{Training Results Summary}
 
 \begin{table}[htbp]
     \centering
-    \caption{YouTube Comments Model Evaluation Report}
-    \begin{tabular}{l c c c c}
+    \caption{Overall training summary}
+    \label{tab:training_summary}
+    \begin{tabular}{l cccccc c c c}
     \toprule
-     & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & Support \\
+    \textbf{Model} & \multicolumn{2}{c}{\textbf{Precision}} & \multicolumn{2}{c}{\textbf{Recall}} & \multicolumn{2}{c}{\textbf{F1-Score}} & \textbf{Accuracy} & \textbf{Rows} & \textbf{Train Time (s)} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+    & Ham & Spam & Ham & Spam & Ham & Spam & & & \\
     \midrule
-    \textbf{Legitimate} & \textbf{0.91} & \textbf{0.98} & \textbf{0.94} & 286 \\
-    \textbf{Spam} & \textbf{0.98} & \textbf{0.91} & \textbf{0.94} & 285 \\
-    \midrule
-    \textbf{Accuracy}  & & & \textbf{0.94} & 571 \\
-    Macro Avg & 0.94 & 0.94 & 0.94 & 571 \\
-    Weighted Avg & 0.94 & 0.94 & 0.94 & 571 \\
+    URL & 0.98 & 0.99 & 0.99 & 0.98 & 0.99 & 0.99 & 0.99 & 208,876 & 187 \\
+    SMS & 0.96 & 0.97 & 0.97 & 0.96 & 0.97 & 0.97 & 0.97 & 6,306 & 54 \\
+    SMS UCI & 0.96 & 0.99 & 0.99 & 0.96 & 0.97 & 0.97 & 0.97 & 1,494 & 17 \\
+    Email & 0.99 & 0.95 & 0.95 & 0.99 & 0.97 & 0.97 & 0.97 & 23,000 & 249 \\
+    YouTube & 0.91 & 0.98 & 0.98 & 0.91 & 0.94 & 0.94 & 0.94 & 1,692 & 0.73 \\
     \bottomrule
     \end{tabular}
-    \label{tab:gbm_evaluation}
 \end{table}
+
+\noindent
+All models were trained on a Lenovo Flex 5 Laptop with an AMD Ryzen 7 4700U Processor and 16GB of DDR4 memory. The training times varied significantly based on the dataset size and model complexity, with the URL and Email model'staking the longest due to their larger datasets' and more complex feature extraction process.
 
 
 \section{Inference}
@@ -669,13 +704,74 @@ The inference process across SMS, email, and comments, generally follows the sam
 \subsection{Final Decision}
 
 The final spam probability score is then compared against a predefined threshold (typically 0.5). If the score meets or exceeds this threshold, the message is classified as spam; otherwise, it is classified as non-spam.
+\newline
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{../analysis/Model_Pipeline_Flowchart.png}
+    \includegraphics[width=1.0\textwidth]{../analysis/Model_Pipeline_Full_Flowchart.png}
     \caption{Hybrid Model Inference Process}
     \label{fig:inference_process}
 \end{figure}
+
+% \begin{figure}[h!]
+%     \centering
+%     \scalebox{0.7}{ % Slightly smaller overall
+%     \begin{tikzpicture}[
+%         font=\small,
+%         process/.style={rectangle, draw, rounded corners, minimum width=3.7cm, minimum height=1.2cm, text centered, draw=black, fill=white},
+%         io/.style={ellipse, draw, minimum width=3.6cm, minimum height=1.2cm, text centered, draw=black, fill=white},
+%         arrow/.style={draw, thick, -{Latex[length=4mm, width=2mm]}} % Larger arrowheads
+%     ]
+    
+%     % Nodes
+%     \node[io] (input) at (0,0) {Raw Message Input};
+%     \node[process] (split) at (4,0) {URL Extractor / Text Split};
+    
+%     \node[process] (textpre) at (4,3.5) {Text Preprocessing};
+%     \node[process] (textclf) at (9,3.5) {
+%         \begin{tabular}{c}
+%         Text Classifier \\
+%         (SMS: Random Forest, \\
+%         Email: XGBoost, \\
+%         YouTube: Gradient Boost)
+%         \end{tabular}
+%     };
+    
+%     \node[process] (urlextract) at (4,-3.5) {URL Feature Extract};
+%     \node[process] (urlclf) at (9,-3.5) {
+%         \begin{tabular}{c}
+%         URL Classifier \\
+%         (LightGBM)
+%         \end{tabular}
+%     };
+    
+%     \node[process] (combine) at (13,0) {
+%         \begin{tabular}{c}
+%         Combined Prediction \\
+%         (Weighted Avg.)
+%         \end{tabular}
+%     };
+    
+%     \node[io] (output) at (17,0) {Final Spam/Ham Label};
+    
+%     % Arrows
+%     \draw[arrow] (input.east) -- (split.west);
+%     \draw[arrow] (split.north) -- (textpre.south);
+%     \draw[arrow] (textpre.east) -- (textclf.west);
+%     \draw[arrow] (textclf.south east) to[out=-30,in=90] (combine.north);
+%     \draw[arrow] (split.south) -- (urlextract.north);
+%     \draw[arrow] (urlextract.east) -- (urlclf.west);
+%     \draw[arrow] (urlclf.north east) to[out=30,in=-90] (combine.south);
+%     \draw[arrow] (combine.east) -- (output.west);
+    
+%     \end{tikzpicture}
+%     }
+%     \caption{Hybrid Spam Detection Pipeline Combining Text and URL Classifiers}
+%     \label{fig:spam_pipeline}
+% \end{figure}
+
+
+
 
 \section{Results and Discussion}
 \subsection{Comparison to Traditional Methods}
